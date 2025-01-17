@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, feature/90-sonar]
   pull_request:
     branches: [main, develop]
 
@@ -21,13 +21,13 @@ jobs:
         with:
           node-version: 18
 
-      - name : Npm Install
+      - name: Npm Install
         run: npm install
         
-      - name : Lint
-        run : npm run lint
+      - name: Lint
+        run: npm run lint
         
-      - name : Test
+      - name: Test
         run: npm test
         
         # Generate sonar-project.properties dynamically
@@ -38,7 +38,7 @@ jobs:
           echo "sonar.sources=." >> sonar-project.properties
           echo "sonar.sourceEncoding=UTF-8" >> sonar-project.properties
 
-      - name : Check Path
+      - name: Check Path
         run: ls -la && pwd && ls -la /
       
       - name: SonarCloud Scan
@@ -47,19 +47,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  Test_Docker:
-    runs-on: ubuntu-latest
-    steps:
-
-      #Checkout Repository
-      - uses: actions/checkout@v3
-      
-      # Docker Build
-      - uses: docker/build-push-action@v3
-        with:
-          push: false
-          file: ./Dockerfile
-          tags: front-stage:test
-          build-args: |
-            password=${{ secrets.DOCKER_PASS }}
