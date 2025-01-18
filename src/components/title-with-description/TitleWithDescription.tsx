@@ -37,7 +37,7 @@ const TitleWithDescription = ({
           </Typography>
         </Tooltip>
       ) : (
-        <Typography onClick={handleTooltip} sx={style.description}>
+        <Typography onClick={handleTooltip} sx={styles.description}>
           {description}
         </Typography>
       )}
