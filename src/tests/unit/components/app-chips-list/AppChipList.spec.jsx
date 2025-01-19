@@ -1,23 +1,8 @@
 import { render, screen, fireEvent, within } from '@testing-library/react'
-import { vi } from 'vitest'
+import { mockedItems, mockedHandleChipDelete } from './AppChipList.mocks'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 
 describe('AppChipList component', () => {
-  const mockedItems = [
-    'Chip 1',
-    'Chip 2',
-    'Chip 3',
-    'Chip 4',
-    'Chip 5',
-    'Chip 6',
-    'Chip 7',
-    'Chip 8',
-    'Chip 9',
-    'Chip 10',
-    'Chip 11'
-  ]
-  const mockedHandleChipDelete = vi.fn()
-
   it('should show all chips if items length <= defaultQuantity', () => {
     render(<AppChipList defaultQuantity={5} items={mockedItems.slice(0, 3)} />)
 
