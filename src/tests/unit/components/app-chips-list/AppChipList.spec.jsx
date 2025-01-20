@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 
@@ -56,7 +57,7 @@ describe('AppChipList component', () => {
     expect(screen.getByTestId('amount-of-chips')).toHaveTextContent('+1')
   })
 
-  it('should delete a chip when handleChipDelete is called', () => {
+  it('should delete a chip when handleChipDelete is called', async () => {
     render(
       <AppChipList
         defaultQuantity={5}
@@ -70,7 +71,7 @@ describe('AppChipList component', () => {
       chipToDelete.closest('[data-testid="chip"]')
     ).getByTestId('close-btn')
 
-    fireEvent.click(closeButton)
+    await userEvent.click(closeButton)
 
     expect(mockedHandleChipDelete).toHaveBeenCalledTimes(1)
     expect(mockedHandleChipDelete).toHaveBeenCalledWith(mockedItems[0])
