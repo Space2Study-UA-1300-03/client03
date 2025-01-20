@@ -6,7 +6,8 @@ export const styles = {
     textAlign: 'center'
   },
   title: {
-    marginBottom: '16px'
+    marginBottom: '8px',
+    typography: 'h5'
   },
   description: {
     marginBottom: '0px'
