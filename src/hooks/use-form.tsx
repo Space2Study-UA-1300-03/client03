@@ -15,6 +15,7 @@ interface UseFormProps<T> {
 interface UseFormOutput<T> {
   data: T
   isDirty: boolean
+  isFormValid: boolean
   errors: { [K in keyof T]: string }
   handleInputChange: (
     key: keyof T
@@ -160,8 +161,13 @@ export const useForm = <T extends object>({
     }))
   }
 
+  const isFormValid =
+    Object.values(errors).every((error) => !error) &&
+    Object.values(data).every((value) => value !== undefined && value !== '')
+
   return {
     data,
+    isFormValid,
     isDirty,
     errors,
     handleDataChange,
