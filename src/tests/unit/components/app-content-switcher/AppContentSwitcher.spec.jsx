@@ -3,21 +3,22 @@ import userEvent from '@testing-library/user-event'
 import { describe, it, vi, expect } from 'vitest'
 import AppContentSwitcher from '~/components/app-content-switcher/AppContentSwitcher'
 
+const mockOnChange = vi.fn()
+
+const switchOptions = {
+  left: { text: 'Left Option', tooltip: 'Left Tooltip' },
+  right: { text: 'Right Option', tooltip: 'Right Tooltip' }
+}
+
+const defaultProps = {
+  active: false,
+  onChange: mockOnChange,
+  switchOptions,
+  typographyVariant: 'body1',
+  styles: {}
+}
+
 describe('AppContentSwitcher', () => {
-  const mockOnChange = vi.fn()
-  const switchOptions = {
-    left: { text: 'Left Option', tooltip: 'Left Tooltip' },
-    right: { text: 'Right Option', tooltip: 'Right Tooltip' }
-  }
-
-  const defaultProps = {
-    active: false,
-    onChange: mockOnChange,
-    switchOptions,
-    typographyVariant: 'body1',
-    styles: {}
-  }
-
   it('should render with the correct props', () => {
     render(<AppContentSwitcher {...defaultProps} />)
     expect(screen.getByText('Left Option')).toBeInTheDocument()
