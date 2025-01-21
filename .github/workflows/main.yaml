@@ -53,6 +53,9 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+#       - name : Check Path
+#         run: ls -la && pwd && ls -la /
       
       # - name: SonarCloud Scan
       #   uses: SonarSource/sonarcloud-github-action@master
