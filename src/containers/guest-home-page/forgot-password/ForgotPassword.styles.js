@@ -27,5 +27,9 @@ export const styles = {
     description: {
       typography: 'body2'
     }
+  },
+  emailInput: {
+    mb: '5px',
+    mt: '15px'
   }
 }
