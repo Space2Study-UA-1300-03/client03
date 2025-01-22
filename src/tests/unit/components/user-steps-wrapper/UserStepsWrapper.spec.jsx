@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect } from 'vitest'
+import { describe, it, beforeEach, expect } from 'vitest'
 import UserStepsWrapper from '~/components/user-steps-wrapper/UserStepsWrapper'
 
 const mockDispatch = vi.fn()
@@ -68,14 +68,15 @@ vi.mock('~/constants', () => ({
 }))
 
 describe('UserStepsWrapper', () => {
-  it('renders the first tab', () => {
+  beforeEach(() => {
     render(<UserStepsWrapper userRole='tutor' />)
+  })
+
+  it('renders the first tab', () => {
     expect(screen.getByText('Mocked GeneralInfoStep')).toBeInTheDocument()
   })
 
   it('renders the second tab after clicking "Next"', async () => {
-    render(<UserStepsWrapper userRole='tutor' />)
-
     const nextButton = screen.getByRole('button', { name: /next/i })
     expect(nextButton).toBeInTheDocument()
 
@@ -84,7 +85,6 @@ describe('UserStepsWrapper', () => {
   })
 
   it('renders file upload input', () => {
-    render(<UserStepsWrapper userRole='tutor' />)
     const fileInput = screen.getByLabelText('photo-upload')
     expect(fileInput).toBeInTheDocument()
   })
