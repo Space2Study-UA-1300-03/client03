@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, beforeEach, expect } from 'vitest'
 import UserStepsWrapper from '~/components/user-steps-wrapper/UserStepsWrapper'
 
 const mockDispatch = vi.fn()
