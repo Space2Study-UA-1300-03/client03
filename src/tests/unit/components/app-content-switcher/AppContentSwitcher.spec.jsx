@@ -30,7 +30,7 @@ describe('AppContentSwitcher', () => {
 
     const switchElement = screen.getByRole('checkbox')
     await userEvent.click(switchElement)
-    expect(mockOnChange).toHaveBeenCalled()
+    expect(mockOnChange).toHaveBeenCalledTimes(1)
   })
 
   it('should render tooltips when tooltip props are passed', async () => {
