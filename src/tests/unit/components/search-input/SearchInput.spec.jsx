@@ -4,7 +4,7 @@ import { it, expect } from 'vitest'
 import SearchInput from '~/components/search-input/SearchInput'
 
 const mockedSearchText = 'test text'
-const mockedSearchEmptyString = undefined || ''
+const mockedSearchEmptyString = ''
 const mockFn = vi.fn()
 
 describe('SearchInput', () => {
@@ -20,15 +20,14 @@ describe('SearchInput', () => {
     render(<SearchInput setSearch={mockFn} />)
     const searchIcon = screen.getByTestId('search-icon')
     await userEvent.click(searchIcon)
-    expect(mockFn).toHaveBeenCalled()
-    // expect(mockFn).toBeCalled()
+    expect(mockFn).toHaveBeenCalledTimes(1)
   })
 
   it('should call setSearch with empty string when delete icon is clicked', async () => {
-    render(<SearchInput setSearch={mockFn} />)
+    render(<SearchInput search={mockedSearchText} setSearch={mockFn} />)
     const deleteIcon = screen.getByTestId('delete-icon')
     await userEvent.click(deleteIcon)
-    expect(mockFn).toHaveBeenCalledWith('' || undefined)
+    expect(mockFn).toHaveBeenCalledWith('')
   })
 
   it('should call setSearch when enter is pressed', () => {
