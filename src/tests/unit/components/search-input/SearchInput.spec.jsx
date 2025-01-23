@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { it, expect } from 'vitest'
 import SearchInput from '~/components/search-input/SearchInput'
@@ -30,10 +30,10 @@ describe('SearchInput', () => {
     expect(mockFn).toHaveBeenCalledWith('')
   })
 
-  it('should call setSearch when enter is pressed', () => {
+  it('should call setSearch when enter is pressed', async () => {
     render(<SearchInput setSearch={mockFn} />)
     const searchIcon = screen.getByTestId('search-icon')
-    fireEvent.keyPress(searchIcon)
+    await userEvent.type(searchIcon, '{Enter}')
     expect(mockFn).toHaveBeenCalled()
   })
 
