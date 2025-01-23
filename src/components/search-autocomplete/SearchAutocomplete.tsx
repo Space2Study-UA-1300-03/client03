@@ -116,7 +116,11 @@ const SearchAutocomplete = ({
         {...props}
       />
 
-      <IconButton onClick={onClear} sx={clearIconVisibility}>
+      <IconButton
+        data-testid='clear-button'
+        onClick={onClear}
+        sx={clearIconVisibility}
+      >
         <ClearIcon fontSize={SizeEnum.Small} />
       </IconButton>
 
