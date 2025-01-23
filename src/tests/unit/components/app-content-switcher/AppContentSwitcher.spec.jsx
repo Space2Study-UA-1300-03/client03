@@ -5,6 +5,10 @@ import AppContentSwitcher from '~/components/app-content-switcher/AppContentSwit
 
 const mockOnChange = vi.fn()
 
+beforeEach(() => {
+  mockOnChange.mockClear()
+})
+
 const switchOptions = {
   left: { text: 'Left Option', tooltip: 'Left Tooltip' },
   right: { text: 'Right Option', tooltip: 'Right Tooltip' }
