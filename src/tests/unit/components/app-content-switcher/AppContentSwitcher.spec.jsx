@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, vi, expect } from 'vitest'
 import AppContentSwitcher from '~/components/app-content-switcher/AppContentSwitcher'
 
 const mockOnChange = vi.fn()
@@ -35,7 +34,7 @@ describe('AppContentSwitcher', () => {
 
     const switchElement = screen.getByRole('checkbox')
     await userEvent.click(switchElement)
-    expect(mockOnChange).toHaveBeenCalled()
+    expect(mockOnChange).toHaveBeenCalledTimes(1)
   })
 
   it('should render tooltips when tooltip props are passed', async () => {
