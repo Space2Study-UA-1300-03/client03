@@ -12,7 +12,7 @@ describe('SearchInput', () => {
     const handleChange = vi.fn()
     render(<SearchInput onChange={handleChange} search={mockedSearchText} />)
     const input = screen.getByRole('textbox')
-    fireEvent.change(input, { target: { value: mockedSearchText } })
+    userEvent.type(input, { target: { value: mockedSearchText } })
     expect(input.value).toBe(mockedSearchText)
   })
 
@@ -20,7 +20,7 @@ describe('SearchInput', () => {
     render(<SearchInput setSearch={mockFn} />)
     const searchIcon = screen.getByTestId('search-icon')
     await userEvent.click(searchIcon)
-    expect(mockFn).toHaveBeenCalledTimes(1)
+    expect(mockFn).toHaveBeenCalledOnce()
   })
 
   it('should call setSearch with empty string when delete icon is clicked', async () => {
