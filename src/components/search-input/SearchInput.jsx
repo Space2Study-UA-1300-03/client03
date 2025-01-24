@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import { styles } from './SearchInput.styles'
 
 const SearchInput = ({ search, setSearch }) => {
-  const [searchInput, setSearchInput] = useState(search)
+  const [searchInput, setSearchInput] = useState(search || '')
 
   return (
     <TextField
