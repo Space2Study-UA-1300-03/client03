@@ -7,9 +7,12 @@
   "and": "and",
   "googleButton": "Sign up with Google",
   "continue": "or continue",
-  "haveAccount": "Already have a tutor account?",
+  "haveAccount": "Already have an account?",
   "joinUs": "Login!",
   "confirmEmailTitle": "Your email address needs to be verified",
   "confirmEmailMessage": "We sent a confirmation email to: ",
-  "confirmEmailDesc": " Check your email and click on the confirmation button to continue."
+  "confirmEmailDesc": " Check your email and click on the confirmation button to continue.",
+  "submit": "Sign up",
+  "terms": "Terms",
+  "privacyPolicy": "Privacy Policy"
 }
