@@ -8,11 +8,11 @@ const mockedSearchEmptyString = ''
 const mockFn = vi.fn()
 
 describe('SearchInput', () => {
-  it('should render text correctly', () => {
+  it('should render text correctly', async () => {
     const handleChange = vi.fn()
-    render(<SearchInput onChange={handleChange} search={mockedSearchText} />)
+    render(<SearchInput onChange={handleChange} />)
     const input = screen.getByRole('textbox')
-    userEvent.type(input, mockedSearchText)
+    await userEvent.type(input, mockedSearchText)
     expect(input.value).toBe(mockedSearchText)
   })
 
