@@ -125,6 +125,7 @@ const SearchAutocomplete = ({
       </IconButton>
 
       <Button
+        data-testid='search-button'
         onClick={onSearch}
         size={isMobile ? SizeEnum.Small : SizeEnum.Large}
         sx={styles.searchBtn}
