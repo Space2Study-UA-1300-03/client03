@@ -2,7 +2,7 @@ import { ChangeEvent, FocusEvent, FormEvent } from 'react'
 import { FormData } from '~/types/common/interfaces/common.interfaces'
 
 export interface SignUpFormProps {
-  handleSubmit: (event: FormEvent<HTMLFormElement>) => void
+  handleSubmit: (event: FormEvent<HTMLDivElement>) => void
   handleChange: (
     field: keyof FormData
   ) => (event: ChangeEvent<HTMLInputElement>) => void

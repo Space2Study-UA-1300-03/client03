@@ -64,7 +64,6 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
           errors={errors}
           handleBlur={handleBlur}
           handleChange={handleInputChange}
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           handleSubmit={handleSubmit}
         />
         <GoogleLogin
