@@ -86,3 +86,11 @@ export interface AddDocuments {
   typeError: string
   maxQuantityFiles: number
 }
+
+export interface FormData {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  confirmPassword: string
+}

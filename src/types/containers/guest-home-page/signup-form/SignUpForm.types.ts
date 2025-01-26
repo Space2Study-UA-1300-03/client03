@@ -1,4 +1,5 @@
 import { ChangeEvent, FocusEvent, FormEvent } from 'react'
+import { FormData } from '~/types/common/interfaces/common.interfaces'
 
 export interface SignUpFormProps {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void
@@ -10,12 +11,4 @@ export interface SignUpFormProps {
   ) => (event: FocusEvent<HTMLInputElement>) => void
   data: FormData
   errors: Partial<FormData>
-}
-
-export interface FormData {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  confirmPassword: string
 }

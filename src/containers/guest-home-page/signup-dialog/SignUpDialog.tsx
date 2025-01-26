@@ -12,10 +12,9 @@ import studentImg from '~/assets/img/signup-dialog/student.svg'
 import styles from './SignUpDialog.styles'
 import useForm from '~/hooks/use-form'
 import { signup } from '~/constants'
-import {
-  SignUpDialogProps,
-  FormData
-} from '~/types/containers/guest-home-page/signup-dialog/SignUpDialog.types'
+import { FormData } from '~/types/common/interfaces/common.interfaces'
+
+import { SignUpDialogProps } from '~/types/containers/guest-home-page/signup-dialog/SignUpDialog.types'
 import { UserRoleEnum } from '~/types'
 
 const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
