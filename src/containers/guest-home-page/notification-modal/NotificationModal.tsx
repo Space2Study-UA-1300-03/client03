@@ -4,6 +4,7 @@ import { Box } from '@mui/material'
 import ImgTitleDescription from '~/components/img-title-description/ImgTitleDescription'
 import AppButton from '~/components/app-button/AppButton'
 import { styles } from '~/containers/guest-home-page/notification-modal/NotificationModal.styles'
+import imgInfo from '~/assets/img/guest-home-page/info.svg'
 
 interface ConfirmEmailModal {
   description: string | ReactElement
@@ -12,12 +13,11 @@ interface ConfirmEmailModal {
   img: string
   onClose: () => void
 }
-
 const NotificationModal: FC<ConfirmEmailModal> = ({
   description,
   buttonTitle,
   title,
-  img,
+  img = imgInfo,
   onClose
 }) => {
   return (
