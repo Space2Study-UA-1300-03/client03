@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import { getEmptyValues } from '~/utils/helper-functions'
 import { isEqual } from '~/utils/isEqual'
 
@@ -10,11 +11,13 @@ interface UseFormProps<T> {
   }>
   onSubmit?: (data?: T) => Promise<void>
   submitWithData?: boolean
+  dirtyOnChange?: boolean
 }
 
 interface UseFormOutput<T> {
   data: T
   isDirty: boolean
+  dirtyOnChange: boolean
   isFormValid: boolean
   errors: { [K in keyof T]: string }
   handleInputChange: (
@@ -35,7 +38,8 @@ export const useForm = <T extends object>({
   initialErrors = getEmptyValues(initialValues, ''),
   validations,
   onSubmit,
-  submitWithData
+  submitWithData,
+  dirtyOnChange = false
 }: UseFormProps<T>): UseFormOutput<T> => {
   const [data, setData] = useState<T>(initialValues)
   const [isDirty, setDirty] = useState<boolean>(false)
@@ -68,10 +72,17 @@ export const useForm = <T extends object>({
         event.target.type === 'checkbox'
           ? event.target.checked
           : event.target.value
-      setData((prev) => ({
-        ...prev,
-        [key]: value
-      }))
+      setData((prev) => {
+        const newData = {
+          ...prev,
+          [key]: value
+        }
+
+        if (dirtyOnChange) {
+          setDirty(!isEqual(newData, initialValues))
+        }
+        return newData
+      })
       checkForError(key, event.target.value)
     }
 
@@ -169,6 +180,7 @@ export const useForm = <T extends object>({
     data,
     isFormValid,
     isDirty,
+    dirtyOnChange,
     errors,
     handleDataChange,
     handleInputChange,
