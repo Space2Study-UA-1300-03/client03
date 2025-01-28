@@ -35,7 +35,9 @@ const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
   const [modal, setModal] = useState<React.ReactElement | null>(null)
   const [paperProps, setPaperProps] = useState<PaperProps>({})
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
-  const [events, setEvents] = useState<Record<string, () => boolean>>({})
+  const [events, setEvents] = useState<
+    Record<string, () => boolean | undefined>
+  >({})
 
   const closeModal = useCallback(
     (forceQuit: boolean = false) => {
