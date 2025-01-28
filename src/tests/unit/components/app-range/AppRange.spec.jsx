@@ -1,14 +1,32 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import AppRange from '~/components/app-range/AppRange'
 
-const onChangeMock = vi.fn()
+import AppRange from '~/components/app-range/AppRange'
+import * as utils from '~/utils/range-filter'
+
+vi.mock('~/utils/range-filter', async () => {
+  const actual = await vi.importActual('~/utils/range-filter')
+  return {
+    ...actual,
+    checkRangeEquality: vi.fn(),
+    createMarks: vi.fn(() => {})
+  }
+})
+
+const mockCheckRangeEquality = vi.mocked(utils.checkRangeEquality)
 
 const propsMock = {
   min: 0,
   max: 100,
-  onChange: onChangeMock,
+  onChange: vi.fn(),
   value: [10, 50]
+}
+
+const changedMockProps = {
+  min: 0,
+  max: 100,
+  onChange: vi.fn(),
+  value: [20, 80]
 }
 
 describe('AppRange', () => {
@@ -37,7 +55,7 @@ describe('AppRange', () => {
 
     expect(sliders[0].value).toBe('17')
     await waitFor(() => {
-      expect(onChangeMock).toHaveBeenCalled('17')
+      expect(propsMock.onChange).toHaveBeenCalled('17')
     })
   })
 
@@ -48,7 +66,7 @@ describe('AppRange', () => {
     await userEvent.type(inputs[0], '20')
 
     await waitFor(() => {
-      expect(onChangeMock).toHaveBeenCalledWith([20, 50])
+      expect(propsMock.onChange).toHaveBeenCalledWith([20, 50])
     })
   })
 
@@ -59,7 +77,7 @@ describe('AppRange', () => {
     await userEvent.type(inputs[0], 'NaN')
 
     await waitFor(() => {
-      expect(onChangeMock).not.toHaveBeenCalled()
+      expect(propsMock.onChange).not.toHaveBeenCalled()
     })
   })
 
@@ -70,24 +88,19 @@ describe('AppRange', () => {
     await userEvent.tab()
 
     await waitFor(() => {
-      expect(onChangeMock).toHaveBeenCalledWith([propsMock.min, 50])
+      expect(propsMock.onChange).toHaveBeenCalledWith([propsMock.min, 50])
     })
   })
 
-  //   it('should update prices when input is blurred and input is greater than max value', async () => {
-  //     const inputs = screen.getAllByRole('textbox')
+  it('should update prices when input is blurred and input is greater than max value', async () => {
+    const inputs = screen.getAllByRole('textbox')
 
-  //     await userEvent.clear(inputs[1])
-  //     await userEvent.type(inputs[1], '1500000')
-  //     await userEvent.tab()
+    await userEvent.clear(inputs[1])
+    await userEvent.type(inputs[1], '1500000')
+    await userEvent.tab()
 
-  //     expect(inputs[1]).not.toHaveFocus()
-
-  //     expect(inputs[1]).toHaveValue('100')
-  //     await waitFor(() => {
-  //       expect(onChangeMock).toHaveBeenCalledWith([10, propsMock.max])
-  //     })
-  //   })
+    expect(inputs[1]).toHaveValue('100')
+  })
 
   it('should not update prices when input is blurred and value in input has not changed', async () => {
     const inputs = screen.getAllByRole('textbox')
@@ -96,7 +109,16 @@ describe('AppRange', () => {
     await userEvent.tab()
 
     await waitFor(() => {
-      expect(onChangeMock).not.toHaveBeenCalled()
+      expect(propsMock.onChange).not.toHaveBeenCalled()
     })
+  })
+
+  it('should call setRange with defaultValue if checkRangeEquality returns true', () => {
+    mockCheckRangeEquality.mockReturnValue(true)
+
+    const { rerender } = render(<AppRange {...propsMock} />)
+    rerender(<AppRange {...changedMockProps} />)
+
+    expect(mockCheckRangeEquality).toHaveBeenCalledWith([10, 50], [20, 80])
   })
 })
