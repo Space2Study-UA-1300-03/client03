@@ -15,7 +15,7 @@ const EmailConfirmPopupSuccess = () => {
         style={styles}
         title={t('modals.emailConfirm')}
       />
-      <AppButton onClick={`openLoginDialog`}>{t('button.goToLogin')}</AppButton>
+      <AppButton onClick={openLoginDialog}>{t('button.goToLogin')}</AppButton>
     </Box>
   )
 }
