@@ -14,6 +14,14 @@ import useForm from '~/hooks/use-form'
 import useConfirm from '~/hooks/use-confirm'
 import { signup } from '~/constants'
 import { FormData } from '~/types/common/interfaces/common.interfaces'
+import {
+  firstName,
+  lastName,
+  email,
+  password,
+  confirmPassword
+} from '~/utils/validations/signUp'
+
 import { SignUpDialogProps } from '~/types/containers/guest-home-page/signup-dialog/SignUpDialog.types'
 import { UserRoleEnum } from '~/types'
 
@@ -54,12 +62,11 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
         confirmPassword: ''
       },
       validations: {
-        email: (value: string) =>
-          value.includes('@') ? '' : 'Invalid email address',
-        password: (value: string) =>
-          value.length >= 6 ? '' : 'Password must be at least 6 characters',
-        confirmPassword: (value: string, allValues: FormData) =>
-          value === allValues.password ? '' : 'Passwords do not match'
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword
       }
     })
 
