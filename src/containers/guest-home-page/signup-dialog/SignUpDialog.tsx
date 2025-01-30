@@ -24,6 +24,7 @@ import {
 
 import { SignUpDialogProps } from '~/types/containers/guest-home-page/signup-dialog/SignUpDialog.types'
 import { UserRoleEnum } from '~/types'
+import { useSignUpMutation } from '~/services/auth-service'
 
 import styles from './SignUpDialog.styles'
 
@@ -31,6 +32,7 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
   const { t } = useTranslation()
   const { closeModal, registerEvent, unregisterEvent } = useModalContext()
   const { openDialog } = useConfirm()
+  const [signUp] = useSignUpMutation()
 
   const closeConfirmation = useCallback(
     (isConfirmed: boolean) => {
@@ -49,9 +51,27 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
 
   const { handleSubmit, handleInputChange, handleBlur, data, errors, isDirty } =
     useForm<FormData>({
-      // eslint-disable-next-line @typescript-eslint/require-await
       onSubmit: async (data?: FormData): Promise<void> => {
-        console.log('Form submitted', data)
+        if (!data) return
+
+        try {
+          await signUp({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+            role:
+              initialRole === UserRoleEnum.Tutor
+                ? UserRoleEnum.Tutor
+                : UserRoleEnum.Student
+          }).unwrap()
+
+          alert('Registration successful!')
+          closeModal(true)
+        } catch (err) {
+          console.error('Registration error:', err)
+        }
       },
       dirtyOnChange: true,
       initialValues: {
@@ -76,7 +96,7 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
       return true
     })
 
-    return function () {
+    return () => {
       unregisterEvent(CLOSE_EVENT_KEY)
     }
   }, [isDirty, registerEvent, unregisterEvent, onDelete])
