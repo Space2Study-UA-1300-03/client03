@@ -26,6 +26,19 @@ const SignUpForm: FC<SignUpFormProps> = ({
     showInputText: showConfirmPassword
   } = useInputVisibility(errors.confirmPassword)
 
+  const requiredFields = [
+    'firstName',
+    'lastName',
+    'email',
+    'password',
+    'confirmPassword'
+  ]
+
+  const isFormValid =
+    requiredFields.every(
+      (field) => data[field as keyof typeof data]?.trim() !== ''
+    ) && Object.values(errors).every((error) => !error)
+
   return (
     <Box component='form' onSubmit={handleSubmit} sx={styles.form}>
       <Box sx={styles.nameFieldsContainer}>
@@ -93,7 +106,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
           </a>
         </Typography>
       </Box>
-      <AppButton sx={styles.submitButton} type='submit'>
+      <AppButton disabled={!isFormValid} sx={styles.submitButton} type='submit'>
         {t('signup.submit')}
       </AppButton>
     </Box>
