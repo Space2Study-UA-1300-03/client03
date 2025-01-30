@@ -57,7 +57,6 @@ const EmailConfirmModal = ({ confirmToken, openModal }) => {
       />
     )
   }
-  console.log(error)
 
   if (error && error.code === 'EMAIL_ALREADY_CONFIRMED') {
     return (
