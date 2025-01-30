@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { FC, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
