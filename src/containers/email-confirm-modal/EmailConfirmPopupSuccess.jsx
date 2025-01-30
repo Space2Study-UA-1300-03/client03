@@ -5,7 +5,7 @@ import ImgTitleDescription from '~/components/img-title-description/ImgTitleDesc
 import imgSuccess from '~/assets/img/email-confirmation-modals/success-icon.svg'
 import { useTranslation } from 'react-i18next'
 
-const EmailConfirmPopupSuccess = () => {
+const EmailConfirmPopupSuccess = ({openLoginDialog}) => {
   const { t } = useTranslation()
 
   return (
