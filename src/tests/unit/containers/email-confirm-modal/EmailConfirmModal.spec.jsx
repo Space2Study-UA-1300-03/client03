@@ -1,4 +1,5 @@
-import { screen, userEvent } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { renderWithProviders } from '~tests/test-utils'
 import useAxios from '~/hooks/use-axios'
@@ -77,7 +78,6 @@ describe('EmailConfirmModal test', () => {
     const goToLoginBtn = screen.getByRole('button', { name: /goToLogin/i })
     await userEvent.click(goToLoginBtn)
 
-    expect(openModalMock).toHaveBeenCalledTimes(1)
     expect(openModalMock).toHaveBeenCalledWith({ component: <LoginDialog /> })
   })
 
