@@ -50,7 +50,7 @@ const LoginDialog = () => {
     onSubmit: async () => {
       try {
         await loginUser(data).unwrap()
-        closeModal()
+        closeModal(true)
       } catch (e) {
         setAlert({
           severity: snackbarVariants.error,
