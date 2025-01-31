@@ -1,8 +1,8 @@
 import { FC, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import Box from '@mui/material/Box'
 
+import LanguageSwitcher from '~/components/language-switcher/LanguageSwitcher'
 import LoginDialog from '~/containers/guest-home-page/login-dialog/LoginDialog'
 import AppButton from '~/components/app-button/AppButton'
 import NavigationIcon from '~/components/navigation-icon/NavigationIcon'
@@ -37,6 +37,7 @@ const GuestIcons: FC<GuestIconsProps> = ({ setSidebarOpen }) => {
 
   return (
     <Box sx={styles.iconBox}>
+      <LanguageSwitcher />
       {icons}
       <AppButton
         onClick={openLoginDialog}
