@@ -34,7 +34,6 @@ const style = {
     borderColor: { xs: 'primary.100' }
   },
   title: {
-    mb: '16px',
     fontSize: '40px',
     lineHeight: '48px',
     marginBottom: '25px',
