@@ -6,14 +6,14 @@ const files = []
 const validationData = {
   maxFileSize: 10_000_000,
   maxAllFilesSize: 50_000_000,
-  filesTypes: ['application/pdf'],
+  fileTypes: ['application/jpg'],
   fileSizeError: 'becomeTutor.documents.fileSizeError',
   allFilesSizeError: 'becomeTutor.documents.allFilesSizeError',
   typeError: 'becomeTutor.documents.typeError',
   maxQuantityFiles: 7
 }
 const fakeFile = new File(['certificate'], 'test-file.png', {
-  type: 'application/pdf'
+  type: 'application/jpg'
 })
 const getFakeTestEvent = (fakeFile) => ({
   preventDefault: vi.fn(),

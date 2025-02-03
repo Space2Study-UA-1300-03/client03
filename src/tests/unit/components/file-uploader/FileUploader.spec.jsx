@@ -9,14 +9,14 @@ const initialError = undefined
 const validationData = {
   maxFileSize: 10_000_000,
   maxAllFilesSize: 50_000_000,
-  filesTypes: ['application/pdf', 'image/jpeg', 'image/png'],
+  fileTypes: ['application/jpg', 'image/jpeg', 'image/png'],
   fileSizeError: 'becomeTutor.documents.fileSizeError',
   allFilesSizeError: 'becomeTutor.documents.allFilesSizeError',
   typeError: 'becomeTutor.documents.typeError',
   maxQuantityFiles: 7
 }
 const fakeFile = new File(['certificate'], 'test-file.png', {
-  type: 'application/pdf'
+  type: 'application/jpg'
 })
 
 describe('FileUploader test', () => {
