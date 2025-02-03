@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useTranslation } from 'react-i18next'
 
@@ -24,8 +24,13 @@ vi.mock('react-i18next', async () => {
 describe('LanguageSwitcher component tests', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-
+    localStorage.clear()
     render(<LanguageSwitcher />)
+  })
+
+  afterEach(() => {
+    localStorage.clear()
+    cleanup()
   })
 
   it('renders the language switcher button', async () => {
