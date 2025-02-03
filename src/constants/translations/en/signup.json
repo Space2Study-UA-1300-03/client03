@@ -14,5 +14,7 @@
   "confirmEmailDesc": " Check your email and click on the confirmation button to continue.",
   "submit": "Sign up",
   "terms": "Terms",
-  "privacyPolicy": "Privacy Policy"
+  "privacyPolicy": "Privacy Policy",
+  "accNotFoundTitle": "Account not found",
+  "accNotFoundMessage": "It looks like youre new here. Please sign up to continue."
 }
