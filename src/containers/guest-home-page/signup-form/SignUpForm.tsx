@@ -9,13 +9,15 @@ import Typography from '@mui/material/Typography'
 
 import { styles } from './SignUpForm.styles'
 import { SignUpFormProps } from '~/types/containers/guest-home-page/signup-form/SignUpForm.types'
+import Loader from '~/components/loader/Loader'
 
-const SignUpForm: FC<SignUpFormProps> = ({
+const SignUpForm: FC<SignUpFormProps & { isLoading: boolean }> = ({
   handleSubmit,
   handleChange,
   handleBlur,
   data,
-  errors
+  errors,
+  isLoading // 🆕 Отримуємо `isLoading`
 }) => {
   const { t } = useTranslation()
   const [isTermsChecked, setIsTermsChecked] = useState(false)
@@ -91,7 +93,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
         InputProps={confirmPasswordVisibility}
         errorMsg={
           t(errors.confirmPassword || '') ||
-          (!passwordsMatch ? t('signup.passwordsDoNotMatch') : '')
+          (!passwordsMatch ? t('common.passwordsDoNotMatch') : '')
         }
         fullWidth
         label={t('common.labels.confirmPassword')}
@@ -118,8 +120,12 @@ const SignUpForm: FC<SignUpFormProps> = ({
           </a>
         </Typography>
       </Box>
-      <AppButton disabled={!isFormValid} sx={styles.submitButton} type='submit'>
-        {t('common.labels.signup')}
+      <AppButton
+        disabled={!isFormValid || isLoading}
+        sx={styles.submitButton}
+        type='submit'
+      >
+        {isLoading ? <Loader size={24} /> : t('common.labels.signup')}{' '}
       </AppButton>
     </Box>
   )
