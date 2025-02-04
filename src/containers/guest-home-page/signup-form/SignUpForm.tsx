@@ -108,18 +108,18 @@ const SignUpForm: FC<SignUpFormProps> = ({
           required
         />
         <Typography variant='body2'>
-          {t('signup.iAgree')}{' '}
+          {t('common.labels.iAgree')}{' '}
           <a href='#' style={styles.link}>
-            {t('signup.terms')}
+            {t('common.labels.terms')}
           </a>{' '}
-          {t('signup.and')}{' '}
+          {t('common.labels.and')}{' '}
           <a href='#' style={styles.link}>
-            {t('signup.privacyPolicy')}
+            {t('common.labels.privacyPolicy')}
           </a>
         </Typography>
       </Box>
       <AppButton disabled={!isFormValid} sx={styles.submitButton} type='submit'>
-        {t('signup.submit')}
+        {t('common.labels.signup')}
       </AppButton>
     </Box>
   )

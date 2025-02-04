@@ -10,7 +10,7 @@ const style = {
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: { lg: '82px', md: '40px' },
-    maxHeight: { xs: 'calc(100vh - 56px)', sm: 'calc(100vh - 64px)' }
+    maxHeight: '800px'
   },
   imgContainer: {
     width: '472px',
@@ -34,10 +34,10 @@ const style = {
     borderColor: { xs: 'primary.100' }
   },
   title: {
-    mb: '16px',
     fontSize: '40px',
     lineHeight: '48px',
-    marginBottom: '25px'
+    marginBottom: '25px',
+    maxWidth: '400px'
   },
   form: {
     overflow: 'auto',
