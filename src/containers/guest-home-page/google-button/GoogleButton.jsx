@@ -29,8 +29,8 @@ const GoogleButton = ({ role, route, buttonWidth, type }) => {
   const handleCredentialResponse = useCallback(
     async (token) => {
       try {
-        await googleAuth({ token, role }).unwrap()
-        closeModal()
+        await googleAuth({ token, role, type }).unwrap()
+        closeModal(true)
       } catch (e) {
         if (e.data.code === 'USER_NOT_FOUND') {
           openModal({
@@ -52,7 +52,16 @@ const GoogleButton = ({ role, route, buttonWidth, type }) => {
         }
       }
     },
-    [googleAuth, role, closeModal, setAlert, t, scrollToRegistartion, openModal]
+    [
+      googleAuth,
+      role,
+      type,
+      closeModal,
+      setAlert,
+      t,
+      scrollToRegistartion,
+      openModal
+    ]
   )
 
   useEffect(() => {
