@@ -1,4 +1,11 @@
-import { Offer, UserResponse, UserRoleEnum } from '~/types'
+import {
+  Answer,
+  Category,
+  Offer,
+  QuestionTypesEnum,
+  UserResponse,
+  UserRoleEnum
+} from '~/types'
 
 export interface ItemsWithCount<T> {
   count: number
@@ -6,8 +13,8 @@ export interface ItemsWithCount<T> {
 }
 export interface CommonEntityFields {
   _id: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface CategoryAppearance {
@@ -20,13 +27,10 @@ export interface DataByRole<T> {
   [UserRoleEnum.Tutor]: T
 }
 
-export interface CategoryInterface {
-  _id: string
+export interface CategoryInterface extends CommonEntityFields {
   name: string
   appearance: CategoryAppearance
   totalOffers: DataByRole<number>
-  createdAt: string
-  updatedAt: string
 }
 
 export interface CategoryNameInterface {
@@ -34,13 +38,10 @@ export interface CategoryNameInterface {
   name: string
 }
 
-export interface SubjectInterface {
-  _id: string
+export interface SubjectInterface extends CommonEntityFields {
   name: string
   category: string
   totalOffers: DataByRole<number>
-  createdAt: string
-  updatedAt: string
 }
 
 export interface SubjectNameInterface {
@@ -48,12 +49,11 @@ export interface SubjectNameInterface {
   name: string
 }
 
-export interface ReviewInterface {
+export interface ReviewInterface extends CommonEntityFields {
   offer: Offer
   author: UserResponse
   comment: string
   rating: number
-  createdAt: string
 }
 
 export interface Faq {
@@ -93,4 +93,69 @@ export interface FormData {
   email: string
   password: string
   confirmPassword: string
+}
+
+export interface Media {
+  name: string
+  path: string
+}
+
+export interface File extends CommonEntityFields {
+  name: string
+  size: number
+  url?: string
+}
+
+export interface Link {
+  name: string
+  url: string
+}
+
+export interface Lesson extends CommonEntityFields {
+  title: string
+  category?: {
+    name: string
+  }
+}
+
+export interface Quiz extends CommonEntityFields {
+  title: string
+  category?: {
+    name: string
+  }
+}
+
+export interface CourseResources {
+  _id: string
+  title: string
+  category?: { _id: string; name: string }
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface Question {
+  _id: string
+  title: string
+  text: string
+  answers: Answer[]
+  author: string
+  type: QuestionTypesEnum
+  category?: Category | null
+  createdAt: string | Date
+  updatedAt: string | Date
+}
+
+export interface CreateQuizParams {
+  title: string
+  description: string
+  category: string | null
+  items: string[]
+}
+
+export interface UpdateQuizParams {
+  id: string
+  title: string
+  description: string
+  category: string | null
+  items: string[]
 }

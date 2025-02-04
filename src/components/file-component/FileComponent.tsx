@@ -17,7 +17,7 @@ interface FileComponentProps {
 const FileComponent: FC<FileComponentProps> = ({ file }) => {
   const { t } = useTranslation()
 
-  const fileFormat = file.name.split('.')[1]
+  const fileFormat = file.name.split('.').pop() || 'unknown'
 
   const formattedDate = getFormattedDate({
     date: file.createdAt,

@@ -57,7 +57,7 @@ export const columns: TableColumn<Question>[] = [
     field: 'updatedAt',
     calculatedCellValue: (question: Question) => (
       <Typography sx={styles.date}>
-        {getFormattedDate({ date: question.updatedAt })}
+        {getFormattedDate({ date: new Date(question.updatedAt ?? '') })}
       </Typography>
     )
   }
