@@ -28,6 +28,7 @@ import { UserRoleEnum } from '~/types'
 import { useSignUpMutation } from '~/services/auth-service'
 
 import styles from './SignUpDialog.styles'
+import InfoPopUpModal from '../info-pop-up-modal/InfoPopUpModal'
 
 export interface ErrorResponse {
   code?: string
@@ -37,7 +38,8 @@ export interface ErrorResponse {
 
 const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
   const { t } = useTranslation()
-  const { closeModal, registerEvent, unregisterEvent } = useModalContext()
+  const { openModal, closeModal, registerEvent, unregisterEvent } =
+    useModalContext()
   const { openDialog } = useConfirm()
   const { setAlert } = useSnackBarContext()
   const [signUp] = useSignUpMutation()
@@ -75,11 +77,9 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
                 : UserRoleEnum.Student
           }).unwrap()
 
-          setAlert({
-            severity: 'success',
-            message: t('signup.success')
+          openModal({
+            component: <InfoPopUpModal email={data.email} />
           })
-          closeModal(true)
         } catch (err: unknown) {
           const errorResponse = err as ErrorResponse
 
