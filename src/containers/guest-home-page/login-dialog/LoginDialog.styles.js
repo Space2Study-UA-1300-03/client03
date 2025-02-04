@@ -34,7 +34,8 @@ const style = {
   title: {
     mb: '16px',
     fontSize: '40px',
-    lineHeight: '48px'
+    lineHeight: '48px',
+    maxWidth: '343px'
   },
   form: {
     overflow: 'auto',

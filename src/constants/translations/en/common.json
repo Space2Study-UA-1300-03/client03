@@ -52,6 +52,8 @@
     "signup": "Sign up",
     "country": "Country",
     "city": "City",
+    "iAgree": "I agree to the",
+    "and": "and",
     "sendMessage": "Send message",
     "viewDetails": "View details",
     "enrollOffer": "Enroll offer",

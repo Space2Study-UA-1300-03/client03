@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useInputVisibility from '~/hooks/use-input-visibility'
 import Box from '@mui/material/Box'
@@ -18,6 +18,7 @@ const SignUpForm: FC<SignUpFormProps> = ({
   errors
 }) => {
   const { t } = useTranslation()
+  const [isTermsChecked, setIsTermsChecked] = useState(false)
 
   const { inputVisibility: passwordVisibility, showInputText: showPassword } =
     useInputVisibility(errors.password)
@@ -34,10 +35,14 @@ const SignUpForm: FC<SignUpFormProps> = ({
     'confirmPassword'
   ]
 
+  const passwordsMatch = data.password === data.confirmPassword
   const isFormValid =
     requiredFields.every(
       (field) => data[field as keyof typeof data]?.trim() !== ''
-    ) && Object.values(errors).every((error) => !error)
+    ) &&
+    Object.values(errors).every((error) => !error) &&
+    passwordsMatch &&
+    isTermsChecked
 
   return (
     <Box component='form' onSubmit={handleSubmit} sx={styles.form}>
@@ -84,7 +89,10 @@ const SignUpForm: FC<SignUpFormProps> = ({
       />
       <AppTextField
         InputProps={confirmPasswordVisibility}
-        errorMsg={t(errors.confirmPassword || '')}
+        errorMsg={
+          t(errors.confirmPassword || '') ||
+          (!passwordsMatch ? t('signup.passwordsDoNotMatch') : '')
+        }
         fullWidth
         label={t('common.labels.confirmPassword')}
         onBlur={handleBlur('confirmPassword')}
@@ -94,20 +102,24 @@ const SignUpForm: FC<SignUpFormProps> = ({
         value={data.confirmPassword}
       />
       <Box sx={styles.agreeTerms}>
-        <Checkbox required />
+        <Checkbox
+          checked={isTermsChecked}
+          onChange={() => setIsTermsChecked((prev) => !prev)}
+          required
+        />
         <Typography variant='body2'>
-          {t('signup.iAgree')}{' '}
+          {t('common.labels.iAgree')}{' '}
           <a href='#' style={styles.link}>
-            {t('signup.terms')}
+            {t('common.labels.terms')}
           </a>{' '}
-          {t('signup.and')}{' '}
+          {t('common.labels.and')}{' '}
           <a href='#' style={styles.link}>
-            {t('signup.privacyPolicy')}
+            {t('common.labels.privacyPolicy')}
           </a>
         </Typography>
       </Box>
       <AppButton disabled={!isFormValid} sx={styles.submitButton} type='submit'>
-        {t('signup.submit')}
+        {t('common.labels.signup')}
       </AppButton>
     </Box>
   )

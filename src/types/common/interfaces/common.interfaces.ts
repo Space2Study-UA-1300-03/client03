@@ -80,7 +80,7 @@ export interface RouteItem {
 export interface AddDocuments {
   maxFileSize: number
   maxAllFilesSize: number
-  filesTypes: string[]
+  fileTypes: string[]
   fileSizeError: string
   allFilesSizeError: string
   typeError: string

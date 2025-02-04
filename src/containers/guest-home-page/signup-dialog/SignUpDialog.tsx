@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import SignUpForm from '~/containers/guest-home-page/signup-form/SignUpForm'
 import GoogleLogin from '~/containers/guest-home-page/google-login/GoogleLogin'
 import { useModalContext, CLOSE_EVENT_KEY } from '~/context/modal-context'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 import tutorImg from '~/assets/img/signup-dialog/tutor.svg'
 import studentImg from '~/assets/img/signup-dialog/student.svg'
@@ -27,11 +28,20 @@ import { UserRoleEnum } from '~/types'
 import { useSignUpMutation } from '~/services/auth-service'
 
 import styles from './SignUpDialog.styles'
+import InfoPopUpModal from '../info-pop-up-modal/InfoPopUpModal'
+
+export interface ErrorResponse {
+  code?: string
+  message?: string
+  status?: number
+}
 
 const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
   const { t } = useTranslation()
-  const { closeModal, registerEvent, unregisterEvent } = useModalContext()
+  const { openModal, closeModal, registerEvent, unregisterEvent } =
+    useModalContext()
   const { openDialog } = useConfirm()
+  const { setAlert } = useSnackBarContext()
   const [signUp] = useSignUpMutation()
 
   const closeConfirmation = useCallback(
@@ -67,9 +77,27 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
                 : UserRoleEnum.Student
           }).unwrap()
 
-          alert('Registration successful!')
-          closeModal(true)
-        } catch (err) {
+          openModal({
+            component: <InfoPopUpModal email={data.email} />
+          })
+        } catch (err: unknown) {
+          const errorResponse = err as ErrorResponse
+
+          let errorMessage = t('errors.UNKNOWN_ERROR')
+
+          if (errorResponse?.code) {
+            errorMessage = t(`errors.${errorResponse.code}`, {
+              defaultValue: t('errors.UNKNOWN_ERROR')
+            })
+          } else if (errorResponse?.status === 409) {
+            errorMessage = t('errors.ALREADY_REGISTERED')
+          }
+
+          setAlert({
+            severity: 'error',
+            message: errorMessage
+          })
+
           console.error('Registration error:', err)
         }
       },
