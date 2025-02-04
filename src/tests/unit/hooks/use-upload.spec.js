@@ -6,7 +6,7 @@ const files = []
 const validationData = {
   maxFileSize: 10_000_000,
   maxAllFilesSize: 50_000_000,
-  filesTypes: ['application/pdf'],
+  fileTypes: ['application/pdf'],
   fileSizeError: 'becomeTutor.documents.fileSizeError',
   allFilesSizeError: 'becomeTutor.documents.allFilesSizeError',
   typeError: 'becomeTutor.documents.typeError',
