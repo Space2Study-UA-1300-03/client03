@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import Box from '@mui/material/Box'
-
+import TutorHome from '~/pages/tutor-home/TutorHome'
 import { descriptionTimes } from '~/components/accordion-with-image/accordion-with-image.constants'
 import PageWrapper from '~/components/page-wrapper/PageWrapper'
 import EmailConfirmModal from '~/containers/email-confirm-modal/EmailConfirmModal'
@@ -47,6 +47,7 @@ const GuestHomePage = () => {
   return (
     <Box sx={styles.root}>
       <Welcome />
+      <TutorHome />
       <PageWrapper sx={styles.sectionsWrapper}>
         <FeatureBlock items={descriptionTimes} />
         <WhatCanYouDo />
