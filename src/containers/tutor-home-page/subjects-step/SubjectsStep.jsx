@@ -13,7 +13,7 @@ const SubjectsStep = ({ btnsBox }) => {
   const { t } = useTranslation()
   const [subjects, setSubjects] = useState({ category: null, subject: null })
   const [listOfItems, setListOfItems] = useState([])
-  const [sameSubjectError, setSameSubjectError] = useState('')
+  const sameSubjectError = listOfItems.includes(subjects.subject)
 
   const categoryOptions = useMemo(
     () => categoriesMock.map((item) => Object.keys(item)[0]),
@@ -31,15 +31,14 @@ const SubjectsStep = ({ btnsBox }) => {
 
   const onChangeCategory = (_, value) =>
     setSubjects({ category: value, subject: null })
+
   const onChangeSubject = (_, value) =>
     setSubjects((prev) => ({ ...prev, subject: value }))
 
   const addSubject = () => {
-    if (listOfItems.includes(subjects.subject)) {
-      setSameSubjectError(t('becomeTutor.categories.sameSubject'))
+    if (sameSubjectError) {
       return
     }
-    setSameSubjectError('')
     setListOfItems((prev) => [...prev, subjects.subject])
     setSubjects({ category: null, subject: null })
   }
@@ -74,7 +73,7 @@ const SubjectsStep = ({ btnsBox }) => {
             value={subjects.subject}
           />
           <AppButton
-            disabled={!subjects.subject}
+            disabled={!subjects.subject || sameSubjectError}
             fullWidth
             onClick={addSubject}
             sx={{ mb: 2 }}
@@ -82,8 +81,8 @@ const SubjectsStep = ({ btnsBox }) => {
             {t('becomeTutor.categories.btnText')}
           </AppButton>
           {sameSubjectError && (
-            <Typography sx={{ textAlign: 'center', color: 'red' }}>
-              {sameSubjectError}
+            <Typography sx={{ textAlign: 'center', color: 'red', mb: 2 }}>
+              {t('becomeTutor.categories.sameSubject')}
             </Typography>
           )}
           <AppChipList
