@@ -1,11 +1,14 @@
 import { useCallback, useEffect } from 'react'
 import { useHref } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { useGoogleAuthMutation } from '~/services/auth-service'
 import { useModalContext } from '~/context/modal-context'
 import { useSnackBarContext } from '~/context/snackbar-context'
 import { scrollToHash } from '~/utils/hash-scroll'
 import useBreakpoints from '~/hooks/use-breakpoints'
+import NotificationModal from '../notification-modal/NotificationModal'
+import imgReject from '~/assets/img/email-confirmation-modals/not-success-icon.svg'
 
 import { snackbarVariants } from '~/constants'
 import { styles } from '~/containers/guest-home-page/google-button/GoogleButton.styles'
@@ -13,27 +16,52 @@ import { styles } from '~/containers/guest-home-page/google-button/GoogleButton.
 const GoogleButton = ({ role, route, buttonWidth, type }) => {
   const ref = useHref(route)
   const mediaQuery = useBreakpoints().isLaptopAndAbove ? 'md' : 'xs'
-  const { closeModal } = useModalContext()
+  const { closeModal, openModal } = useModalContext()
   const { setAlert } = useSnackBarContext()
   const [googleAuth] = useGoogleAuthMutation()
+  const { t } = useTranslation()
+
+  const scrollToRegistartion = useCallback(() => {
+    closeModal(true)
+    scrollToHash(ref)
+  }, [closeModal, ref])
 
   const handleCredentialResponse = useCallback(
     async (token) => {
       try {
-        await googleAuth({ token, role }).unwrap()
-        closeModal()
+        await googleAuth({ token, role, type }).unwrap()
+        closeModal(true)
       } catch (e) {
-        setAlert({
-          severity: snackbarVariants.error,
-          message: `errors.${e.data.code}`
-        })
         if (e.data.code === 'USER_NOT_FOUND') {
-          closeModal()
-          scrollToHash(ref)
+          openModal({
+            component: (
+              <NotificationModal
+                buttonTitle={t('common.goToSignUp')}
+                description={t('signup.accNotFoundMessage')}
+                img={imgReject}
+                onClose={scrollToRegistartion}
+                title={t('signup.accNotFoundTitle')}
+              />
+            )
+          })
+        } else {
+          setAlert({
+            severity: snackbarVariants.error,
+            message: `errors.${e.data.code}`
+          })
         }
       }
     },
-    [googleAuth, role, closeModal, setAlert, ref]
+    [
+      googleAuth,
+      role,
+      type,
+      closeModal,
+      setAlert,
+      t,
+      scrollToRegistartion,
+      openModal
+    ]
   )
 
   useEffect(() => {

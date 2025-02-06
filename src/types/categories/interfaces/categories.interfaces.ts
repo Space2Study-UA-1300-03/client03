@@ -1,3 +1,4 @@
+import { Lesson } from '~/types/common/common.index'
 import { TableColumn } from '~/types/components/components.index'
 import { Categories } from '~/types/my-resources/myResources.index'
 import { Question } from '~/types/questions/questions.index'
@@ -20,7 +21,9 @@ export interface ScreenBasedLimits {
   default: number
 }
 
-export interface RemoveColumnRules<T extends Question | Categories> {
+export interface RemoveColumnRules<
+  T extends Partial<Question | Categories | Lesson>
+> {
   desktop?: TableColumn<T>['label'][]
   tablet?: TableColumn<T>['label'][]
   mobile?: TableColumn<T>['label'][]

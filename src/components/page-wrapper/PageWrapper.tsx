@@ -13,7 +13,7 @@ const PageWrapper = (
   const { closeModal } = useModalContext()
 
   useEffect(() => {
-    return () => closeModal()
+    return () => closeModal(true)
   }, [closeModal])
 
   return (

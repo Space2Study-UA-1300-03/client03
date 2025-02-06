@@ -1,15 +1,14 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import { styles } from '~/containers/email-confirm-modal/EmailConfirmModal.styles'
 import { useCallback } from 'react'
-import { useModalContext } from '~/context/modal-context'
 import { useTranslation } from 'react-i18next'
-import imgReject from '~/assets/img/email-confirmation-modals/not-success-icon.svg'
-import LoginDialog from '~/containers/guest-home-page/login-dialog/LoginDialog'
-import useAxios from '~/hooks/use-axios'
+
+import { useModalContext } from '~/context/modal-context'
 import { AuthService } from '~/services/auth-service'
+import useAxios from '~/hooks/use-axios'
 import Loader from '~/components/loader/Loader'
-import ImgTitleDescription from '~/components/img-title-description/ImgTitleDescription'
+import LoginDialog from '~/containers/guest-home-page/login-dialog/LoginDialog'
+import imgReject from '~/assets/img/email-confirmation-modals/not-success-icon.svg'
+import NotificationModal from '../guest-home-page/notification-modal/NotificationModal'
+import imgSuccess from '~/assets/img/email-confirmation-modals/success-icon.svg'
 
 const EmailConfirmModal = ({ confirmToken, openModal }) => {
   const { t } = useTranslation()
@@ -33,42 +32,41 @@ const EmailConfirmModal = ({ confirmToken, openModal }) => {
     return <Loader size={100} />
   }
 
+  if (response) {
+    return (
+      <NotificationModal
+        buttonTitle={t('button.goToLogin')}
+        img={imgSuccess}
+        onClose={openLoginDialog}
+        title={t('modals.emailConfirm')}
+      />
+    )
+  }
+
   if (
     (error && error.code === 'BAD_CONFIRM_TOKEN') ||
     (error && error.code === 'DOCUMENT_NOT_FOUND' && response === null)
   ) {
     return (
-      <Box sx={styles.box}>
-        <ImgTitleDescription
-          description={t('modals.emailReject.badToken')}
-          img={imgReject}
-          style={styles}
-          title={t('modals.emailNotConfirm')}
-        />
-        <Button onClick={closeModal} sx={styles.button} variant='contained'>
-          {t('common.confirmButton')}
-        </Button>
-      </Box>
+      <NotificationModal
+        buttonTitle={t('common.confirmButton')}
+        description={t('modals.emailReject.badToken')}
+        img={imgReject}
+        onClose={closeModal}
+        title={t('modals.emailNotConfirm')}
+      />
     )
   }
 
   if (error && error.code === 'EMAIL_ALREADY_CONFIRMED') {
     return (
-      <Box sx={styles.box}>
-        <ImgTitleDescription
-          description={t('modals.emailReject.alreadyConfirmed')}
-          img={imgReject}
-          style={styles}
-          title={t('modals.emailAlreadyConfirm')}
-        />
-        <Button
-          onClick={openLoginDialog}
-          sx={styles.button}
-          variant='contained'
-        >
-          {t('common.confirmButton')}
-        </Button>
-      </Box>
+      <NotificationModal
+        buttonTitle={t('common.confirmButton')}
+        description={t('modals.emailReject.alreadyConfirmed')}
+        img={imgReject}
+        onClose={closeModal}
+        title={t('modals.emailAlreadyConfirm')}
+      />
     )
   }
 }

@@ -20,10 +20,20 @@ import {
   TableColumn,
   RemoveColumnRules,
   Question,
-  ServiceFunction
+  ServiceFunction,
+  Lesson,
+  Categories
 } from '~/types'
 
-interface AddResourcesProps<T extends CourseResources | Question> {
+interface ResourceBase {
+  _id: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+interface AddResourcesProps<
+  T extends ResourceBase & (Categories | CourseResources | Question | Lesson)
+> {
   resources: T[]
   onAddResources: (resource: T[]) => void
   resourceType: string
@@ -93,12 +103,13 @@ const AddResources = <T extends CourseResources | Question>({
   const getItems = useCallback(
     (inputValue: string, selectedCategories: string[]) => {
       return response.items.filter((item) => {
-        let titleMatch
-        if ('title' in item) {
+        let titleMatch = false
+
+        if ('title' in item && typeof item.title === 'string') {
           titleMatch = item.title
             .toLocaleLowerCase()
             .includes(inputValue.toLocaleLowerCase())
-        } else {
+        } else if ('fileName' in item && typeof item.fileName === 'string') {
           titleMatch = item.fileName
             .toLocaleLowerCase()
             .split('.')

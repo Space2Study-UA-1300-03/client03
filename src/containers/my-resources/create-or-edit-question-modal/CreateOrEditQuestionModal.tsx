@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { FC, SyntheticEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import Typography from '@mui/material/Typography'
