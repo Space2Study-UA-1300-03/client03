@@ -1,4 +1,4 @@
-import { FC, useEffect, useCallback } from 'react'
+import { FC, useEffect, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Box from '@mui/material/Box'
@@ -43,6 +43,7 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
   const { openDialog } = useConfirm()
   const { setAlert } = useSnackBarContext()
   const [signUp] = useSignUpMutation()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const closeConfirmation = useCallback(
     (isConfirmed: boolean) => {
@@ -64,6 +65,8 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
       onSubmit: async (data?: FormData): Promise<void> => {
         if (!data) return
 
+        setIsLoading(true)
+
         try {
           await signUp({
             firstName: data.firstName,
@@ -82,7 +85,6 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
           })
         } catch (err: unknown) {
           const errorResponse = err as ErrorResponse
-
           let errorMessage = t('errors.UNKNOWN_ERROR')
 
           if (errorResponse?.code) {
@@ -99,6 +101,8 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
           })
 
           console.error('Registration error:', err)
+        } finally {
+          setIsLoading(false)
         }
       },
       dirtyOnChange: true,
@@ -151,6 +155,7 @@ const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
           handleBlur={handleBlur}
           handleChange={handleInputChange}
           handleSubmit={handleSubmit}
+          isLoading={isLoading}
         />
         <GoogleLogin
           buttonWidth={styles.form.maxWidth}
