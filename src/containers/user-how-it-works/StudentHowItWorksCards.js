@@ -3,25 +3,29 @@ import howItWorksStudentSecond from '~/assets/img/guest-home-page/howItWorksStud
 import howItWorksStudentThird from '~/assets/img/guest-home-page/howItWorksStudentThird.svg'
 import howItWorksStudentFourth from '~/assets/img/guest-home-page/howItWorksStudentFourth.svg'
 
-export const howItWorksCards = [
+export const studentHowItWorksCards = [
   {
     image: howItWorksStudentSecond,
     title: 'studentHomePage.howItWorks.selectATutor.title',
-    description: 'studentHomePage.howItWorks.selectATutor.description'
+    description: 'studentHomePage.howItWorks.selectATutor.description',
+    id: 1
   },
   {
     image: howItWorksStudentThird,
     title: 'studentHomePage.howItWorks.sendRequest.title',
-    description: 'studentHomePage.howItWorks.sendRequest.description'
+    description: 'studentHomePage.howItWorks.sendRequest.description',
+    id: 2
   },
   {
     image: howItWorksStudentFourth,
     title: 'studentHomePage.howItWorks.startLearning.title',
-    description: 'studentHomePage.howItWorks.startLearning.description'
+    description: 'studentHomePage.howItWorks.startLearning.description',
+    id: 3
   },
   {
     image: howItWorksStudentFirst,
     title: 'studentHomePage.howItWorks.writeFeedback.title',
-    description: 'studentHomePage.howItWorks.writeFeedback.description'
+    description: 'studentHomePage.howItWorks.writeFeedback.description',
+    id: 4
   }
 ]
