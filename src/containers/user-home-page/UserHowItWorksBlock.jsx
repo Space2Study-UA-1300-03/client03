@@ -8,7 +8,7 @@ const UserHowItWorksBlock = ({ image, title, description, style, key }) => {
 
   return (
     <Box key={key} style={style.card}>
-      <Box alt={title} component='img' src={image} sx={style.cardImg} />
+      <Box alt={t(title)} component='img' src={image} sx={style.cardImg} />
       <TitleWithDescription
         description={t(description)}
         style={style.cardTitleWithDescription}
