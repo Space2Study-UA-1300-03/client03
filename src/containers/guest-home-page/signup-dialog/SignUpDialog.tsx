@@ -24,17 +24,11 @@ import {
 } from '~/utils/validations/signUp'
 
 import { SignUpDialogProps } from '~/types/containers/guest-home-page/signup-dialog/SignUpDialog.types'
-import { UserRoleEnum } from '~/types'
+import { UserRoleEnum, ErrorResponse } from '~/types'
 import { useSignUpMutation } from '~/services/auth-service'
 
 import styles from './SignUpDialog.styles'
 import InfoPopUpModal from '../info-pop-up-modal/InfoPopUpModal'
-
-export interface ErrorResponse {
-  code?: string
-  message?: string
-  status?: number
-}
 
 const SignUpDialog: FC<SignUpDialogProps> = ({ initialRole }) => {
   const { t } = useTranslation()
