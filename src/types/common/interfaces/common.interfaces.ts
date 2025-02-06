@@ -141,8 +141,8 @@ export interface Question {
   author: string
   type: QuestionTypesEnum
   category?: Category | null
-  createdAt: string | Date
-  updatedAt: string | Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface CreateQuizParams {
