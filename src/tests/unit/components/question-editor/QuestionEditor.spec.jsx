@@ -141,18 +141,4 @@ describe('QuestionEditor', () => {
     await userEvent.type(openAnswerInput, 'New answer')
     expect(handleInputChangeMock).toHaveBeenCalledWith('openAnswer')
   })
-
-  // it('it should click on edit title and category', async () => {
-  //   render(
-  //     <QuestionEditor
-  //       data={mockedData}
-  //       handleInputChange={handleInputChangeMock}
-  //       handleNonInputValueChange={handleNonInputValueChangeMock}
-  //       onCancel={onCancelMock}
-  //       onEdit={onEditMock}
-  //       onSave={onSaveMock}
-  //     />
-  //   )
-
-  // })
 })
