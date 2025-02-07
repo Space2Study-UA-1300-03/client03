@@ -2,7 +2,9 @@
   "generalInfo": {
     "title": "Please complete the registration form for the best possible experience",
     "textFieldLabel": "Describe in short your professional status",
-    "helperText": "Inputs with the * sign are required"
+    "helperText": "Inputs with the * sign are required",
+    "limitCharacters": "You have reached your maximum limit of characters allowed",
+    "citiesNotFound": "Oops... No cities were found for this country"
   },
   "experience": {
     "title": "Describe your professional experience. Maximum 70 characters.",

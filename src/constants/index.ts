@@ -27,3 +27,7 @@ export const itemsLoadLimit = {
   mobile: 6,
   default: 12
 }
+
+export const textAreaLimit = {
+  limit: 200
+}

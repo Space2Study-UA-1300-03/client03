@@ -3,6 +3,6 @@ export const styles = {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    mr: multiline ? '48px' : '14px'
+    mr: multiline ? '75px' : '14px'
   })
 }
