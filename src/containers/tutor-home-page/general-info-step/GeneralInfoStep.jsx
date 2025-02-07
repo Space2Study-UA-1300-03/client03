@@ -27,7 +27,7 @@ const GeneralInfoStep = ({ btnsBox }) => {
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
 
-  const onDeleteError = () => {
+  const onCityError = () => {
     setCurrentCities([])
     setAlert({
       severity: snackbarVariants.error,
@@ -49,7 +49,7 @@ const GeneralInfoStep = ({ btnsBox }) => {
     service: (country) => stepperService.getCities(country),
     defaultResponse: [],
     fetchOnMount: false,
-    onResponseError: onDeleteError
+    onResponseError: onCityError
   })
 
   useEffect(() => {
