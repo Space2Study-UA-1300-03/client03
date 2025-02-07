@@ -19,7 +19,7 @@ const GeneralInfoStep = ({ btnsBox }) => {
     lastName: '',
     country: '',
     city: '',
-    proffessionalSummary: '',
+    professionalSummary: '',
     more18Years: false
   })
   const [currentCountries, setCurrentCountries] = useState([])
@@ -161,16 +161,16 @@ const GeneralInfoStep = ({ btnsBox }) => {
               />
               <AppTextArea
                 errorMsg={
-                  data?.proffessionalSummary?.length === textAreaLimit.limit
+                  data?.professionalSummary?.length === textAreaLimit.limit
                     ? t('becomeTutor.generalInfo.limitCharacters')
                     : null
                 }
                 fullWidth
                 label={t('becomeTutor.generalInfo.textFieldLabel')}
                 maxLength={textAreaLimit.limit}
-                onChange={handleInputChange('proffessionalSummary')}
+                onChange={handleInputChange('professionalSummary')}
                 sx={styles.fullWidth}
-                value={data?.proffessionalSummary || ''}
+                value={data?.professionalSummary || ''}
               />
             </Box>
             <FormControlLabel
