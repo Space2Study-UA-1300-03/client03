@@ -17,7 +17,7 @@ const SignUpForm: FC<SignUpFormProps & { isLoading: boolean }> = ({
   handleBlur,
   data,
   errors,
-  isLoading // 🆕 Отримуємо `isLoading`
+  isLoading
 }) => {
   const { t } = useTranslation()
   const [isTermsChecked, setIsTermsChecked] = useState(false)
@@ -93,7 +93,9 @@ const SignUpForm: FC<SignUpFormProps & { isLoading: boolean }> = ({
         InputProps={confirmPasswordVisibility}
         errorMsg={
           t(errors.confirmPassword || '') ||
-          (!passwordsMatch ? t('common.passwordsDoNotMatch') : '')
+          (data.password && !passwordsMatch
+            ? t('common.errorMessages.passwordsDontMatch')
+            : '')
         }
         fullWidth
         label={t('common.labels.confirmPassword')}
@@ -103,6 +105,7 @@ const SignUpForm: FC<SignUpFormProps & { isLoading: boolean }> = ({
         type={showConfirmPassword ? 'text' : 'password'}
         value={data.confirmPassword}
       />
+
       <Box sx={styles.agreeTerms}>
         <Checkbox
           checked={isTermsChecked}
