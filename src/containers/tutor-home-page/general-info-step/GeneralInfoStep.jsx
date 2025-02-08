@@ -53,22 +53,11 @@ const GeneralInfoStep = ({ btnsBox }) => {
   })
 
   useEffect(() => {
-    if (countries?.length !== 0) {
-      const filteredCountries = countries?.filter(
-        (country) => !['Russia', 'China'].includes(country.name)
-      )
-      setCurrentCountries(filteredCountries)
-    }
+    setCurrentCountries(countries)
   }, [countries])
 
   useEffect(() => {
-    if (cities?.length !== 0) {
-      const uniqueCities = cities?.filter(
-        (city, index, self) =>
-          index === self.findIndex((c) => c.name === city.name)
-      )
-      setCurrentCities(uniqueCities)
-    }
+    setCurrentCities(cities)
   }, [cities])
 
   const handleCoutryChange = (_, selectedCountryName) => {
