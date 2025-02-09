@@ -1,6 +1,5 @@
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { expect, it } from 'vitest'
 
 import QuestionEditor from '~/components/question-editor/QuestionEditor'
 
@@ -17,22 +16,26 @@ const onCancelMock = vi.fn()
 const onEditMock = vi.fn()
 const onSaveMock = vi.fn()
 
+const renderComponent = (props = {}) =>
+  render(
+    <QuestionEditor
+      data={mockedData}
+      handleInputChange={handleInputChangeMock}
+      handleNonInputValueChange={handleNonInputValueChangeMock}
+      onCancel={onCancelMock}
+      onEdit={onEditMock}
+      onSave={onSaveMock}
+      {...props}
+    />
+  )
+
 describe('QuestionEditor', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    renderComponent()
   })
 
   it('should renders question input field', () => {
-    render(
-      <QuestionEditor
-        data={mockedData}
-        handleInputChange={handleInputChangeMock}
-        handleNonInputValueChange={handleNonInputValueChangeMock}
-        onCancel={onCancelMock}
-        onEdit={onEditMock}
-        onSave={onSaveMock}
-      />
-    )
     const questionInput = screen.getByRole('textbox', { name: /question/i })
     expect(questionInput).toBeInTheDocument()
   })
@@ -53,13 +56,6 @@ describe('QuestionEditor', () => {
   })
 
   it('it should renders questionType multipleChoice', () => {
-    render(
-      <QuestionEditor
-        data={mockedData}
-        handleInputChange={handleInputChangeMock}
-        handleNonInputValueChange={handleNonInputValueChangeMock}
-      />
-    )
     const select = screen.getByRole('combobox', {
       value: 'questionPage.questionType.multipleChoice'
     })
@@ -67,13 +63,6 @@ describe('QuestionEditor', () => {
   })
 
   it('it should renders questionType openAnswer', () => {
-    render(
-      <QuestionEditor
-        data={mockedData}
-        handleInputChange={handleInputChangeMock}
-        handleNonInputValueChange={handleNonInputValueChangeMock}
-      />
-    )
     const select = screen.getByRole('combobox', {
       value: 'questionPage.questionType.openAnswer'
     })
@@ -81,13 +70,6 @@ describe('QuestionEditor', () => {
   })
 
   it('it should renders questionType oneAnswer', () => {
-    render(
-      <QuestionEditor
-        data={mockedData}
-        handleInputChange={handleInputChangeMock}
-        handleNonInputValueChange={handleNonInputValueChangeMock}
-      />
-    )
     const select = screen.getByRole('combobox', {
       value: 'questionPage.questionType.oneAnswer'
     })
@@ -95,13 +77,6 @@ describe('QuestionEditor', () => {
   })
 
   it('it should renders addNewOne ', () => {
-    render(
-      <QuestionEditor
-        data={mockedData}
-        handleInputChange={handleInputChangeMock}
-        handleNonInputValueChange={handleNonInputValueChangeMock}
-      />
-    )
     const checkbox = screen.getByRole('checkbox', {
       name: 'questionPage.addNewOne'
     })
@@ -109,16 +84,6 @@ describe('QuestionEditor', () => {
   })
 
   it('should change question type', async () => {
-    render(
-      <QuestionEditor
-        data={mockedData}
-        handleInputChange={handleInputChangeMock}
-        handleNonInputValueChange={handleNonInputValueChangeMock}
-        onCancel={onCancelMock}
-        onEdit={onEditMock}
-        onSave={onSaveMock}
-      />
-    )
     const questionInput = screen.getByRole('textbox', { name: /question/i })
     await userEvent.type(questionInput, 'text')
     expect(handleInputChangeMock).toHaveBeenCalledWith('text')
