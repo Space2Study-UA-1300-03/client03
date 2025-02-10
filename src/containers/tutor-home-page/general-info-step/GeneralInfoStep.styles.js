@@ -7,5 +7,38 @@ export const styles = {
     height: { sm: '485px' },
     paddingBottom: { xs: '30px', sm: '0' },
     ...fadeAnimation
+  },
+  imgContainer: {
+    display: 'flex',
+    flex: 1,
+    maxWidth: '432px',
+    aspectRatio: { xs: '4/3', sm: 'auto' },
+    pb: { xs: '16px', sm: '52px' }
+  },
+  img: {
+    width: '100%',
+    m: { sm: 0, xs: '0 auto' }
+  },
+  rightBox: {
+    maxWidth: '432px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    m: { md: 0, xs: '0 auto' },
+    pt: 0
+  },
+  inputsContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    columnGap: '20px'
+  },
+  fullWidth: {
+    gridColumn: 'span 2'
+  },
+  checkboxLabel: {
+    fontSize: '14px'
+  },
+  requiredField: {
+    fontSize: '12px'
   }
 }

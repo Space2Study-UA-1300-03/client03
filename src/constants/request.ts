@@ -23,6 +23,9 @@ export const URLs = {
     getNames: '/categories/names',
     priceRange: '/price-range'
   },
+  countries: {
+    get: '/locations/countries'
+  },
   subjects: {
     get: '/subjects',
     getNames: '/subjects/names'

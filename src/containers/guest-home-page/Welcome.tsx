@@ -10,23 +10,34 @@ import AppButton from '~/components/app-button/AppButton'
 import titleMd from '~/assets/img/guest-home-page/titleMd.svg'
 import titleSm from '~/assets/img/guest-home-page/titleSm.svg'
 import titleXs from '~/assets/img/guest-home-page/titleXs.svg'
+
+import titleMdUk from '~/assets/img/guest-home-page/titleMdUk.svg'
+import titleSmUk from '~/assets/img/guest-home-page/titleSmUk.svg'
+import titleXsUk from '~/assets/img/guest-home-page/titleXsUk.svg'
+
 import { guestRoutes } from '~/router/constants/guestRoutes'
 import { styles } from '~/containers/guest-home-page/styles/Welcome.styles.js'
 
 const Welcome = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { isLaptopAndAbove, isTablet, isMobile } = useBreakpoints()
 
   const image = useMemo(() => {
-    if (isLaptopAndAbove) return titleMd
-    if (isTablet) return titleSm
-    if (isMobile) return titleXs
-  }, [isLaptopAndAbove, isTablet, isMobile])
+    if (i18n.language === 'ua') {
+      if (isLaptopAndAbove) return titleMdUk
+      if (isTablet) return titleSmUk
+      if (isMobile) return titleXsUk
+    } else {
+      if (isLaptopAndAbove) return titleMd
+      if (isTablet) return titleSm
+      if (isMobile) return titleXs
+    }
+  }, [i18n.language, isLaptopAndAbove, isTablet, isMobile])
 
   return (
     <Box
       className='section'
-      id={guestRoutes.welcome.route} //
+      id={guestRoutes.welcome.route}
       sx={styles.container}
     >
       <Box alt='Title' component='img' src={image} sx={styles.title} />

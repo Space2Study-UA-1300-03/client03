@@ -47,11 +47,11 @@ const validations: Validations = {
 
 export const emptyField = (
   value: string | null,
-  emtyMessage = 'common.errorMessages.emptyField',
+  emptyMessage = 'common.errorMessages.emptyField',
   helperText?: string
 ) => {
   if (!value) {
-    return emtyMessage
+    return emptyMessage
   }
   return helperText
 }
@@ -81,4 +81,17 @@ export const helperTextHandler = (
   emptyMessage?: string
 ) => {
   return emptyField(value, emptyMessage, validations[marker](value))
+}
+
+export const confirmPassword = (
+  password: string,
+  data: { password: string }
+) => {
+  if (!password) {
+    return 'common.errorMessages.emptyField'
+  }
+  if (password !== data.password && data.password) {
+    return 'common.errorMessages.passwordsDontMatch'
+  }
+  return ''
 }
