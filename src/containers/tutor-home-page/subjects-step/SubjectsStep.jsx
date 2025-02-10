@@ -7,75 +7,63 @@ import { useTranslation } from 'react-i18next'
 import { styles } from '~/containers/tutor-home-page/subjects-step/SubjectsStep.styles'
 import img from '~/assets/img/tutor-home-page/become-tutor/study-category.svg'
 import AppButton from '~/components/app-button/AppButton'
-import { axiosClient } from '~/plugins/axiosClient'
-import { URLs } from '~/constants/request'
+import useAxios from '~/hooks/use-axios'
+import { categoryService } from '~/services/category-service'
+import { subjectService } from '~/services/subject-service'
 
 const SubjectsStep = ({ btnsBox }) => {
   const { t } = useTranslation()
-  const [subject, setSubject] = useState({
-    category: null,
-    subject: null
-  })
-  const [listOfItems, setListOfItems] = useState([])
-  const [categories, setCategories] = useState([])
-  const [subjects, setSubjects] = useState([])
+  const [subject, setSubject] = useState({ category: null, subject: null })
+  const [listOfSubjects, setListOfSubjects] = useState([])
+
   const sameSubjectError = useMemo(
-    () => subject.subject && listOfItems.includes(subject.subject.subjectName),
-    [subject.subject, listOfItems]
+    () =>
+      subject.subject?.subjectName &&
+      listOfSubjects.includes(subject.subject.subjectName),
+    [subject.subject?.subjectName, listOfSubjects]
   )
 
+  const { response: categories, loading: loadingCategories } = useAxios({
+    service: categoryService.getCategoriesNames,
+    defaultResponse: [],
+    fetchOnMount: true
+  })
+
+  const {
+    response: subjects,
+    loading: loadingSubjects,
+    fetchData: fetchSubjects
+  } = useAxios({
+    service: subjectService.getSubjectsNames,
+    defaultResponse: [],
+    fetchOnMount: false
+  })
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axiosClient.get(URLs.categories.getNames)
-        setCategories(response.data)
-        console.log('Fetched categories:', response.data)
-      } catch (error) {
-        console.error('Error fetching categories:', error)
-      }
+    if (subject.category) {
+      fetchSubjects(subject.category._id)
     }
+  }, [subject.category, fetchSubjects])
 
-    fetchCategories()
-  }, [])
-
-  console.log('subject', subject)
-
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      if (!subject.category?._id) return
-
-      try {
-        const response = await axiosClient.get(
-          `/categories/${subject.category._id}/subjects/names`
-        )
-        setSubjects(response.data)
-        console.log('Fetched subjects:', response.data)
-      } catch (error) {
-        console.error('Error fetching subjects:', error)
-      }
-    }
-
-    fetchSubjects()
-  }, [subject.category])
-
-  const onChangeCategory = (_, value) =>
+  const onChangeCategory = (_, value) => {
     setSubject({ category: value, subject: null })
+  }
 
-  const onChangeSubject = (_, value) =>
+  const onChangeSubject = (_, value) => {
     setSubject((prev) => ({ ...prev, subject: value }))
+  }
 
   const addSubject = () => {
-    if (sameSubjectError) {
-      return
+    if (!sameSubjectError && subject.subject) {
+      setListOfSubjects((prev) => [...prev, subject.subject.subjectName])
+      setSubject({ category: null, subject: null })
     }
-    setListOfItems((prev) => [...prev, subject?.subject?.subjectName])
-    setSubject({ category: null, subject: null })
   }
 
   const handleChipDelete = (item) => {
-    setListOfItems((prev) => prev.filter((name) => name !== item))
+    setListOfSubjects((prev) => prev.filter((name) => name !== item))
   }
-  console.log('listOfItems:', listOfItems)
+
   return (
     <Box sx={styles.container}>
       <Box sx={styles.imgContainer}>
@@ -86,6 +74,7 @@ const SubjectsStep = ({ btnsBox }) => {
           <Typography mb={2}>{t('becomeTutor.categories.title')}</Typography>
           <AppAutoComplete
             getOptionLabel={(option) => option.categoryName ?? option}
+            loading={loadingCategories}
             onChange={onChangeCategory}
             options={categories}
             sx={{ mb: 2 }}
@@ -97,6 +86,7 @@ const SubjectsStep = ({ btnsBox }) => {
           <AppAutoComplete
             disabled={!subject.category}
             getOptionLabel={(option) => option.subjectName ?? option}
+            loading={loadingSubjects}
             onChange={onChangeSubject}
             options={subjects}
             sx={{ mb: 2 }}
@@ -119,7 +109,7 @@ const SubjectsStep = ({ btnsBox }) => {
           <AppChipList
             defaultQuantity={2}
             handleChipDelete={handleChipDelete}
-            items={listOfItems}
+            items={listOfSubjects}
           />
         </Box>
         {btnsBox}
