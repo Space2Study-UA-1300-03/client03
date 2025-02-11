@@ -1,50 +1,67 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
-import { categoriesMock } from '~/containers/tutor-home-page/subjects-step/constants'
 import { useTranslation } from 'react-i18next'
 import { styles } from '~/containers/tutor-home-page/subjects-step/SubjectsStep.styles'
 import img from '~/assets/img/tutor-home-page/become-tutor/study-category.svg'
 import AppButton from '~/components/app-button/AppButton'
+import useAxios from '~/hooks/use-axios'
+import { categoryService } from '~/services/category-service'
+import { subjectService } from '~/services/subject-service'
 
 const SubjectsStep = ({ btnsBox }) => {
   const { t } = useTranslation()
-  const [subjects, setSubjects] = useState({ category: null, subject: null })
-  const [listOfItems, setListOfItems] = useState([])
-  const sameSubjectError = listOfItems.includes(subjects.subject)
+  const [subject, setSubject] = useState({ category: null, subject: null })
+  const [listOfSubjects, setListOfSubjects] = useState([])
 
-  const categoryOptions = useMemo(
-    () => categoriesMock.map((item) => Object.keys(item)[0]),
-    []
+  const sameSubjectError = useMemo(
+    () =>
+      subject.subject?.subjectName &&
+      listOfSubjects.includes(subject.subject.subjectName),
+    [subject.subject?.subjectName, listOfSubjects]
   )
 
-  const subjectOptions = useMemo(() => {
-    if (!subjects.category) return []
-    return (
-      categoriesMock.find((cat) => Object.keys(cat)[0] === subjects.category)?.[
-        subjects.category
-      ] || []
-    )
-  }, [subjects.category])
+  const { response: categories, loading: loadingCategories } = useAxios({
+    service: categoryService.getCategoriesNames,
+    defaultResponse: [],
+    fetchOnMount: true
+  })
 
-  const onChangeCategory = (_, value) =>
-    setSubjects({ category: value, subject: null })
+  const {
+    response: subjects,
+    loading: loadingSubjects,
+    fetchData: fetchSubjects
+  } = useAxios({
+    service: subjectService.getSubjectsNames,
+    defaultResponse: [],
+    fetchOnMount: false
+  })
 
-  const onChangeSubject = (_, value) =>
-    setSubjects((prev) => ({ ...prev, subject: value }))
+  useEffect(() => {
+    if (subject.category) {
+      fetchSubjects(subject.category._id)
+    }
+  }, [subject.category, fetchSubjects])
+
+  const onChangeCategory = (_, value) => {
+    setSubject({ category: value, subject: null })
+  }
+
+  const onChangeSubject = (_, value) => {
+    setSubject((prev) => ({ ...prev, subject: value }))
+  }
 
   const addSubject = () => {
-    if (sameSubjectError) {
-      return
+    if (!sameSubjectError && subject.subject) {
+      setListOfSubjects((prev) => [...prev, subject.subject.subjectName])
+      setSubject({ category: null, subject: null })
     }
-    setListOfItems((prev) => [...prev, subjects.subject])
-    setSubjects({ category: null, subject: null })
   }
 
   const handleChipDelete = (item) => {
-    setListOfItems((prev) => prev.filter((name) => name !== item))
+    setListOfSubjects((prev) => prev.filter((name) => name !== item))
   }
 
   return (
@@ -56,24 +73,28 @@ const SubjectsStep = ({ btnsBox }) => {
         <Box sx={styles.contentBox}>
           <Typography mb={2}>{t('becomeTutor.categories.title')}</Typography>
           <AppAutoComplete
+            getOptionLabel={(option) => option.categoryName ?? option}
+            loading={loadingCategories}
             onChange={onChangeCategory}
-            options={categoryOptions}
+            options={categories}
             sx={{ mb: 2 }}
             textFieldProps={{
               label: t('becomeTutor.categories.mainSubjectsLabel')
             }}
-            value={subjects.category}
+            value={subject.category}
           />
           <AppAutoComplete
-            disabled={!subjects.category}
+            disabled={!subject.category}
+            getOptionLabel={(option) => option.subjectName ?? option}
+            loading={loadingSubjects}
             onChange={onChangeSubject}
-            options={subjectOptions.map((item) => item.name)}
+            options={subjects}
             sx={{ mb: 2 }}
             textFieldProps={{ label: t('becomeTutor.categories.subjectLabel') }}
-            value={subjects.subject}
+            value={subject.subject}
           />
           <AppButton
-            disabled={!subjects.subject || sameSubjectError}
+            disabled={!subject.subject || sameSubjectError}
             fullWidth
             onClick={addSubject}
             sx={{ mb: 2 }}
@@ -88,7 +109,7 @@ const SubjectsStep = ({ btnsBox }) => {
           <AppChipList
             defaultQuantity={2}
             handleChipDelete={handleChipDelete}
-            items={listOfItems}
+            items={listOfSubjects}
           />
         </Box>
         {btnsBox}
