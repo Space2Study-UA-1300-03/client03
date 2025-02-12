@@ -29,8 +29,8 @@ import guestHomePage from './guest-home-page.json'
 import table from './table.json'
 import subjectsPage from './subjects-page.json'
 import becomeTutor from './become-tutor.json'
-import subjects from './subjects.json'
-import categories from './categories.json'
+import subjectsNames from './subjects-names.json'
+import categoriesNames from './categories-names.json'
 
 const ua = {
   translations: {
@@ -65,8 +65,8 @@ const ua = {
     table,
     subjectsPage,
     becomeTutor,
-    subjects,
-    categories
+    subjectsNames,
+    categoriesNames
   }
 }
 
