@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 
 import NavigationIcon from '~/components/navigation-icon/NavigationIcon'
+import LanguageSwitcher from '~/components/language-switcher/LanguageSwitcher'
 import { userIcons } from '~/containers/navigation-icons/NavigationIcons.constants'
 
 import { styles } from '~/containers/navigation-icons/NavigationIcons.styles'
@@ -44,6 +45,7 @@ const UserIcons: FC<UserIconsProps> = ({ setSidebarOpen }) => {
 
   return (
     <Box ref={anchorRef} sx={styles.iconBox}>
+      <LanguageSwitcher />
       {icons}
       <AccountMenu anchorEl={menuAnchorEl} onClose={closeMenu} />
     </Box>
