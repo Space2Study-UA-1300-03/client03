@@ -1,27 +1,30 @@
 import { useState, useEffect, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { useTranslation } from 'react-i18next'
+
+import useAxios from '~/hooks/use-axios'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
-import { useTranslation } from 'react-i18next'
-import { styles } from '~/containers/tutor-home-page/subjects-step/SubjectsStep.styles'
-import img from '~/assets/img/tutor-home-page/become-tutor/study-category.svg'
 import AppButton from '~/components/app-button/AppButton'
-import useAxios from '~/hooks/use-axios'
 import { categoryService } from '~/services/category-service'
 import { subjectService } from '~/services/subject-service'
+import { styles } from '~/containers/tutor-home-page/subjects-step/SubjectsStep.styles'
+import img from '~/assets/img/tutor-home-page/become-tutor/study-category.svg'
 
-const SubjectsStep = ({ btnsBox }) => {
+const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
   const { t } = useTranslation()
   const [subject, setSubject] = useState({ category: null, subject: null })
-  const [listOfSubjects, setListOfSubjects] = useState([])
+  const [listOfSubjects, setListOfSubjects] = useState(data.interests)
 
-  const sameSubjectError = useMemo(
-    () =>
-      subject.subject?.subjectName &&
-      listOfSubjects.includes(subject.subject.subjectName),
-    [subject.subject?.subjectName, listOfSubjects]
-  )
+  const sameSubjectError = useMemo(() => {
+    if (!Object.keys(listOfSubjects).length) return false
+    const presentListSubjects = Object.values(listOfSubjects).flat()
+    return (
+      subject?.subject?.subjectName &&
+      presentListSubjects.includes(subject.subject.subjectName)
+    )
+  }, [subject?.subject?.subjectName, listOfSubjects])
 
   const { response: categories, loading: loadingCategories } = useAxios({
     service: categoryService.getCategoriesNames,
@@ -55,13 +58,44 @@ const SubjectsStep = ({ btnsBox }) => {
 
   const addSubject = () => {
     if (!sameSubjectError && subject.subject) {
-      setListOfSubjects((prev) => [...prev, subject.subject.subjectName])
+      setListOfSubjects((prevData) => {
+        const updatedInterests = { ...prevData }
+        const categoryKey = subject.category.categoryName
+          .replace(/\s+/g, '-')
+          .toLowerCase()
+        if (!updatedInterests[categoryKey]) {
+          updatedInterests[categoryKey] = []
+        }
+        updatedInterests[categoryKey].push(subject.subject.subjectName)
+
+        handleSubjectChange('interests', updatedInterests)
+        return updatedInterests
+      })
+
       setSubject({ category: null, subject: null })
     }
   }
 
   const handleChipDelete = (item) => {
-    setListOfSubjects((prev) => prev.filter((name) => name !== item))
+    setListOfSubjects((prevData) => {
+      const updatedInterests = { ...prevData }
+      const categoryWithItem = Object.entries(updatedInterests).find(
+        ([, subjects]) => {
+          return subjects.includes(item)
+        }
+      )
+      const [category, subjects] = categoryWithItem
+
+      updatedInterests[category] = subjects.filter(
+        (subject) => subject !== item
+      )
+      if (updatedInterests[category].length === 0) {
+        delete updatedInterests[category]
+      }
+
+      handleSubjectChange('interests', updatedInterests)
+      return updatedInterests
+    })
   }
 
   return (
@@ -109,7 +143,7 @@ const SubjectsStep = ({ btnsBox }) => {
           <AppChipList
             defaultQuantity={2}
             handleChipDelete={handleChipDelete}
-            items={listOfSubjects}
+            items={Object.values(listOfSubjects || {}).flat()}
           />
         </Box>
         {btnsBox}

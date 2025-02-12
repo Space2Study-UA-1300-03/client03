@@ -13,52 +13,55 @@ import { useSnackBarContext } from '~/context/snackbar-context'
 
 import { styles } from '~/containers/tutor-home-page/general-info-step/GeneralInfoStep.styles'
 
-const GeneralInfoStep = ({ btnsBox }) => {
-  const [data, setData] = useState({
-    firstName: '',
-    lastName: '',
-    country: '',
-    city: '',
-    professionalSummary: '',
-    more18Years: false
-  })
-  const [currentCountries, setCurrentCountries] = useState([])
-  const [currentCities, setCurrentCities] = useState([])
+const GeneralInfoStep = ({
+  btnsBox,
+  data,
+  handleChange,
+  handleDataChange,
+  handleNonInputValueChange,
+  errors,
+  handleBlur
+}) => {
+  const [currentCities, setCurrentCities] = useState(null)
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
 
-  const onCityError = () => {
-    setCurrentCities([])
+  const onResponseCityError = () => {
+    handleNonInputValueChange('city', '')
+    setCurrentCities(null)
     setAlert({
       severity: snackbarVariants.error,
       message: t('becomeTutor.generalInfo.citiesNotFound')
     })
   }
 
+  const onResponseCity = (response) => {
+    setCurrentCities(response)
+  }
+
   const { response: countries, loading: loadingCountries } = useAxios({
     service: stepperService.getCountries,
-    defaultResponse: [],
+    defaultResponse: null,
     fetchOnMount: true
   })
 
-  const {
-    response: cities,
-    loading: loadingCities,
-    fetchData: fetchCity
-  } = useAxios({
+  const { loading: loadingCities, fetchData: fetchCity } = useAxios({
     service: (country) => stepperService.getCities(country),
-    defaultResponse: [],
+    defaultResponse: null,
     fetchOnMount: false,
-    onResponseError: onCityError
+    onResponse: onResponseCity,
+    onResponseError: onResponseCityError
   })
 
   useEffect(() => {
-    setCurrentCountries(countries)
+    if (data?.country && countries) {
+      const selectedCountry = countries.find(
+        (country) => country.name === data.country
+      )
+      fetchCity(selectedCountry.iso2)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countries])
-
-  useEffect(() => {
-    setCurrentCities(cities)
-  }, [cities])
 
   const handleCoutryChange = (_, selectedCountryName) => {
     if (selectedCountryName) {
@@ -68,43 +71,13 @@ const GeneralInfoStep = ({ btnsBox }) => {
 
       fetchCity(selectedCountry.iso2)
     }
-    setData((prev) => {
-      const newData = {
-        ...prev,
-        country: selectedCountryName || '',
-        city: ''
-      }
+    setCurrentCities(null)
 
-      return newData
+    handleDataChange({
+      country: selectedCountryName || '',
+      city: ''
     })
   }
-
-  const handleInputChange =
-    (key, type = 'input') =>
-    (event, value) => {
-      let updatedValue
-
-      switch (type) {
-        case 'input':
-          updatedValue = event.target.value
-          break
-        case 'checkbox':
-          updatedValue = event.target.checked
-          break
-        case 'select':
-          updatedValue = value
-          break
-      }
-
-      setData((prev) => {
-        const newData = {
-          ...prev,
-          [key]: updatedValue
-        }
-
-        return newData
-      })
-    }
 
   return (
     <Box sx={styles.container}>
@@ -116,21 +89,29 @@ const GeneralInfoStep = ({ btnsBox }) => {
           <Typography mb='20px'>
             {t('becomeTutor.generalInfo.title')}
           </Typography>
-          <Box component='form' sx={styles.form}>
+          <Box sx={styles.form}>
             <Box sx={styles.inputsContainer}>
               <AppTextField
                 autoFocus
+                errorMsg={t(errors.firstName || '')}
                 label={t('common.labels.firstName')}
-                onChange={handleInputChange('firstName')}
+                onBlur={handleBlur('firstName')}
+                onChange={handleChange('firstName')}
+                required
+                value={data.firstName}
               />
               <AppTextField
+                errorMsg={t(errors.lastName || '')}
                 label={t('common.labels.lastName')}
-                onChange={handleInputChange('lastName')}
+                onBlur={handleBlur('lastName')}
+                onChange={handleChange('lastName')}
+                required
+                value={data.lastName}
               />
               <AppAutoComplete
                 loading={loadingCountries}
                 onChange={handleCoutryChange}
-                options={currentCountries.map((country) => country.name)}
+                options={countries?.map((country) => country.name)}
                 sx={{ mb: '20px' }}
                 textFieldProps={{
                   label: t('common.labels.country')
@@ -138,9 +119,11 @@ const GeneralInfoStep = ({ btnsBox }) => {
                 value={data.country || null}
               />
               <AppAutoComplete
-                disabled={!data.country || currentCities.length === 0}
+                disabled={!currentCities}
                 loading={loadingCities}
-                onChange={handleInputChange('city', 'select')}
+                onChange={(_, value) =>
+                  handleNonInputValueChange('city', value)
+                }
                 options={currentCities?.map((city) => city.name)}
                 sx={{ mb: '16px' }}
                 textFieldProps={{
@@ -157,19 +140,20 @@ const GeneralInfoStep = ({ btnsBox }) => {
                 fullWidth
                 label={t('becomeTutor.generalInfo.textFieldLabel')}
                 maxLength={textAreaLimit.limit}
-                onChange={handleInputChange('professionalSummary')}
+                onChange={handleChange('professionalSummary')}
                 sx={styles.fullWidth}
                 value={data?.professionalSummary || ''}
               />
             </Box>
             <FormControlLabel
+              checked={data?.more18Years || false}
               control={<Checkbox />}
               label={
                 <Typography sx={styles.checkboxLabel}>
                   {t('common.confirmYears')}
                 </Typography>
               }
-              onChange={handleInputChange('more18Years', 'checkbox')}
+              onChange={handleChange('more18Years')}
             />
             <Typography sx={styles.requiredField}>
               {t('becomeTutor.generalInfo.helperText')}

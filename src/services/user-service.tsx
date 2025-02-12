@@ -23,11 +23,15 @@ export const userService = {
       createUrlPath(URLs.users.get, userId, { role: userRole })
     )
   },
-  updateUser: (
-    userId: string,
-    params: UpdateUserParams
-  ): Promise<AxiosResponse<null>> => {
-    return axiosClient.patch(createUrlPath(URLs.users.update, userId), params)
+  updateUser: (params: UpdateUserParams): Promise<AxiosResponse<null>> => {
+    return axiosClient.patch(createUrlPath(URLs.users.update), params)
+  },
+  updateUserPhoto: (formData: string): Promise<AxiosResponse<null>> => {
+    return axiosClient.patch(URLs.users.update, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
   deleteUser: (userId: string): Promise<AxiosResponse<null>> => {
     return axiosClient.delete(createUrlPath(URLs.users.get, userId))

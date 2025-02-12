@@ -30,7 +30,8 @@ export const styles = {
   inputsContainer: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    columnGap: '20px'
+    columnGap: '20px',
+    rowGap: '5px'
   },
   fullWidth: {
     gridColumn: 'span 2'

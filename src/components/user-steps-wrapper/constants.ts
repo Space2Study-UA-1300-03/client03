@@ -5,7 +5,11 @@ export const initialValues = {
   lastName: '',
   country: null,
   city: null,
-  professionalSummary: ''
+  professionalSummary: '',
+  interests: {},
+  languages: [],
+  photo: null,
+  photoFile: null
 }
 
 export const validations = {

@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { Box, Typography } from '@mui/material'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 import { snackbarVariants } from '~/constants'
 import { validationData } from './constants'
@@ -12,30 +12,41 @@ import { style } from '~/containers/tutor-home-page/add-photo-step/AddPhotoStep.
 import DragAndDrop from '~/components/drag-and-drop/DragAndDrop'
 import FileUploader from '~/components/file-uploader/FileUploader'
 
-const AddPhotoStep = ({ btnsBox }) => {
+const AddPhotoStep = ({ btnsBox, handlePhotoChange, data }) => {
   const { t } = useTranslation()
-  const [uploadedPhoto, setUploadedPhoto] = useState(null)
   const { isLaptopAndAbove, isTablet, isMobile } = useBreakpoints()
   const { setAlert } = useSnackBarContext()
+  const fileUploaderRef = useRef()
 
   const resizePhoto = async (photo) => {
-    const originalPhoto = URL.createObjectURL(photo)
+    const originalPhoto = URL.createObjectURL(photo[0])
     const photoSize = { newWidth: 440, newHeight: 440 }
     const resizedPhoto = await imageResize(originalPhoto, photoSize)
 
-    setUploadedPhoto(resizedPhoto)
+    handlePhotoChange({
+      photoFile: photo,
+      photo: resizedPhoto
+    })
     URL.revokeObjectURL(originalPhoto)
   }
 
   const handlePhotoUpload = async ({ files, error }) => {
     if (!error && files.length > 0) {
-      await resizePhoto(files[0])
+      await resizePhoto(files)
     } else {
       setAlert({
         severity: snackbarVariants.error,
         message: `${error}`
       })
     }
+  }
+
+  const handleDeletePhoto = () => {
+    handlePhotoChange({
+      photoFile: null,
+      photo: null
+    })
+    fileUploaderRef.current.value = ''
   }
 
   const dragAndDrop = (
@@ -48,13 +59,16 @@ const AddPhotoStep = ({ btnsBox }) => {
       }}
       validationData={validationData}
     >
-      {uploadedPhoto ? (
-        <Box
-          alt={t('becomeTutor.photo.imageAlt')}
-          component='img'
-          src={uploadedPhoto}
-          style={style.img}
-        />
+      {data?.photo ? (
+        <>
+          <Box
+            alt={t('becomeTutor.photo.imageAlt')}
+            component='img'
+            src={data.photo}
+            style={style.img}
+          />
+          <CancelIcon onClick={handleDeletePhoto} style={style.closeIcon} />
+        </>
       ) : (
         <Typography>{t('becomeTutor.photo.placeholder')}</Typography>
       )}
@@ -73,6 +87,8 @@ const AddPhotoStep = ({ btnsBox }) => {
             buttonText={t('becomeTutor.photo.button')}
             emitter={handlePhotoUpload}
             isImages
+            namePhoto={data?.photoFile ? data?.photoFile[0].name : null}
+            ref={fileUploaderRef}
             sx={style.fileUploader}
             validationData={validationData}
           />
