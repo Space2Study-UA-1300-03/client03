@@ -13,7 +13,6 @@ import LanguageStep from '~/containers/tutor-home-page/language-step/LanguageSte
 
 import StepWrapper from '~/components/step-wrapper/StepWrapper'
 
-// import { useSnackBarContext } from '~/context/snackbar-context'
 import {
   tutorStepLabels,
   studentStepLabels,
@@ -28,7 +27,6 @@ interface UserStepsWrapperProps {
 
 const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
   const stepLabels = userRole === student ? studentStepLabels : tutorStepLabels
-  // const { setAlert } = useSnackBarContext()
   const [isUserFetched, setIsUserFetched] = useState(false)
   const dispatch = useAppDispatch()
 
@@ -39,7 +37,6 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
     data,
     handleDataChange,
     errors
-    // isDirty
   } = useForm({
     dirtyOnChange: true,
     initialValues: initialValues,

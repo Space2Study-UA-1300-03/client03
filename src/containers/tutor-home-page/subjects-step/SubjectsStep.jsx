@@ -60,9 +60,7 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
     if (!sameSubjectError && subject.subject) {
       setListOfSubjects((prevData) => {
         const updatedInterests = { ...prevData }
-        const categoryKey = subject.category.categoryName
-          .replace(/\s+/g, '-')
-          .toLowerCase()
+        const categoryKey = subject.category.categoryName.replace(/\s+/g, '-')
         if (!updatedInterests[categoryKey]) {
           updatedInterests[categoryKey] = []
         }

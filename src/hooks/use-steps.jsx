@@ -1,7 +1,5 @@
-import { useCallback, useState } from 'react'
-
+import { useState } from 'react'
 import useAxios from '~/hooks/use-axios'
-import { useAppSelector } from '~/hooks/use-redux'
 
 import { useModalContext } from '~/context/modal-context'
 import { useSnackBarContext } from '~/context/snackbar-context'
@@ -12,17 +10,14 @@ const useSteps = ({ steps, data }) => {
   const [activeStep, setActiveStep] = useState(0)
   const { closeModal } = useModalContext()
   const { setAlert } = useSnackBarContext()
-  const { userId } = useAppSelector((state) => state.appMain)
 
-  const updateUser = useCallback(
-    (data, formData) => {
-      Promise.all([
-        userService.updateUser(data, userId),
-        userService.updateUserPhoto(formData)
-      ])
-    },
-    [userId]
-  )
+  const updateUser = (params) => {
+    const { userInfo, formData } = params
+    return Promise.all([
+      userService.updateUser(userInfo),
+      userService.updateUserPhoto(formData)
+    ])
+  }
 
   const handleResponseError = (error) => {
     setAlert({
@@ -70,12 +65,14 @@ const useSteps = ({ steps, data }) => {
       city,
       professionalSummary,
       languages,
-      photoFile
+      photoFile = [],
+      interests
     } = data
-    const formData = new FormData()
-    formData.append('photo', photoFile)
 
     // const hasErrors = stepErrors.find((error) => error)
+
+    const formData = new FormData()
+    formData.append('photo', photoFile[0])
 
     const userInfo = {
       firstName,
@@ -83,11 +80,11 @@ const useSteps = ({ steps, data }) => {
       country: country ?? '',
       city: city ?? '',
       professionalSummary: professionalSummary ?? '',
-      // mainSubjects: stepData.subjects,
-      nativeLanguage: languages ?? ''
+      interests: interests ?? {},
+      languages: languages ?? ''
     }
 
-    fetchData(userInfo, formData)
+    fetchData({ userInfo, formData })
     // !hasErrors && fetchData(data, formData)
   }
 

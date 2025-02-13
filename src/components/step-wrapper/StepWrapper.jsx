@@ -35,6 +35,7 @@ const StepWrapper = ({ children, steps, data }) => {
 
   const nextButton = isLastStep ? (
     <AppButton
+      disabled={loading}
       loading={loading}
       onClick={handleSubmit}
       size='small'

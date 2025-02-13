@@ -1,21 +1,21 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
+import { Typography } from '@mui/material'
 
 import img from '~/assets/img/tutor-home-page/become-tutor/languages.svg'
-import { styles } from '~/containers/tutor-home-page/language-step/LanguageStep.styles'
-import { useState } from 'react'
-import { Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { student, tutor } from '~/constants'
 import { languagesService } from '~/services/languages-service'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
-import AddLanguageBtn from './AddLanguageBtn'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import useAxios from '~/hooks/use-axios'
+import AddLanguageBtn from './AddLanguageBtn'
 
-const LanguageStep = ({ userRole, btnsBox }) => {
+import { styles } from '~/containers/tutor-home-page/language-step/LanguageStep.styles'
+
+const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
   const { t } = useTranslation()
   const [language, setLanguage] = useState('')
-  const [languagesList, setLanguagesList] = useState([])
 
   const { response: languages, loading: loadingLanguages } = useAxios({
     service: languagesService.getLanguages,
@@ -26,23 +26,29 @@ const LanguageStep = ({ userRole, btnsBox }) => {
   const handleChange = (_, selectedValue) => {
     setLanguage(selectedValue)
   }
+
   const addLanguage = () => {
-    if (!language.name || languagesList.includes(language.name)) {
+    if (!language.name || data?.languages?.includes(language.name)) {
       return
     }
-    setLanguagesList([...languagesList, language.name])
+    handleLanguageChange('languages', [
+      ...(data.languages || []),
+      language.name
+    ])
     setLanguage('')
   }
+
   const handleDeleteLanguage = (name) => {
-    setLanguagesList(languagesList.filter((lang) => lang !== name))
+    const updatedLanguageList = data?.languages.filter((lang) => lang !== name)
+    handleLanguageChange('languages', [...updatedLanguageList])
   }
+
   const StudentLangStep = () => {
     return (
       <Box>
         <Typography>{t('becomeTutor.languages.studentTitle')}</Typography>
         <AppAutoComplete
           getOptionLabel={(option) => option.name || ''}
-          isOptionEqualToValue={(option, value) => option._id === value._id}
           key={languages.id}
           loading={loadingLanguages}
           onChange={handleChange}
@@ -51,7 +57,7 @@ const LanguageStep = ({ userRole, btnsBox }) => {
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabel')
           }}
-          value={language}
+          value={language || null}
         />
       </Box>
     )
@@ -63,7 +69,6 @@ const LanguageStep = ({ userRole, btnsBox }) => {
         <Typography>{t('becomeTutor.languages.tutorTitle')}</Typography>
         <AppAutoComplete
           getOptionLabel={(option) => option.name || ''}
-          isOptionEqualToValue={(option, value) => option._id === value._id}
           key={languages.id}
           loading={loadingLanguages}
           onChange={handleChange}
@@ -72,12 +77,12 @@ const LanguageStep = ({ userRole, btnsBox }) => {
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabel')
           }}
-          value={language}
+          value={language || null}
         />
         <AddLanguageBtn addLanguage={addLanguage} language={language} />
         <AppChipList
           handleChipDelete={handleDeleteLanguage}
-          items={languagesList}
+          items={data?.languages || []}
         />
       </Box>
     )

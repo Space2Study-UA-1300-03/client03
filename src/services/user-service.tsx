@@ -27,7 +27,7 @@ export const userService = {
     return axiosClient.patch(createUrlPath(URLs.users.update), params)
   },
   updateUserPhoto: (formData: string): Promise<AxiosResponse<null>> => {
-    return axiosClient.patch(URLs.users.update, formData, {
+    return axiosClient.patch(URLs.users.updateImage, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

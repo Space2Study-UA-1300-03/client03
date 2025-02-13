@@ -22,7 +22,6 @@ const AddPhotoStep = ({ btnsBox, handlePhotoChange, data }) => {
     const originalPhoto = URL.createObjectURL(photo[0])
     const photoSize = { newWidth: 440, newHeight: 440 }
     const resizedPhoto = await imageResize(originalPhoto, photoSize)
-
     handlePhotoChange({
       photoFile: photo,
       photo: resizedPhoto

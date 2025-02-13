@@ -10,6 +10,12 @@ import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import reducer from '~/redux/reducer'
 
+vi.mock('~/context/snackbar-context', () => ({
+  useSnackBarContext: vi.fn().mockReturnValue({
+    setAlert: vi.fn()
+  })
+}))
+
 vi.mock('~/hooks/use-steps', async () => {
   const actual = await vi.importActual('~/hooks/use-steps')
   return {
@@ -23,6 +29,18 @@ vi.mock('~/hooks/use-steps', async () => {
         back: vi.fn(),
         setActiveStep: vi.fn(),
         handleSubmit: vi.fn()
+      },
+      data: {
+        firstName: 'John',
+        lastName: 'Doe',
+        country: 'USA',
+        city: 'New York',
+        professionalSummary: 'Developer',
+        languages: ['English'],
+        interests: {},
+        photoFile: [
+          new File(['photo content'], 'photo.jpg', { type: 'image/jpeg' })
+        ]
       }
     })
   }
