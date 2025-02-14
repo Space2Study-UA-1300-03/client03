@@ -26,3 +26,16 @@ export const studentStepLabels = [
   'language',
   'photo'
 ]
+
+export const tabMap = {
+  generalInfo: [
+    'city',
+    'country',
+    'professionalSummary',
+    'firstName',
+    'lastName'
+  ],
+  interests: ['interests'],
+  language: ['languages'],
+  photo: ['photo', 'photoFile']
+}

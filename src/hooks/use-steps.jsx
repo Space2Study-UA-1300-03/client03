@@ -5,11 +5,13 @@ import { useModalContext } from '~/context/modal-context'
 import { useSnackBarContext } from '~/context/snackbar-context'
 import { userService } from '~/services/user-service'
 import { snackbarVariants } from '~/constants'
+import { tabMap } from '~/components/user-steps-wrapper/constants'
 
 const useSteps = ({ steps, data }) => {
   const [activeStep, setActiveStep] = useState(0)
   const { closeModal } = useModalContext()
   const { setAlert } = useSnackBarContext()
+  const isLastStep = activeStep === steps.length - 1
 
   const updateUser = (params) => {
     const { userInfo, formData } = params
@@ -17,6 +19,24 @@ const useSteps = ({ steps, data }) => {
       userService.updateUser(userInfo),
       userService.updateUserPhoto(formData)
     ])
+  }
+
+  const stepErrors = (errors) => {
+    const result = {}
+
+    Object.keys(errors).forEach((field) => {
+      const tab = Object.keys(tabMap).find((key) => tabMap[key].includes(field))
+      if (tab) {
+        if (!result[tab]) {
+          result[tab] = []
+        }
+        result[tab].push(errors[field])
+      }
+    })
+
+    return Object.keys(tabMap).map((tab) => {
+      return result[tab] && result[tab].some((error) => error)
+    })
   }
 
   const handleResponseError = (error) => {
@@ -54,8 +74,6 @@ const useSteps = ({ steps, data }) => {
   const back = () => {
     setActiveStep((prev) => prev - 1)
   }
-
-  const isLastStep = activeStep === steps.length - 1
 
   const handleSubmit = () => {
     const {
@@ -95,7 +113,7 @@ const useSteps = ({ steps, data }) => {
     setActiveStep
   }
 
-  return { activeStep, isLastStep, stepOperation, loading }
+  return { activeStep, isLastStep, stepOperation, loading, stepErrors }
   // return { activeStep, stepErrors, isLastStep, stepOperation, loading }
 }
 
