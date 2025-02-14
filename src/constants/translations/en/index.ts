@@ -31,6 +31,8 @@ import cooperationsPage from './cooperations-page.json'
 import myResourcesPage from './my-resources-page.json'
 import questionPage from './question-page.json'
 import subjectsPage from './subjects-page.json'
+import subjectsNames from './subjects-names.json'
+import categoriesNames from './categories-names.json'
 
 const en = {
   translations: {
@@ -66,7 +68,9 @@ const en = {
     cooperationsPage,
     myResourcesPage,
     questionPage,
-    subjectsPage
+    subjectsPage,
+    subjectsNames,
+    categoriesNames
   }
 }
 

@@ -1,0 +1,21 @@
+{
+    "categories": {
+      "computer science": "Комп'ютерні науки",
+      "finances": "Фінанси",
+      "languages": "Мови",
+      "design": "Дизайн",
+      "physics": "Фізика",
+      "history": "Історія",
+      "psychology": "Психологія",
+      "astronomy": "Астрономія",
+      "biology": "Біологія",
+      "information technology": "Інформаційні технології",
+      "audit": "Аудит",
+      "marketing": "Маркетинг",
+      "mathematics": "Математика",
+      "music": "Музика",
+      "painting": "Малювання",
+      "chemistry": "Хімія"
+    }
+  }
+  
