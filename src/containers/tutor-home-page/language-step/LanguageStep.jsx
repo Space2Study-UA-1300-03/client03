@@ -49,7 +49,7 @@ const LanguageStep = ({ userRole, btnsBox }) => {
           options={languages}
           sx={{ mt: '20px' }}
           textFieldProps={{
-            label: t('becomeTutor.languages.autocompleteLabel')
+            label: t('becomeTutor.languages.autocompleteLabelStudent')
           }}
           value={language}
         />
@@ -70,7 +70,7 @@ const LanguageStep = ({ userRole, btnsBox }) => {
           options={languages}
           sx={{ mt: '20px' }}
           textFieldProps={{
-            label: t('becomeTutor.languages.autocompleteLabel')
+            label: t('becomeTutor.languages.autocompleteLabelTutor')
           }}
           value={language}
         />
