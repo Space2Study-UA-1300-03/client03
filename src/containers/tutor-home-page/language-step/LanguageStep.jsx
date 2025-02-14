@@ -48,16 +48,15 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
       <Box>
         <Typography>{t('becomeTutor.languages.studentTitle')}</Typography>
         <AppAutoComplete
-          getOptionLabel={(option) => option.name || ''}
           key={languages.id}
           loading={loadingLanguages}
-          onChange={handleChange}
-          options={languages}
+          onChange={(_, value) => handleLanguageChange('languages', [value])}
+          options={languages?.map((language) => language.name)}
           sx={{ mt: '20px' }}
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabel')
           }}
-          value={language || null}
+          value={data?.languages[0] || null}
         />
       </Box>
     )
