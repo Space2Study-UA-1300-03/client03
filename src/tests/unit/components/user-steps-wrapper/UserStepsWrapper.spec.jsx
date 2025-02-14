@@ -59,7 +59,8 @@ vi.mock('~/components/step-wrapper/StepWrapper', () => ({
 
 vi.mock('~/components/user-steps-wrapper/constants', () => ({
   tutorStepLabels: ['General Info', 'Subjects', 'Languages', 'Add Photo'],
-  initialValues: {}
+  initialValues: {},
+  validations: {}
 }))
 
 vi.mock('~/constants', () => ({

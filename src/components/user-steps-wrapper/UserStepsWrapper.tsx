@@ -1,19 +1,23 @@
 import { FC, useEffect, useState } from 'react'
-import { useAppDispatch } from '~/hooks/use-redux'
-import { markFirstLoginComplete } from '~/redux/reducer'
-import StepWrapper from '~/components/step-wrapper/StepWrapper'
+import Box from '@mui/material/Box'
 
-import { StepProvider } from '~/context/step-context'
+import { useAppDispatch } from '~/hooks/use-redux'
+import useForm from '~/hooks/use-form'
+
+import { markFirstLoginComplete } from '~/redux/reducer'
 
 import GeneralInfoStep from '~/containers/tutor-home-page/general-info-step/GeneralInfoStep'
 import AddPhotoStep from '~/containers/tutor-home-page/add-photo-step/AddPhotoStep'
 import SubjectsStep from '~/containers/tutor-home-page/subjects-step/SubjectsStep'
 import LanguageStep from '~/containers/tutor-home-page/language-step/LanguageStep'
 
+import StepWrapper from '~/components/step-wrapper/StepWrapper'
+
 import {
   tutorStepLabels,
   studentStepLabels,
-  initialValues
+  initialValues,
+  validations
 } from '~/components/user-steps-wrapper/constants'
 import { student } from '~/constants'
 
@@ -22,8 +26,22 @@ interface UserStepsWrapperProps {
 }
 
 const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
+  const stepLabels = userRole === student ? studentStepLabels : tutorStepLabels
   const [isUserFetched, setIsUserFetched] = useState(false)
   const dispatch = useAppDispatch()
+
+  const {
+    handleInputChange,
+    handleNonInputValueChange,
+    handleBlur,
+    data,
+    handleDataChange,
+    errors
+  } = useForm({
+    dirtyOnChange: true,
+    initialValues: initialValues,
+    validations: validations
+  })
 
   useEffect(() => {
     dispatch(markFirstLoginComplete())
@@ -31,21 +49,36 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
 
   const childrenArr = [
     <GeneralInfoStep
+      data={data}
+      errors={errors}
+      handleBlur={handleBlur}
+      handleChange={handleInputChange}
+      handleDataChange={handleDataChange}
+      handleNonInputValueChange={handleNonInputValueChange}
       isUserFetched={isUserFetched}
       key='1'
       setIsUserFetched={setIsUserFetched}
     />,
-    <SubjectsStep key='2' />,
-    <LanguageStep key='3' userRole={userRole} />,
-    <AddPhotoStep key='4' />
+    <SubjectsStep
+      data={data}
+      handleSubjectChange={handleNonInputValueChange}
+      key='2'
+    />,
+    <LanguageStep
+      data={data}
+      handleLanguageChange={handleNonInputValueChange}
+      key='3'
+      userRole={userRole}
+    />,
+    <AddPhotoStep data={data} handlePhotoChange={handleDataChange} key='4' />
   ]
 
-  const stepLabels = userRole === student ? studentStepLabels : tutorStepLabels
-
   return (
-    <StepProvider initialValues={initialValues} stepLabels={stepLabels}>
-      <StepWrapper steps={stepLabels}>{childrenArr}</StepWrapper>
-    </StepProvider>
+    <Box component='form'>
+      <StepWrapper data={data} steps={stepLabels}>
+        {childrenArr}
+      </StepWrapper>
+    </Box>
   )
 }
 

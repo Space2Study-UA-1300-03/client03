@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react'
+import { FC, ReactElement, forwardRef, Ref } from 'react'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import ListItem from '@mui/material/ListItem'
 import List from '@mui/material/List'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import CloudDoneIcon from '@mui/icons-material/CloudDone'
 import CloseIcon from '@mui/icons-material/Close'
 import { SxProps } from '@mui/material'
 
@@ -35,19 +36,24 @@ interface FileUploaderProps {
   }
   variant?: ButtonVariantEnum
   icon?: ReactElement
+  namePhoto?: string
 }
 
-const FileUploader: FC<FileUploaderProps> = ({
-  buttonText,
-  emitter,
-  initialState = [],
-  initialError = '',
-  validationData,
-  isImages = false,
-  sx = {},
-  variant,
-  icon
-}) => {
+const FileUploader: FC<FileUploaderProps> = (
+  {
+    buttonText,
+    emitter,
+    initialState = [],
+    initialError = '',
+    validationData,
+    isImages = false,
+    sx = {},
+    variant,
+    icon,
+    namePhoto
+  },
+  ref: Ref<HTMLAnchorElement>
+) => {
   const { t } = useTranslation()
 
   const { addFiles, deleteFile } = useUpload({
@@ -69,12 +75,30 @@ const FileUploader: FC<FileUploaderProps> = ({
     </ListItem>
   ))
 
-  const uploadButton = (
+  const uploadButton = namePhoto ? (
+    <Button component={ComponentEnum.Label} sx={sx.button} variant={variant}>
+      <CloudDoneIcon sx={styles.icon} />
+      {namePhoto}
+      <input
+        hidden
+        multiple
+        onChange={addFiles}
+        ref={ref}
+        type={InputEnum.File}
+      />
+    </Button>
+  ) : (
     <Button component={ComponentEnum.Label} sx={sx.button} variant={variant}>
       {isImages && <CloudUploadIcon sx={styles.icon} />}
       {buttonText}
       {icon}
-      <input hidden multiple onChange={addFiles} type={InputEnum.File} />
+      <input
+        hidden
+        multiple
+        onChange={addFiles}
+        ref={ref}
+        type={InputEnum.File}
+      />
     </Button>
   )
 
@@ -103,4 +127,4 @@ const FileUploader: FC<FileUploaderProps> = ({
   )
 }
 
-export default FileUploader
+export default forwardRef(FileUploader)

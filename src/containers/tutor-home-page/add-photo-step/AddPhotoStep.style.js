@@ -23,6 +23,7 @@ export const style = {
     pb: { xs: '16px', sm: '26px', md: '52px' }
   },
   uploadBox: {
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -64,5 +65,14 @@ export const style = {
       maxWidth: '270px',
       overflow: 'auto'
     }
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: '5px',
+    right: '5px',
+    color: 'white',
+    backgroundColor: 'black',
+    borderRadius: '50%',
+    cursor: 'pointer'
   }
 }
