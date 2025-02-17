@@ -9,10 +9,13 @@ import WestIcon from '@mui/icons-material/West'
 
 import AppButton from '~/components/app-button/AppButton'
 import useSteps from '~/hooks/use-steps'
+import { snackbarVariants } from '~/constants'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 import { styles } from '~/components/step-wrapper/StepWrapper.styles'
 
 const StepWrapper = ({ children, steps, data, errors, validateData }) => {
+  const { setAlert } = useSnackBarContext()
   const { activeStep, isLastStep, loading, stepOperation, stepErrors } =
     useSteps({
       steps,
@@ -26,6 +29,14 @@ const StepWrapper = ({ children, steps, data, errors, validateData }) => {
       const { isValidData, newErrors } = validateData()
       setIsValidForm(isValidData)
       setTabError(stepErrors(newErrors))
+
+      if (!isValidData) {
+        setAlert({
+          severity: snackbarVariants.warning,
+          message: 'errorMessages.stepperSubmitWarning',
+          duration: 6000
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLastStep])
