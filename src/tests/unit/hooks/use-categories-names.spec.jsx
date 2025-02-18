@@ -2,13 +2,24 @@ import { vi } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import useCategoriesNames from '~/hooks/use-categories-names'
 import { categoryService } from '~/services/category-service'
+import { defaultResponses } from '~/constants'
 
 vi.mock('~/services/category-service')
 
-const mockCategoriesNames = [
-  { _id: '1', name: 'Category 1' },
-  { _id: '2', name: 'Category 2' }
-]
+const mockCategoriesNames = {
+  data: [
+    { _id: '1', name: 'Category 1' },
+    { _id: '2', name: 'Category 2' }
+  ],
+  pagination: {
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 2,
+    itemsPerPage: 10,
+    hasNextPage: false,
+    hasPrevPage: false
+  }
+}
 
 const mockError = {
   status: 404,
@@ -25,11 +36,10 @@ describe('useCategoriesNames', () => {
     const { result } = renderHook(() => useCategoriesNames())
 
     expect(result.current.loading).toBe(true)
-    expect(result.current.response).toEqual([])
+    expect(result.current.response).toEqual(defaultResponses.itemsWithCount)
 
-    waitFor(() => {
-      expect(categoryService.getCategoriesNames).toHaveBeenCalled()
-
+    await waitFor(() => {
+      expect(categoryService.getCategoriesNames).toHaveBeenCalledWith(1, 10)
       expect(result.current.loading).toBe(false)
       expect(result.current.response).toEqual(mockCategoriesNames)
     })
@@ -43,13 +53,12 @@ describe('useCategoriesNames', () => {
     const { result } = renderHook(() => useCategoriesNames())
 
     expect(result.current.loading).toBe(true)
-    expect(result.current.response).toEqual([])
+    expect(result.current.response).toEqual(defaultResponses.itemsWithCount)
 
-    waitFor(() => {
-      expect(categoryService.getCategoriesNames).toHaveBeenCalled()
-
+    await waitFor(() => {
+      expect(categoryService.getCategoriesNames).toHaveBeenCalledWith(1, 10)
       expect(result.current.loading).toBe(false)
-      expect(result.current.error).toBe(mockError)
+      expect(result.current.error).toEqual(mockError)
     })
   })
 })
