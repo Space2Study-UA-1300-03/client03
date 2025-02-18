@@ -7,10 +7,20 @@ import {
   UserRoleEnum
 } from '~/types'
 
-export interface ItemsWithCount<T> {
-  count: number
-  items: T[]
+export interface Pagination {
+  currentPage: number
+  totalPages: number
+  totalItems: number
+  itemsPerPage: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
 }
+
+export interface ItemsWithCount<T> {
+  data: T[]
+  pagination: Pagination
+}
+
 export interface CommonEntityFields {
   _id: string
   createdAt: Date

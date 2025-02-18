@@ -1,42 +1,39 @@
 import { useCallback } from 'react'
-import { defaultResponses } from '~/constants'
-
 import useAxios from '~/hooks/use-axios'
+import { defaultResponses } from '~/constants'
 import { subjectService } from '~/services/subject-service'
-import { ErrorResponse, SubjectNameInterface } from '~/types'
+import { ErrorResponse, ItemsWithCount, SubjectNameInterface } from '~/types'
 
-interface UseSubjectsNamesProps<T> {
+interface UseSubjectsNamesProps {
   category: string | null
+  page?: number
+  limit?: number
   fetchOnMount?: boolean
-  transform?: (data: SubjectNameInterface[]) => T[]
 }
 
-interface UseSubjectsNamesResult<T> {
+interface UseSubjectsNamesResult {
   loading: boolean
-  response: T[]
+  response: ItemsWithCount<SubjectNameInterface>
   fetchData: () => Promise<void>
   error: ErrorResponse | null
 }
 
-const useSubjectsNames = <T = SubjectNameInterface,>({
+const useSubjectsNames = ({
   category,
-  fetchOnMount = true,
-  transform
-}: UseSubjectsNamesProps<T>): UseSubjectsNamesResult<T> => {
-  const getSubjectsNames = useCallback(
-    () => subjectService.getSubjectsNames(category),
-    [category]
-  )
+  page = 1,
+  limit = 10,
+  fetchOnMount = true
+}: UseSubjectsNamesProps): UseSubjectsNamesResult => {
+  const getSubjectsNames = useCallback(() => {
+    return subjectService.getSubjectsNames(category, page, limit)
+  }, [category, page, limit])
 
   const { loading, response, fetchData, error } = useAxios<
-    SubjectNameInterface[],
-    undefined,
-    T[]
+    ItemsWithCount<SubjectNameInterface>
   >({
     service: getSubjectsNames,
     fetchOnMount,
-    defaultResponse: defaultResponses.array,
-    transform
+    defaultResponse: defaultResponses.itemsWithCount
   })
 
   return { loading, response, fetchData, error }
