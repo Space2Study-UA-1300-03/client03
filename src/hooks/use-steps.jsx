@@ -5,18 +5,37 @@ import { useModalContext } from '~/context/modal-context'
 import { useSnackBarContext } from '~/context/snackbar-context'
 import { userService } from '~/services/user-service'
 import { snackbarVariants } from '~/constants'
+import { tabMap } from '~/components/user-steps-wrapper/constants'
 
 const useSteps = ({ steps, data }) => {
   const [activeStep, setActiveStep] = useState(0)
   const { closeModal } = useModalContext()
   const { setAlert } = useSnackBarContext()
+  const isLastStep = activeStep === steps.length - 1
 
   const updateUser = (params) => {
     const { userInfo, formData } = params
-    return Promise.all([
-      userService.updateUser(userInfo),
-      userService.updateUserPhoto(formData)
-    ])
+    const requests = [userService.updateUser(userInfo)]
+
+    if (formData) requests.push(userService.updateUserPhoto(formData))
+    return Promise.all(requests)
+  }
+
+  const stepErrors = (errors) => {
+    if (!errors) return []
+    const result = {}
+
+    Object.keys(errors).forEach((field) => {
+      const tab = Object.keys(tabMap).find((key) => tabMap[key].includes(field))
+      if (tab) {
+        result[tab] = result[tab] || []
+        result[tab].push(errors[field])
+      }
+    })
+
+    return Object.keys(tabMap).map((tab) => {
+      return result[tab] && result[tab].some((error) => error)
+    })
   }
 
   const handleResponseError = (error) => {
@@ -42,11 +61,6 @@ const useSteps = ({ steps, data }) => {
     onResponseError: handleResponseError
   })
 
-  // const stepErrors = Object.values(data).map(
-  //   (data) =>
-  //     data && data.errors && Object.values(data.errors).find((error) => error)
-  // )
-
   const next = () => {
     setActiveStep((prev) => prev + 1)
   }
@@ -54,8 +68,6 @@ const useSteps = ({ steps, data }) => {
   const back = () => {
     setActiveStep((prev) => prev - 1)
   }
-
-  const isLastStep = activeStep === steps.length - 1
 
   const handleSubmit = () => {
     const {
@@ -65,14 +77,16 @@ const useSteps = ({ steps, data }) => {
       city,
       professionalSummary,
       languages,
-      photoFile = [],
+      photoFile,
       interests
     } = data
+    const hasPhoto = photoFile && photoFile.length > 0
+    let formData
 
-    // const hasErrors = stepErrors.find((error) => error)
-
-    const formData = new FormData()
-    formData.append('photo', photoFile[0])
+    if (hasPhoto) {
+      formData = new FormData()
+      formData.append('photo', photoFile[0])
+    }
 
     const userInfo = {
       firstName,
@@ -85,7 +99,6 @@ const useSteps = ({ steps, data }) => {
     }
 
     fetchData({ userInfo, formData })
-    // !hasErrors && fetchData(data, formData)
   }
 
   const stepOperation = {
@@ -95,8 +108,7 @@ const useSteps = ({ steps, data }) => {
     setActiveStep
   }
 
-  return { activeStep, isLastStep, stepOperation, loading }
-  // return { activeStep, stepErrors, isLastStep, stepOperation, loading }
+  return { activeStep, isLastStep, stepOperation, loading, stepErrors }
 }
 
 export default useSteps

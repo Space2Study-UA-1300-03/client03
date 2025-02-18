@@ -64,9 +64,16 @@ const renderWithStore = (children) => {
 }
 
 describe('StepWrapper test', () => {
+  let validateDataMock
+
   beforeEach(() => {
+    validateDataMock = vi.fn().mockReturnValue({
+      isValidData: true,
+      newErrors: {}
+    })
+
     renderWithStore(
-      <StepWrapper data={{}} steps={stepsMock}>
+      <StepWrapper data={{}} steps={stepsMock} validateData={validateDataMock}>
         {childrenArrMock}
       </StepWrapper>
     )
@@ -90,8 +97,7 @@ describe('StepWrapper test', () => {
     await userEvent.click(nextBtn)
 
     const finishBtn = screen.getByText(/Finish/i)
-    await userEvent.click(finishBtn)
-    expect(vi.fn()).not.toHaveBeenCalled()
+    expect(finishBtn).toBeInTheDocument()
   })
 
   it('should render first children after click on next and back button', async () => {

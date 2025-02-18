@@ -1,4 +1,4 @@
-import { cloneElement } from 'react'
+import { cloneElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Container from '@mui/material/Container'
@@ -9,24 +9,55 @@ import WestIcon from '@mui/icons-material/West'
 
 import AppButton from '~/components/app-button/AppButton'
 import useSteps from '~/hooks/use-steps'
+import { snackbarVariants } from '~/constants'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 import { styles } from '~/components/step-wrapper/StepWrapper.styles'
 
-const StepWrapper = ({ children, steps, data }) => {
-  const { activeStep, isLastStep, loading, stepOperation } = useSteps({
-    steps,
-    data
-  })
+const StepWrapper = ({ children, steps, data, errors, validateData }) => {
+  const { setAlert } = useSnackBarContext()
+  const { activeStep, isLastStep, loading, stepOperation, stepErrors } =
+    useSteps({
+      steps,
+      data
+    })
+  const [tabError, setTabError] = useState([])
+  const [isValidForm, setIsValidForm] = useState(false)
+
+  useEffect(() => {
+    if (isLastStep) {
+      const { isValidData, newErrors } = validateData()
+      setIsValidForm(isValidData)
+      setTabError(stepErrors(newErrors))
+
+      if (!isValidData) {
+        setAlert({
+          severity: snackbarVariants.warning,
+          message: 'errorMessages.stepperSubmitWarning',
+          duration: 6000
+        })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLastStep])
+
+  useEffect(() => {
+    setTabError(stepErrors(errors))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors])
 
   const { next, back, setActiveStep, handleSubmit } = stepOperation
   const { t } = useTranslation()
 
   const stepLabels = steps.map((step, index) => (
     <Box
-      // color={stepErrors[index] ? 'error.500' : 'primary.500'}
       key={step}
       onClick={() => setActiveStep(index)}
-      sx={[styles.defaultTab, index === activeStep && styles.activeTab]}
+      sx={[
+        styles.defaultTab,
+        index === activeStep && styles.activeTab,
+        tabError[index] && styles.error
+      ]}
       typography='caption'
     >
       {t(`step.stepLabels.${step}`)}
@@ -35,7 +66,7 @@ const StepWrapper = ({ children, steps, data }) => {
 
   const nextButton = isLastStep ? (
     <AppButton
-      disabled={loading}
+      disabled={loading || !isValidForm}
       loading={loading}
       onClick={handleSubmit}
       size='small'
