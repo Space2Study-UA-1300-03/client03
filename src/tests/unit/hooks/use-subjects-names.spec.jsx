@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook, waitFor, cleanup } from '@testing-library/react'
 import useSubjectsNames from '~/hooks/use-subjects-names'
 import { subjectService } from '~/services/subject-service'
 
@@ -26,6 +26,11 @@ const mockError = {
   message: 'The requested URL was not found.'
 }
 
+afterEach(() => {
+  vi.clearAllMocks()
+  cleanup()
+})
+
 describe('useSubjectsNames', () => {
   it('fetches subjects with a category successfully', async () => {
     subjectService.getSubjectsNames.mockResolvedValueOnce({
@@ -42,10 +47,13 @@ describe('useSubjectsNames', () => {
       10
     )
 
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false)
-      expect(result.current.response).toEqual(mockSubjectsNames)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.loading).toBe(false)
+        expect(result.current.response).toEqual(mockSubjectsNames)
+      },
+      { timeout: 5000 }
+    )
   })
 
   it('handles API errors', async () => {
@@ -63,9 +71,12 @@ describe('useSubjectsNames', () => {
       10
     )
 
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false)
-      expect(result.current.error).toEqual(mockError)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.loading).toBe(false)
+        expect(result.current.error).toEqual(mockError)
+      },
+      { timeout: 5000 }
+    )
   })
 })

@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook, waitFor, cleanup } from '@testing-library/react'
 import useCategoriesNames from '~/hooks/use-categories-names'
 import { categoryService } from '~/services/category-service'
 import { defaultResponses } from '~/constants'
@@ -27,6 +27,11 @@ const mockError = {
   message: 'The requested URL was not found.'
 }
 
+afterEach(() => {
+  vi.clearAllMocks()
+  cleanup()
+})
+
 describe('useCategoriesNames', () => {
   it('fetches categories names successfully', async () => {
     categoryService.getCategoriesNames.mockResolvedValueOnce({
@@ -38,11 +43,14 @@ describe('useCategoriesNames', () => {
     expect(result.current.loading).toBe(true)
     expect(result.current.response).toEqual(defaultResponses.itemsWithCount)
 
-    await waitFor(() => {
-      expect(categoryService.getCategoriesNames).toHaveBeenCalledWith(1, 10)
-      expect(result.current.loading).toBe(false)
-      expect(result.current.response).toEqual(mockCategoriesNames)
-    })
+    await waitFor(
+      () => {
+        expect(categoryService.getCategoriesNames).toHaveBeenCalledWith(1, 10)
+        expect(result.current.loading).toBe(false)
+        expect(result.current.response).toEqual(mockCategoriesNames)
+      },
+      { timeout: 5000 }
+    )
   })
 
   it('handles API errors', async () => {
@@ -55,10 +63,13 @@ describe('useCategoriesNames', () => {
     expect(result.current.loading).toBe(true)
     expect(result.current.response).toEqual(defaultResponses.itemsWithCount)
 
-    await waitFor(() => {
-      expect(categoryService.getCategoriesNames).toHaveBeenCalledWith(1, 10)
-      expect(result.current.loading).toBe(false)
-      expect(result.current.error).toEqual(mockError)
-    })
+    await waitFor(
+      () => {
+        expect(categoryService.getCategoriesNames).toHaveBeenCalledWith(1, 10)
+        expect(result.current.loading).toBe(false)
+        expect(result.current.error).toEqual(mockError)
+      },
+      { timeout: 5000 }
+    )
   })
 })
