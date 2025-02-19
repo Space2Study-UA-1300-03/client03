@@ -31,5 +31,16 @@
       "title": "Receive Feedbacks",
       "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
     }
+  },
+  "faq": {
+    "subtitle": "Everything you need to know about tutoring journey in Space2Study as a tutor",
+    "findStudent": "How to find a student",
+    "findStudentDescription": "Finding the best student can ensure a smooth tutoring experience. Start by posting detailed offers specifying your expertise, subjects, and availability. You can also review student requests and respond to suitable ones.",
+    "tutorProfile": "How to fill out a tutor’s profile",
+    "tutorProfileDescription": "Ensure your profile is complete with accurate details about your qualifications, experience, and teaching style. A well-filled profile increases your chances of attracting students.",
+    "rules": "Rules for tutors",
+    "rulesDescription": "Tutors must ensure they provide accurate information and conduct lessons professionally. They must not distribute student-provided materials or engage in unethical behavior.",
+    "howPayLessons": "How you can be paid for lessons",
+    "howPayLessonsDescription": "Tutors receive payments directly from students based on agreed-upon terms. The Space2Study platform does not impose commissions on approved collaborations."
   }
 }

@@ -6,6 +6,7 @@ import { useModalContext } from '~/context/modal-context'
 import UserStepsWrapper from '~/components/user-steps-wrapper/UserStepsWrapper'
 import PageWrapper from '~/components/page-wrapper/PageWrapper'
 import FindBlock from '~/components/find-block/FindBlock'
+import Faq from '~/containers/faq/Faq'
 
 import { styles } from '~/pages/tutor-home/TutorHome.styles'
 import { translationKey } from '~/components/find-block/find-student-constants'
@@ -30,6 +31,7 @@ const TutorHome = () => {
     <PageWrapper data-testid='tutorHome'>
       <FindBlock translationKey={translationKey} />
       <UserHowItWorks userRole={userRole} />
+      <Faq userRole={userRole} />
     </PageWrapper>
   )
 }

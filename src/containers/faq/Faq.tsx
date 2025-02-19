@@ -6,13 +6,13 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'
 import Accordions from '~/components/accordion/Accordions'
-import { accordionItems } from './accordionItems'
+import { accordionStudentItems, accordionTutorItems } from './accordionItems'
 
 import { TypographyVariantEnum } from '~/types'
 import { studentRoutes } from '~/router/constants/studentRoutes'
-import { styles } from '~/containers/student-home-page/faq/Faq.styles'
+import { styles } from '~/containers/faq/Faq.styles'
 
-const Faq = () => {
+const Faq = ({ userRole }) => {
   const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState<number | number[] | null>(null)
 
@@ -30,6 +30,16 @@ const Faq = () => {
     })
   }
 
+  console.log(userRole)
+
+  const accordionItems =
+    userRole === 'student' ? accordionStudentItems : accordionTutorItems
+
+  const subtitle =
+    userRole === 'student'
+      ? t('studentHomePage.faq.subtitle')
+      : t('tutorHomePage.faq.subtitle')
+
   return (
     <Box
       className='section'
@@ -37,7 +47,7 @@ const Faq = () => {
       sx={styles.container}
     >
       <TitleWithDescription
-        description={t('studentHomePage.faq.subtitle')}
+        description={subtitle}
         style={styles.titleWithDescription}
         title={t('studentHomePage.faq.title')}
       />
