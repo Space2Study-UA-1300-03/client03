@@ -3,50 +3,57 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 
-import useAxios from '~/hooks/use-axios'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
 import AppButton from '~/components/app-button/AppButton'
-import { categoryService } from '~/services/category-service'
-import { subjectService } from '~/services/subject-service'
+import useCategoriesNames from '~/hooks/use-categories-names'
+import useSubjectsNames from '~/hooks/use-subjects-names'
 import { styles } from '~/containers/tutor-home-page/subjects-step/SubjectsStep.styles'
 import img from '~/assets/img/tutor-home-page/become-tutor/study-category.svg'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
   const { t } = useTranslation()
+  const { setAlert } = useSnackBarContext()
+
   const [subject, setSubject] = useState({ category: null, subject: null })
   const [listOfSubjects, setListOfSubjects] = useState(data.interests)
 
-  const sameSubjectError = useMemo(() => {
-    if (!Object.keys(listOfSubjects).length) return false
-    const presentListSubjects = Object.values(listOfSubjects).flat()
-    return (
-      subject?.subject?.subjectName &&
-      presentListSubjects.includes(subject.subject.subjectName)
-    )
-  }, [subject?.subject?.subjectName, listOfSubjects])
-
-  const { response: categories, loading: loadingCategories } = useAxios({
-    service: categoryService.getCategoriesNames,
-    defaultResponse: [],
+  const {
+    response: categories,
+    loading: loadingCategories,
+    error: categoriesError
+  } = useCategoriesNames({
+    page: 1,
+    limit: 1000,
     fetchOnMount: true
   })
 
   const {
     response: subjects,
     loading: loadingSubjects,
-    fetchData: fetchSubjects
-  } = useAxios({
-    service: subjectService.getSubjectsNames,
-    defaultResponse: [],
+    fetchData: fetchSubjects,
+    error: subjectsError
+  } = useSubjectsNames({
+    category: subject.category ? subject.category._id : null,
+    page: 1,
+    limit: 1000,
     fetchOnMount: false
   })
 
   useEffect(() => {
     if (subject.category) {
-      fetchSubjects(subject.category._id)
+      fetchSubjects()
     }
   }, [subject.category, fetchSubjects])
+
+  const sameSubjectError = useMemo(() => {
+    const presentListSubjects = Object.values(listOfSubjects).flat()
+    return (
+      subject?.subject?.subjectName &&
+      presentListSubjects.includes(subject.subject.subjectName)
+    )
+  }, [subject, listOfSubjects])
 
   const onChangeCategory = (_, value) => {
     setSubject({ category: value, subject: null })
@@ -58,43 +65,49 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
 
   const addSubject = () => {
     if (!sameSubjectError && subject.subject) {
-      setListOfSubjects((prevData) => {
-        const updatedInterests = { ...prevData }
-        const categoryKey = subject.category.categoryName.replace(/\s+/g, '-')
-        if (!updatedInterests[categoryKey]) {
-          updatedInterests[categoryKey] = []
-        }
-        updatedInterests[categoryKey].push(subject.subject.subjectName)
+      const updatedInterests = { ...listOfSubjects }
+      const categoryKey = subject.category.categoryName.replace(/\s+/g, '-')
+      updatedInterests[categoryKey] = updatedInterests[categoryKey] || []
+      updatedInterests[categoryKey].push(subject.subject.subjectName)
 
-        handleSubjectChange('interests', updatedInterests)
-        return updatedInterests
-      })
-
+      handleSubjectChange('interests', updatedInterests)
+      setListOfSubjects(updatedInterests)
       setSubject({ category: null, subject: null })
     }
   }
 
   const handleChipDelete = (item) => {
-    setListOfSubjects((prevData) => {
-      const updatedInterests = { ...prevData }
-      const categoryWithItem = Object.entries(updatedInterests).find(
-        ([, subjects]) => {
-          return subjects.includes(item)
-        }
-      )
+    const updatedInterests = { ...listOfSubjects }
+    const categoryWithItem = Object.entries(updatedInterests).find(
+      ([, subjects]) => subjects.includes(item)
+    )
+    if (categoryWithItem) {
       const [category, subjects] = categoryWithItem
-
       updatedInterests[category] = subjects.filter(
         (subject) => subject !== item
       )
       if (updatedInterests[category].length === 0) {
         delete updatedInterests[category]
       }
-
       handleSubjectChange('interests', updatedInterests)
-      return updatedInterests
-    })
+      setListOfSubjects(updatedInterests)
+    }
   }
+
+  useEffect(() => {
+    if (categoriesError) {
+      setAlert({
+        severity: 'error',
+        message: 'error.categoriesLoad'
+      })
+    }
+    if (subjectsError) {
+      setAlert({
+        severity: 'error',
+        message: 'error.subjectsLoad'
+      })
+    }
+  }, [categoriesError, subjectsError, setAlert])
 
   return (
     <Box sx={styles.container}>
@@ -108,7 +121,7 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
             getOptionLabel={(option) => option.categoryName ?? option}
             loading={loadingCategories}
             onChange={onChangeCategory}
-            options={categories}
+            options={categories.data || []}
             sx={{ mb: 2 }}
             textFieldProps={{
               label: t('becomeTutor.categories.mainSubjectsLabel')
@@ -120,7 +133,7 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
             getOptionLabel={(option) => option.subjectName ?? option}
             loading={loadingSubjects}
             onChange={onChangeSubject}
-            options={subjects}
+            options={subjects.data || []}
             sx={{ mb: 2 }}
             textFieldProps={{ label: t('becomeTutor.categories.subjectLabel') }}
             value={subject.subject}
