@@ -10,6 +10,7 @@ import { style } from './UserHowItWorks.styles'
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'
 import HowItWorksBlock from './UserHowItWorksBlock'
 import { ButtonVariantEnum, SizeEnum } from '~/types'
+import { guestRoutes } from '~/router/constants/guestRoutes'
 
 const UserHowItWorks = ({ userRole }) => {
   const { t } = useTranslation()
@@ -32,7 +33,7 @@ const UserHowItWorks = ({ userRole }) => {
   })
 
   return (
-    <Box sx={style.root}>
+    <Box id={guestRoutes.navBar.howItWorks.route} sx={style.root}>
       <TitleWithDescription
         description={t(`${translation}.howItWorks.description`)}
         style={style.mainTitleWithDescription}
