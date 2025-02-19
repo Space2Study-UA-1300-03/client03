@@ -16,24 +16,28 @@ const useLoadMore = <Data, Params>({
   limit,
   params
 }: UseLoadMoreProps<Data, Params>) => {
-  const [skip, setSkip] = useState<number>(0)
+  const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<Data[]>([])
   const [previousLimit, setPreviousLimit] = useState<number>(limit)
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true)
 
   let isFetched = false
 
-  const loadMore = useCallback(
-    () => setSkip((prevState) => prevState + limit),
-    [limit]
-  )
+  const loadMore = useCallback(() => {
+    if (hasNextPage) {
+      setPage((prevPage) => prevPage + 1)
+    }
+  }, [hasNextPage])
 
   const handleResponse = useCallback((responseData: ItemsWithCount<Data>) => {
-    setData((prevState) => [...prevState, ...responseData.items])
+    setData((prevState) => [...prevState, ...responseData.data])
+    setHasNextPage(responseData.pagination?.hasNextPage ?? false)
   }, [])
 
   const resetData = useCallback(() => {
-    setSkip(0)
+    setPage(1)
     setData([])
+    setHasNextPage(true)
   }, [])
 
   const { response, loading, fetchData } = useAxios<
@@ -48,7 +52,7 @@ const useLoadMore = <Data, Params>({
 
   useLayoutEffect(() => {
     if (previousLimit === limit && !isFetched) {
-      void fetchData({ ...params, limit, skip } as Params)
+      void fetchData({ ...params, limit, page } as Params)
     } else {
       resetData()
       setPreviousLimit(limit)
@@ -58,12 +62,11 @@ const useLoadMore = <Data, Params>({
       // eslint-disable-next-line react-hooks/exhaustive-deps
       isFetched = true
     }
-  }, [fetchData, limit, previousLimit, resetData, skip, params])
+  }, [fetchData, limit, previousLimit, resetData, page, params])
 
-  const isExpandable = useMemo(
-    () => data.length < response.count && data.length > 0,
-    [data, response]
-  )
+  const isExpandable = useMemo(() => hasNextPage, [hasNextPage])
+
+  console.log(response, 'response')
 
   return {
     data,
