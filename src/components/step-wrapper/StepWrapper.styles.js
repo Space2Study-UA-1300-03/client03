@@ -54,5 +54,9 @@ export const styles = {
   finishBtn: {
     ...btnStyle,
     minWidth: '96px'
+  },
+  error: {
+    color: 'error.500',
+    borderColor: { sm: 'error.500' }
   }
 }

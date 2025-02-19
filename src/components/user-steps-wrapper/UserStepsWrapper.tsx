@@ -58,7 +58,8 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
     data,
     handleDataChange,
     errors,
-    isDirty
+    isDirty,
+    validateData
   } = useForm({
     dirtyOnChange: true,
     initialValues: initialValues,
@@ -108,7 +109,12 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
 
   return (
     <Box component='form'>
-      <StepWrapper data={data} steps={stepLabels}>
+      <StepWrapper
+        data={data}
+        errors={errors}
+        steps={stepLabels}
+        validateData={validateData}
+      >
         {childrenArr}
       </StepWrapper>
     </Box>

@@ -19,7 +19,17 @@ export const snackbarVariants: { [key: string]: AlertColor } = {
 export const defaultResponses = {
   array: [],
   object: {},
-  itemsWithCount: { count: 0, items: [] }
+  itemsWithCount: {
+    data: [],
+    pagination: {
+      currentPage: 1,
+      totalPages: 1,
+      totalItems: 0,
+      itemsPerPage: 10,
+      hasNextPage: false,
+      hasPrevPage: false
+    }
+  }
 }
 
 export const itemsLoadLimit = {

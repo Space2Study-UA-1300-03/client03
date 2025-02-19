@@ -12,6 +12,7 @@ interface UseFormProps<T> {
   onSubmit?: (data?: T) => Promise<void>
   submitWithData?: boolean
   dirtyOnChange?: boolean
+  validateData?: { isValid: boolean; newErrors: { [K in keyof T]: string } }
 }
 
 interface UseFormOutput<T> {
@@ -31,6 +32,7 @@ interface UseFormOutput<T> {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   resetData: (keys?: (keyof T)[]) => void
   handleDataChange: <K extends object>(newData: K) => void
+  validateData: () => void
 }
 
 export const useForm = <T extends object>({
@@ -124,24 +126,36 @@ export const useForm = <T extends object>({
       }))
     }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    let isValid = true
-    const submittedData = submitWithData !== false ? data : undefined
+  const validateData = () => {
+    let isValidData = true
     const newErrors = { ...errors }
 
-    if (validations) {
-      for (const key in validations) {
-        const value = data[key]
-        const validation = validateValue(key, value)
-        if (validation) {
-          isValid = false
-          newErrors[key] = validation
-        }
+    for (const key in validations) {
+      const value = data[key]
+      const validation = validateValue(key, value)
+      if (validation) {
+        isValidData = false
+        newErrors[key] = validation
       }
     }
 
-    isValid ? onSubmit && void onSubmit(submittedData) : setErrors(newErrors)
+    setErrors(newErrors)
+    return { isValidData, newErrors }
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const submittedData = submitWithData !== false ? data : undefined
+    let isValidForm = true
+
+    if (validations) {
+      const { isValidData } = validateData()
+      isValidForm = isValidData
+    }
+
+    if (isValidForm) {
+      onSubmit && void onSubmit(submittedData)
+    }
   }
 
   const resetData = (keys: (keyof T)[] = []) => {
@@ -188,7 +202,8 @@ export const useForm = <T extends object>({
     handleBlur,
     handleErrors,
     handleSubmit,
-    resetData
+    resetData,
+    validateData
   }
 }
 

@@ -1,5 +1,31 @@
 {
   "createOffer": {
+    "labels": {
+      "title": "Create a brief title for your offer",
+      "describe": "Describe your offer",
+      "category": "Category",
+      "subject": "Subject",
+      "language": "Tutoring languages",
+      "price": "Set the offer value per lesson",
+      "question": "Insert Question",
+      "answer": "Insert Answer",
+      "selectCourse": "Select a course",
+      "linkCourse": "Link your created course to the offer"
+    },
+    "placeholders": {
+      "title": "Enter the title of your offer",
+      "describe": "Describe your tutoring service, your teaching style, and your expertise",
+      "category": "Select a category",
+      "subject": "Select a subject",
+      "language": "Select languages you're comfortable tutoring in",
+      "price": "Set the price per lesson",
+      "question": "Enter the FAQ question",
+      "answer": "Enter the FAQ answer",
+      "min": "Min",
+      "max": "Max"
+    },
+    "addFAQ": "Add one more question",
+    "addToDrafts": "Add to Drafts",
     "title": {
       "tutor": "Create a New Offer",
       "student": "Create a New Request"
@@ -32,11 +58,11 @@
   "title": {
     "firstStep": {
       "tutor": "Pick Your Specialization",
-      "student": "Describe Your Needs"
+      "student": "Describe Your Learning Needs"
     },
     "secondStep": {
       "tutor": "Teaching parameters",
-      "student": "Preferred Parameters"
+      "student": "Preferred Teaching Parameters"
     },
     "thirdStep": "Frequently asked questions"
   },
@@ -80,7 +106,8 @@
     "language": "Language",
     "title": "Title",
     "question": "Insert Question",
-    "answer": "Insert Answer"
+    "answer": "Insert Answer",
+    "selectCourse": "Select a course"
   },
   "errorMessages": {
     "languages": "Please select at least one language.",
