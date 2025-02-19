@@ -16,6 +16,24 @@ vi.mock('~/context/step-context', () => ({
   StepProvider: ({ children }) => <div>{children}</div>
 }))
 
+vi.mock('~/context/modal-context', () => ({
+  useModalContext: () => ({
+    closeModal: vi.fn(),
+    registerEvent: vi.fn(),
+    unregisterEvent: vi.fn()
+  }),
+  CLOSE_EVENT_KEY: 'CLOSE_EVENT_KEY'
+}))
+
+vi.mock('~/hooks/use-confirm', () => ({
+  __esModule: true,
+  default: () => ({
+    checkConfirmation: vi.fn(),
+    setNeedConfirmation: vi.fn(),
+    openDialog: vi.fn()
+  })
+}))
+
 vi.mock(
   '~/containers/tutor-home-page/general-info-step/GeneralInfoStep',
   () => ({

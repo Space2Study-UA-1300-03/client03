@@ -1,8 +1,10 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
+import { useTranslation } from 'react-i18next'
 
 import { useAppDispatch } from '~/hooks/use-redux'
 import useForm from '~/hooks/use-form'
+import useConfirm from '~/hooks/use-confirm'
 
 import { markFirstLoginComplete } from '~/redux/reducer'
 
@@ -10,6 +12,7 @@ import GeneralInfoStep from '~/containers/tutor-home-page/general-info-step/Gene
 import AddPhotoStep from '~/containers/tutor-home-page/add-photo-step/AddPhotoStep'
 import SubjectsStep from '~/containers/tutor-home-page/subjects-step/SubjectsStep'
 import LanguageStep from '~/containers/tutor-home-page/language-step/LanguageStep'
+import { useModalContext, CLOSE_EVENT_KEY } from '~/context/modal-context'
 
 import StepWrapper from '~/components/step-wrapper/StepWrapper'
 
@@ -29,6 +32,24 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
   const stepLabels = userRole === student ? studentStepLabels : tutorStepLabels
   const [isUserFetched, setIsUserFetched] = useState(false)
   const dispatch = useAppDispatch()
+  const { closeModal, registerEvent, unregisterEvent } = useModalContext()
+  const { openDialog } = useConfirm()
+  const { t } = useTranslation()
+
+  const closeConfirmation = useCallback(
+    (isConfirmed: boolean) => {
+      if (isConfirmed) closeModal(true)
+    },
+    [closeModal]
+  )
+
+  const onClose = useCallback(() => {
+    openDialog({
+      title: t('titles.confirmTitle'),
+      message: t('questions.unsavedChanges'),
+      sendConfirm: (isConfirmed) => closeConfirmation(isConfirmed)
+    })
+  }, [openDialog, t, closeConfirmation])
 
   const {
     handleInputChange,
@@ -37,12 +58,24 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
     data,
     handleDataChange,
     errors,
+    isDirty,
     validateData
   } = useForm({
     dirtyOnChange: true,
     initialValues: initialValues,
     validations: validations
   })
+
+  useEffect(() => {
+    registerEvent(CLOSE_EVENT_KEY, () => {
+      if (isDirty) return onClose()
+      return true
+    })
+
+    return () => {
+      unregisterEvent(CLOSE_EVENT_KEY)
+    }
+  }, [isDirty, registerEvent, unregisterEvent, onClose])
 
   useEffect(() => {
     dispatch(markFirstLoginComplete())

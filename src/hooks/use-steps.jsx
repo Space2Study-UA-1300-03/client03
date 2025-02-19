@@ -50,7 +50,7 @@ const useSteps = ({ steps, data }) => {
       severity: snackbarVariants.success,
       message: 'becomeTutor.successMessage'
     })
-    closeModal()
+    closeModal(true)
   }
 
   const { loading, fetchData } = useAxios({
