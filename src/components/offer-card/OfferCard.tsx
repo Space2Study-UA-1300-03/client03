@@ -3,21 +3,8 @@ import { FC } from 'react'
 import { styles } from '~/components/offer-card/OfferCard.styles'
 import AppOfferButtons from './AppOfferButtons'
 import TutorRating from './TutorRating'
-import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import SaveFavoriteButton from './SaveFavoriteButton'
-
-interface OfferCardProps {
-  avatar?: string
-  rating?: number
-  author: string
-  subjects?: string[]
-  proficiencyLevel: string[]
-  price?: string | number
-  languages?: string[]
-  reviews: number
-  title: string
-  description: string
-}
+import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
 
 const OfferCard: FC<OfferCardProps> = ({
   avatar,
@@ -28,7 +15,8 @@ const OfferCard: FC<OfferCardProps> = ({
   languages,
   reviews,
   title,
-  description
+  description,
+  rating
 }) => {
   return (
     <Box sx={styles.offerCard}>
@@ -39,7 +27,7 @@ const OfferCard: FC<OfferCardProps> = ({
           sx={{ minWidth: '80px', minHeight: '80px' }}
         />
         <Typography sx={styles.author}> {author} </Typography>
-        <TutorRating />
+        <TutorRating rating={rating} />
         <Typography sx={styles.reviews}> {`${reviews} reviews`} </Typography>
       </Box>
       <Box sx={styles.cardDetails}>
@@ -77,13 +65,20 @@ const OfferCard: FC<OfferCardProps> = ({
             )
           })}
         </Stack>
-        <Typography sx={styles.description}> {description} </Typography>
+        <Typography
+          overflow='hidden'
+          sx={styles.description}
+          textOverflow='ellipsis'
+          whiteSpace='balance'
+        >
+          {' '}
+          {description}
+        </Typography>
         <Stack direction='row' spacing={1}>
           {languages?.map((item) => {
             return (
               <Chip
                 color='default'
-                icon={<PublicOutlinedIcon />}
                 key={item}
                 label={item}
                 sx={{ color: '#616161' }}

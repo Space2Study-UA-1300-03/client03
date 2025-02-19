@@ -59,7 +59,7 @@ export const styles = {
     gap: '16px',
     justifyContent: 'center',
     alignItems: 'center',
-    maxWidth: '250px'
+    maxwidth: '250px'
   },
   button: {
     p: '7px 24px',

@@ -4,29 +4,18 @@ import { styles } from '~/components/offer-card-square-version/OfferCardSquare.s
 import AppOfferButtonsSquare from './AppOfferButtonsSquare'
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined'
 import StarIcon from '@mui/icons-material/Star'
-
-interface OfferCardProps {
-  avatar?: string
-  rating?: number
-  author: string
-  subjects?: [] | string[]
-  proficiencyLevel: string[]
-  price?: string | number
-  languages?: [] | string[]
-  reviews: number
-  title: string
-}
+import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
 
 const OfferCardSquare: FC<OfferCardProps> = ({
-  avatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  rating = 5,
-  author = 'Jennifer W.',
-  subjects = ['design'],
-  proficiencyLevel = ['beginner', 'advanced'],
-  price = 75,
-  languages = ['Ukrainian', 'English'],
-  reviews = 15,
-  title = 'Advanced Quantum Mechanics: Theoretical Concepts, Mathematical Formulations in Modern Physics'
+  avatar,
+  rating,
+  author,
+  subjects,
+  proficiencyLevel,
+  price,
+  languages,
+  reviews,
+  title
 }) => {
   return (
     <Box sx={styles.offerCardSquare}>
@@ -38,7 +27,14 @@ const OfferCardSquare: FC<OfferCardProps> = ({
         />
         <Box>
           <Typography sx={styles.author}> {author} </Typography>
-          <Stack direction='row' spacing={1}>
+          <Stack
+            direction='row'
+            display='grid'
+            gap='2px'
+            gridTemplateColumns='repeat(2, 1fr)'
+            gridTemplateRows='auto'
+            spacing={1}
+          >
             {languages?.map((item) => {
               return (
                 <Chip

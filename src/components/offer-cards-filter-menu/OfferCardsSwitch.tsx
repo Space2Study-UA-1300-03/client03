@@ -18,7 +18,7 @@ const OfferCardsSwitch: React.FC = () => {
     }
   }
   return (
-    <Box sx={styles.cardSwitch}>
+    <Box sx={styles.switch}>
       <AppContentSwitcher
         active={isTutorOffer}
         onChange={onChange}
