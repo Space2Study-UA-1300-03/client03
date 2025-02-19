@@ -10,9 +10,14 @@ import { accordionStudentItems, accordionTutorItems } from './accordionItems'
 
 import { TypographyVariantEnum } from '~/types'
 import { studentRoutes } from '~/router/constants/studentRoutes'
+import { tutorRoutes } from '~/router/constants/tutorRoutes'
 import { styles } from '~/containers/faq/Faq.styles'
 
-const Faq = ({ userRole }) => {
+type FaqProps = {
+  userRole: 'student' | 'tutor'
+}
+
+const Faq = ({ userRole }: FaqProps) => {
   const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState<number | number[] | null>(null)
 
@@ -30,8 +35,6 @@ const Faq = ({ userRole }) => {
     })
   }
 
-  console.log(userRole)
-
   const accordionItems =
     userRole === 'student' ? accordionStudentItems : accordionTutorItems
 
@@ -40,12 +43,13 @@ const Faq = ({ userRole }) => {
       ? t('studentHomePage.faq.subtitle')
       : t('tutorHomePage.faq.subtitle')
 
+  const route =
+    userRole === 'student'
+      ? studentRoutes.navBar.faq.route
+      : tutorRoutes.navBar.faq.route
+
   return (
-    <Box
-      className='section'
-      id={studentRoutes.navBar.faq.route}
-      sx={styles.container}
-    >
+    <Box className='section' id={route} sx={styles.container}>
       <TitleWithDescription
         description={subtitle}
         style={styles.titleWithDescription}
