@@ -38,14 +38,13 @@ export interface DataByRole<T> {
 }
 
 export interface CategoryInterface extends CommonEntityFields {
-  name: string
+  categoryName: string
   appearance: CategoryAppearance
-  totalOffers: DataByRole<number>
 }
 
 export interface CategoryNameInterface {
   _id: string
-  name: string
+  categoryName: string
 }
 
 export interface SubjectInterface extends CommonEntityFields {
