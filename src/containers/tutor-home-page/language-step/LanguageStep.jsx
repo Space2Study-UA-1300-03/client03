@@ -54,7 +54,7 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
           options={languages?.map((language) => language.name)}
           sx={{ mt: '20px' }}
           textFieldProps={{
-            label: t('becomeTutor.languages.autocompleteLabel')
+            label: t('becomeTutor.languages.autocompleteLabelStudent')
           }}
           value={data?.languages[0] || null}
         />
@@ -74,7 +74,7 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
           options={languages}
           sx={{ mt: '20px' }}
           textFieldProps={{
-            label: t('becomeTutor.languages.autocompleteLabel')
+            label: t('becomeTutor.languages.autocompleteLabelTutor')
           }}
           value={language || null}
         />
