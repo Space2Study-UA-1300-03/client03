@@ -149,12 +149,16 @@ const GeneralInfoStep = ({
               checked={data?.more18Years || false}
               control={<Checkbox />}
               label={
-                <Typography sx={styles.checkboxLabel}>
+                <Typography component='span' sx={styles.checkboxLabel}>
                   {t('common.confirmYears')}
                 </Typography>
               }
               onChange={handleChange('more18Years')}
+              required
             />
+            <Typography sx={styles.requiredField}>
+              {t(errors.more18Years || '')}
+            </Typography>
             <Typography sx={styles.requiredField}>
               {t('becomeTutor.generalInfo.helperText')}
             </Typography>

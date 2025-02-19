@@ -180,10 +180,17 @@ export const useForm = <T extends object>({
       return acc
     }, {} as Partial<T>)
 
-    setData((prev) => ({
-      ...prev,
-      ...filteredNewData
-    }))
+    setData((prev) => {
+      const newData = {
+        ...prev,
+        ...filteredNewData
+      }
+
+      if (dirtyOnChange) {
+        setDirty(!isEqual(newData, initialValues))
+      }
+      return newData
+    })
   }
 
   const isFormValid =

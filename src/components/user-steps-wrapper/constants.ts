@@ -1,4 +1,4 @@
-import { nameField, textField } from '~/utils/validations/common'
+import { nameField, textField, checkboxField } from '~/utils/validations/common'
 
 export const initialValues = {
   firstName: '',
@@ -9,12 +9,14 @@ export const initialValues = {
   interests: {},
   languages: [],
   photo: null,
-  photoFile: null
+  photoFile: null,
+  more18Years: false
 }
 
 export const validations = {
   firstName: nameField,
   lastName: nameField,
+  more18Years: checkboxField,
   professionalSummary: textField(0, 200)
 }
 
