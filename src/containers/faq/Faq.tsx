@@ -6,13 +6,18 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'
 import Accordions from '~/components/accordion/Accordions'
-import { accordionItems } from './accordionItems'
+import { accordionStudentItems, accordionTutorItems } from './accordionItems'
 
 import { TypographyVariantEnum } from '~/types'
 import { studentRoutes } from '~/router/constants/studentRoutes'
-import { styles } from '~/containers/student-home-page/faq/Faq.styles'
+import { tutorRoutes } from '~/router/constants/tutorRoutes'
+import { styles } from '~/containers/faq/Faq.styles'
 
-const Faq = () => {
+type FaqProps = {
+  userRole: 'student' | 'tutor'
+}
+
+const Faq = ({ userRole }: FaqProps) => {
   const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState<number | number[] | null>(null)
 
@@ -30,14 +35,23 @@ const Faq = () => {
     })
   }
 
+  const accordionItems =
+    userRole === 'student' ? accordionStudentItems : accordionTutorItems
+
+  const subtitle =
+    userRole === 'student'
+      ? t('studentHomePage.faq.subtitle')
+      : t('tutorHomePage.faq.subtitle')
+
+  const route =
+    userRole === 'student'
+      ? studentRoutes.navBar.faq.route
+      : tutorRoutes.navBar.faq.route
+
   return (
-    <Box
-      className='section'
-      id={studentRoutes.navBar.faq.route}
-      sx={styles.container}
-    >
+    <Box className='section' id={route} sx={styles.container}>
       <TitleWithDescription
-        description={t('studentHomePage.faq.subtitle')}
+        description={subtitle}
         style={styles.titleWithDescription}
         title={t('studentHomePage.faq.title')}
       />
