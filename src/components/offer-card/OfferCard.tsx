@@ -10,10 +10,10 @@ interface OfferCardProps {
   avatar?: string
   rating?: number
   author: string
-  subjects?: [] | string[]
+  subjects?: string[]
   proficiencyLevel: string[]
   price?: string | number
-  languages?: [] | string[]
+  languages?: string[]
   reviews: number
   title: string
   description: string

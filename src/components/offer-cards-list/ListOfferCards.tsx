@@ -6,7 +6,7 @@ const offerDataMock = [
     id: '1',
     avatar:
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: [1, 5, 3, 2],
+    rating: 4,
     author: 'Jennifer W.',
     subjects: ['design'],
     proficiencyLevel: ['beginner'],
@@ -22,8 +22,8 @@ const offerDataMock = [
     id: '2',
     avatar:
       'https://images.unsplash.com/photo-1699107769235-902ff97e93f3?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: [1, 5, 5, 1],
-    author: 'Jenni ',
+    rating: 3,
+    author: 'Jenni',
     subjects: ['chemistry'],
     proficiencyLevel: ['advanced'],
     price: 50,

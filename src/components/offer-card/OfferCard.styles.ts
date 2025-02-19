@@ -43,7 +43,7 @@ export const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifycontent: 'center',
+    justifyContent: 'center',
     gap: '2'
   },
   cardDetails: {
@@ -59,7 +59,7 @@ export const styles = {
     gap: '16px',
     justifyContent: 'center',
     alignItems: 'center',
-    maxwidth: '250px'
+    maxWidth: '250px'
   },
   button: {
     p: '7px 24px',
