@@ -1,6 +1,6 @@
 import { MultiAccordionWithTitleSx } from '~/types'
 
-const border = {
+export const border = {
   boxShadow: 'none',
   border: '1px solid',
   borderColor: 'primary.100'
