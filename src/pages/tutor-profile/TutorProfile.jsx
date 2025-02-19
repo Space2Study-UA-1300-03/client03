@@ -17,7 +17,6 @@ import { responseMock } from '~/pages/tutor-profile/constants'
 const TutorProfile = () => {
   const { user } = responseMock
   const { reviews } = user.reviewStats || {}
-
   const { userId, userRole } = useAppSelector((state) => state.appMain)
 
   const getUserData = useCallback(
@@ -25,7 +24,7 @@ const TutorProfile = () => {
     [userId, userRole]
   )
 
-  const { loading, response } = useAxios({
+  const { loading } = useAxios({
     service: getUserData,
     fetchOnMount: true,
     defaultResponse: defaultResponses.array
@@ -37,13 +36,13 @@ const TutorProfile = () => {
 
   return (
     <PageWrapper>
-      <ProfileInfo userData={response} />
-      <CompleteProfileBlock data={response} profileItems={profileItems} />
+      <ProfileInfo userData={user} />
+      <CompleteProfileBlock data={user} profileItems={profileItems} />
       <VideoPresentation />
       <CommentsWithRatingBlock
-        averageRating={response.averageRating.tutor}
+        averageRating={user.averageRating}
         reviewsCount={reviews}
-        totalReviews={response.totalReviews.tutor}
+        totalReviews={user.totalReviews}
       />
     </PageWrapper>
   )

@@ -9,8 +9,10 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 import Logo from '~/containers/logo/Logo'
-import HashLink from '~/components/hash-link/HashLink'
 import useBreakpoints from '~/hooks/use-breakpoints'
+import LinkWithScroll from '~/components/link-with-scroll/LinkWithScroll'
+import { useAppSelector } from '~/hooks/use-redux'
+import { UserRoleEnum } from '~/types'
 
 import { guestRoutes } from '~/router/constants/guestRoutes'
 import { styles } from '~/containers/layout/footer/user-footer/UserFooter.styles'
@@ -18,6 +20,7 @@ import { styles } from '~/containers/layout/footer/user-footer/UserFooter.styles
 const UserFooter = () => {
   const { t } = useTranslation()
   const { isMobile } = useBreakpoints()
+  const { userRole } = useAppSelector((state) => state.appMain)
 
   const socialLinks = (
     <Box sx={styles.socialLinks}>
@@ -31,9 +34,13 @@ const UserFooter = () => {
   )
 
   const logo = (
-    <Link component={HashLink} to={guestRoutes.home.path}>
+    <LinkWithScroll
+      to={
+        guestRoutes[userRole as UserRoleEnum]?.route || guestRoutes.home.route
+      }
+    >
       <Logo light sx={styles.logo} />
-    </Link>
+    </LinkWithScroll>
   )
 
   return (
