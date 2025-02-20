@@ -1,18 +1,14 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-
 import Box from '@mui/material/Box'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-
-import { useAppSelector } from '~/hooks/use-redux'
 import useLoadMore from '~/hooks/use-load-more'
 import useSubjectsNames from '~/hooks/use-subjects-names'
 import { subjectService } from '~/services/subject-service'
 import { categoryService } from '~/services/category-service'
 import { useModalContext } from '~/context/modal-context'
-
 import PageWrapper from '~/components/page-wrapper/PageWrapper'
 import SearchAutocomplete from '~/components/search-autocomplete/SearchAutocomplete'
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'
@@ -25,9 +21,7 @@ import AppToolbar from '~/components/app-toolbar/AppToolbar'
 import OfferRequestBlock from '~/containers/find-offer/offer-request-block/OfferRequestBlock'
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
 import useBreakpoints from '~/hooks/use-breakpoints'
-import serviceIcon from '~/assets/img/student-home-page/service_icon.png'
-import { getOpositeRole, getScreenBasedLimit } from '~/utils/helper-functions'
-import { mapArrayByField } from '~/utils/map-array-by-field'
+import { getScreenBasedLimit } from '~/utils/helper-functions'
 
 import {
   CategoryNameInterface,
@@ -46,7 +40,6 @@ const Subjects = () => {
   const params = useMemo(() => ({ name: match }), [match])
 
   const { t } = useTranslation()
-  const { userRole } = useAppSelector((state) => state.appMain)
   const breakpoints = useBreakpoints()
   const { openModal } = useModalContext()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -54,20 +47,20 @@ const Subjects = () => {
 
   const cardsLimit = getScreenBasedLimit(breakpoints, itemsLoadLimit)
 
-  const transform = useCallback(
-    (data: SubjectNameInterface[]): string[] => mapArrayByField(data, 'name'),
-    []
-  )
-
   const {
     loading: subjectNamesLoading,
-    response: subjectsNamesItems,
+    response: subjectsNames,
     fetchData
   } = useSubjectsNames({
     fetchOnMount: false,
     category: categoryId,
-    transform
+    page: 1,
+    limit: 100
   })
+
+  const subjectsNamesItems = subjectsNames.data.map(
+    (item: SubjectNameInterface) => item.subjectName
+  )
 
   const getSubjectNames = () => {
     !isFetched && void fetchData()
@@ -92,24 +85,29 @@ const Subjects = () => {
     params
   })
 
-  const oppositeRole = getOpositeRole(userRole)
-
   const cards = useMemo(
     () =>
       subjects.map((item: SubjectInterface) => {
         return (
           <CardWithLink
-            description={`${item.totalOffers[oppositeRole]} ${t(
-              'categoriesPage.offers'
-            )}`}
-            img={serviceIcon}
+            description={`123 ${t('categoriesPage.offers')}`}
+            icon={item.appearance.icon}
+            iconColor={item.appearance.color}
             key={item._id}
             link={`${authRoutes.categories.path}?categoryId=${categoryId}&subjectId=${item._id}`}
-            title={item.name}
+            title={t(`subjectsNames.subjects.${item.subjectName}`)}
           />
         )
       }),
-    [subjects, categoryId, oppositeRole, t]
+    [subjects, categoryId, t]
+  )
+
+  const getCategoriesNames = useCallback(
+    () =>
+      categoryService
+        .getCategoriesNames(1, 100)
+        .then((response) => response.data),
+    []
   )
 
   const onCategoryChange = (
@@ -118,22 +116,22 @@ const Subjects = () => {
   ) => {
     setIsFetched(false)
     searchParams.set('categoryId', value?._id ?? '')
-    setCategoryName(value?.name ?? '')
+    setCategoryName(value?.categoryName ?? '')
     setSearchParams(searchParams)
     resetData()
   }
 
   const onResponseCategory = (response: CategoryNameInterface[]) => {
     const category = response.find((option) => option._id === categoryId)
-    setCategoryName(category?.name ?? '')
+    setCategoryName(category?.categoryName ?? '')
   }
 
   const autoCompleteCategories = (
     <AsyncAutocomplete
       axiosProps={{ onResponse: onResponseCategory }}
-      labelField='name'
+      labelField='categoryName'
       onChange={onCategoryChange}
-      service={categoryService.getCategoriesNames}
+      service={getCategoriesNames}
       sx={styles.categoryInput}
       textFieldProps={{
         label: t('breadCrumbs.categories')
@@ -154,6 +152,8 @@ const Subjects = () => {
         style={styles.titleWithDescription}
         title={t('subjectsPage.subjects.title', {
           category: categoryName
+            ? t(`categoriesNames.categories.${categoryName}`)
+            : categoryName
         })}
       />
 
@@ -165,7 +165,7 @@ const Subjects = () => {
         />
         <DirectionLink
           after={<ArrowForwardIcon fontSize={SizeEnum.Small} />}
-          linkTo={authRoutes.categories.path}
+          linkTo={authRoutes.findOffers.path}
           title={t('subjectsPage.subjects.showAllOffers')}
         />
       </Box>
