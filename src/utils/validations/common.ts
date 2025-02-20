@@ -3,6 +3,7 @@ interface Validations {
   numberField: (value: string) => string
   password: (value: string) => string
   email: (value: string) => string
+  checkbox: (value: boolean) => string
 }
 
 const validations: Validations = {
@@ -40,6 +41,12 @@ const validations: Validations = {
       ).test(value)
     ) {
       return 'common.errorMessages.emailValid'
+    }
+    return ''
+  },
+  checkbox: (value) => {
+    if (!value) {
+      return 'common.errorMessages.checkboxRequired'
     }
     return ''
   }
@@ -80,7 +87,7 @@ export const helperTextHandler = (
   marker: keyof Validations,
   emptyMessage?: string
 ) => {
-  return emptyField(value, emptyMessage, validations[marker](value))
+  return emptyField(value, emptyMessage, validations[marker](value) || '')
 }
 
 export const confirmPassword = (
@@ -94,4 +101,8 @@ export const confirmPassword = (
     return 'common.errorMessages.passwordsDontMatch'
   }
   return ''
+}
+
+export const checkboxField = (value: boolean) => {
+  return validations.checkbox(value)
 }

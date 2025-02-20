@@ -42,5 +42,12 @@ export const styles = {
   },
   requiredField: {
     fontSize: '12px'
+  },
+  error: {
+    color: 'error.500',
+    width: { xs: '230px' },
+    m: '0 14px',
+    minHeight: '20px',
+    fontSize: '12px'
   }
 }
