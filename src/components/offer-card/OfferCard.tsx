@@ -1,24 +1,28 @@
-import { Avatar, Box, Typography, Chip, Stack } from '@mui/material'
 import { FC } from 'react'
-import { styles } from '~/components/offer-card/OfferCard.styles'
+import { useTranslation } from 'react-i18next'
+import { Avatar, Box, Typography, Chip, Stack } from '@mui/material'
+
 import AppOfferButtons from './AppOfferButtons'
 import TutorRating from './TutorRating'
 import SaveFavoriteButton from './SaveFavoriteButton'
 import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
-import { useTranslation } from 'react-i18next'
 
-const OfferCard: FC<OfferCardProps> = ({
-  avatar,
-  author,
-  subjects,
-  proficiencyLevel,
-  price,
-  languages,
-  reviews,
-  title,
-  description,
-  rating
-}) => {
+import { styles } from '~/components/offer-card/OfferCard.styles'
+
+const OfferCard: FC<OfferCardProps> = ({ cardData }) => {
+  const {
+    avatar,
+    author,
+    subjects,
+    proficiencyLevel,
+    price,
+    languages,
+    reviews,
+    title,
+    description,
+    rating
+  } = cardData
+
   const { t } = useTranslation()
   return (
     <Box sx={styles.offerCard}>

@@ -1,23 +1,26 @@
-import { Avatar, Box, Typography, Chip, Stack, Divider } from '@mui/material'
 import { FC } from 'react'
-import { styles } from '~/components/offer-card-square-version/OfferCardSquare.style'
-import AppOfferButtonsSquare from './AppOfferButtonsSquare'
+import { useTranslation } from 'react-i18next'
+import { Avatar, Box, Typography, Chip, Stack, Divider } from '@mui/material'
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined'
 import StarIcon from '@mui/icons-material/Star'
-import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
-import { useTranslation } from 'react-i18next'
 
-const OfferCardSquare: FC<OfferCardProps> = ({
-  avatar,
-  rating,
-  author,
-  subjects,
-  proficiencyLevel,
-  price,
-  languages,
-  reviews,
-  title
-}) => {
+import AppOfferButtonsSquare from './AppOfferButtonsSquare'
+import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
+
+import { styles } from '~/components/offer-card-square-version/OfferCardSquare.style'
+
+const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
+  const {
+    avatar,
+    rating,
+    author,
+    subjects,
+    proficiencyLevel,
+    price,
+    languages,
+    reviews,
+    title
+  } = cardData
   const { t } = useTranslation()
   return (
     <Box sx={styles.offerCardSquare}>

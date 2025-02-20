@@ -1,60 +1,31 @@
 import { Box } from '@mui/material'
+
 import OfferCard from '../offer-card/OfferCard'
 import { offerDataMock } from './offerDataMock'
 import OfferCardSquare from '../offer-card-square-version/OfferCardSquare'
 
-const ListOfferCard = ({ isSquareVersion = true }) => {
+import { styles } from '~/components/offer-cards-list/ListOfferCards.style'
+
+interface ListOfferCardProps {
+  cardView: 'grid' | 'single'
+}
+
+const ListOfferCard: React.FC<ListOfferCardProps> = ({ cardView }) => {
   return (
     <Box
       sx={
-        isSquareVersion == false
-          ? {
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              m: '100px'
-            }
-          : {
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gridTemplateRows: 'auto',
-              m: '0 100px'
-            }
+        cardView === 'grid' ? styles.gridCardWrapper : styles.singleCardWrapper
       }
     >
-      {isSquareVersion === false &&
-        offerDataMock.map((data) => (
-          <OfferCard
-            author={data.author}
-            avatar={data.avatar}
-            description={data.description}
-            key={data.id}
-            languages={data.languages}
-            price={data.price}
-            proficiencyLevel={data.proficiencyLevel}
-            rating={data.rating}
-            reviews={data.reviews}
-            subjects={data.subjects}
-            title={data.title}
-          />
-        ))}
-
-      {isSquareVersion === true &&
-        offerDataMock.map((data) => (
-          <OfferCardSquare
-            author={data.author}
-            avatar={data.avatar}
-            description={data.description}
-            key={data.id}
-            languages={data.languages}
-            price={data.price}
-            proficiencyLevel={data.proficiencyLevel}
-            rating={data.rating}
-            reviews={data.reviews}
-            subjects={data.subjects}
-            title={data.title}
-          />
-        ))}
+      {offerDataMock?.map((data, index) => (
+        <Box key={index}>
+          {cardView === 'grid' ? (
+            <OfferCardSquare cardData={data} />
+          ) : (
+            <OfferCard cardData={data} />
+          )}
+        </Box>
+      ))}
     </Box>
   )
 }
