@@ -26,7 +26,6 @@ import OfferRequestBlock from '~/containers/find-offer/offer-request-block/Offer
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
 import useBreakpoints from '~/hooks/use-breakpoints'
 import { getOpositeRole, getScreenBasedLimit } from '~/utils/helper-functions'
-import { mapArrayByField } from '~/utils/map-array-by-field'
 
 import {
   CategoryNameInterface,
@@ -53,20 +52,19 @@ const Subjects = () => {
 
   const cardsLimit = getScreenBasedLimit(breakpoints, itemsLoadLimit)
 
-  const transform = useCallback(
-    (data: SubjectNameInterface[]): string[] => mapArrayByField(data, 'name'),
-    []
-  )
-
   const {
     loading: subjectNamesLoading,
-    response: subjectsNamesItems,
+    response: subjectsNames,
     fetchData
   } = useSubjectsNames({
     fetchOnMount: false,
     category: categoryId,
-    transform
+    page: 1,
+    limit: 100
   })
+  const subjectsNamesItems = subjectsNames.data.map(
+    (item: SubjectNameInterface) => item.subjectName
+  )
 
   const getSubjectNames = () => {
     !isFetched && void fetchData()

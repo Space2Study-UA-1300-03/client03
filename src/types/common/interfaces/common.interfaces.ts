@@ -60,6 +60,7 @@ export interface SubjectInterface extends CommonEntityFields {
 export interface SubjectNameInterface {
   _id: string
   name: string
+  subjectName: string
 }
 
 export interface ReviewInterface extends CommonEntityFields {
