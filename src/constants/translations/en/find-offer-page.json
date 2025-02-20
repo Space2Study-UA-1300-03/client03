@@ -52,5 +52,17 @@
   },
   "otherOffers":{
     "title":"Other offers"
-  }
+  },
+  "cardButtons":{
+    "showDetails": "Show details",
+    "sendMessage": "Send message"
+  },
+  "priceCurrange": "uah",
+  "hour": "hour",
+  "reviews": "reviews",
+  "filterMenu" : {
+    "filter": "filter"
+  },
+  "level": "Level",
+  "subject": "Subjects"
 }

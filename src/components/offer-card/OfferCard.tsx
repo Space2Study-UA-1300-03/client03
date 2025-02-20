@@ -5,6 +5,7 @@ import AppOfferButtons from './AppOfferButtons'
 import TutorRating from './TutorRating'
 import SaveFavoriteButton from './SaveFavoriteButton'
 import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
+import { useTranslation } from 'react-i18next'
 
 const OfferCard: FC<OfferCardProps> = ({
   avatar,
@@ -18,6 +19,7 @@ const OfferCard: FC<OfferCardProps> = ({
   description,
   rating
 }) => {
+  const { t } = useTranslation()
   return (
     <Box sx={styles.offerCard}>
       <Box sx={styles.authInfo}>
@@ -28,7 +30,10 @@ const OfferCard: FC<OfferCardProps> = ({
         />
         <Typography sx={styles.author}> {author} </Typography>
         <TutorRating rating={rating} />
-        <Typography sx={styles.reviews}> {`${reviews} reviews`} </Typography>
+        <Typography sx={styles.reviews}>
+          {' '}
+          {`${reviews} ${t('findOfferPage.reviews')}`}{' '}
+        </Typography>
       </Box>
       <Box sx={styles.cardDetails}>
         <Typography sx={styles.titleCard}> {title} </Typography>
@@ -103,7 +108,7 @@ const OfferCard: FC<OfferCardProps> = ({
                 textTransform: 'uppercase'
               }}
             >
-              {price + ' ' + 'uah'}
+              {price + ' ' + t('findOfferPage.priceCurrange')}
             </Typography>
             <SaveFavoriteButton />
           </Box>
@@ -114,7 +119,7 @@ const OfferCard: FC<OfferCardProps> = ({
               textTransform: 'uppercase'
             }}
           >
-            / hour
+            / {t('findOfferPage.hour')}
           </Typography>
         </Box>
         <AppOfferButtons />

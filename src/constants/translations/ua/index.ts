@@ -31,6 +31,7 @@ import subjectsPage from './subjects-page.json'
 import becomeTutor from './become-tutor.json'
 import subjectsNames from './subjects-names.json'
 import categoriesNames from './categories-names.json'
+import findOfferPage from './find-offer-page.json'
 
 const ua = {
   translations: {
@@ -54,6 +55,7 @@ const ua = {
     tutorHomePage,
     offerPage,
     offerDetailsPage,
+    findOfferPage,
     cooperationsPage,
     myResourcesPage,
     questionPage,

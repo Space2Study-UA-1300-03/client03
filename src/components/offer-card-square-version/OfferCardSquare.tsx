@@ -5,6 +5,7 @@ import AppOfferButtonsSquare from './AppOfferButtonsSquare'
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined'
 import StarIcon from '@mui/icons-material/Star'
 import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
+import { useTranslation } from 'react-i18next'
 
 const OfferCardSquare: FC<OfferCardProps> = ({
   avatar,
@@ -17,6 +18,7 @@ const OfferCardSquare: FC<OfferCardProps> = ({
   reviews,
   title
 }) => {
+  const { t } = useTranslation()
   return (
     <Box sx={styles.offerCardSquare}>
       <Box sx={styles.authInfo}>
@@ -53,7 +55,9 @@ const OfferCardSquare: FC<OfferCardProps> = ({
       <Typography sx={styles.titleCard}> {title} </Typography>
       <Divider />
       <Box sx={styles.chipItems}>
-        <Typography sx={styles.chipItemsTitle}>subjects:</Typography>
+        <Typography sx={styles.chipItemsTitle}>
+          {t('findOfferPage.subject')}:
+        </Typography>
         <Stack direction='row' spacing={0.5}>
           {subjects?.map((item) => {
             return (
@@ -73,7 +77,9 @@ const OfferCardSquare: FC<OfferCardProps> = ({
         </Stack>
       </Box>
       <Box sx={styles.chipItems}>
-        <Typography sx={styles.chipItemsTitle}>Level:</Typography>
+        <Typography sx={styles.chipItemsTitle}>
+          {t('findOfferPage.level')}:
+        </Typography>
         <Stack direction='row' spacing={0.5}>
           {proficiencyLevel?.map((item) => {
             return (
@@ -110,7 +116,7 @@ const OfferCardSquare: FC<OfferCardProps> = ({
                 textTransform: 'uppercase'
               }}
             >
-              {price + ' ' + 'uah'}
+              {price} {t('findOfferPage.priceCurrange')}
             </Typography>
           </Box>
           <Typography
@@ -120,7 +126,7 @@ const OfferCardSquare: FC<OfferCardProps> = ({
               textTransform: 'uppercase'
             }}
           >
-            / hour
+            / {t('findOfferPage.hour')}
           </Typography>
         </Box>
         <Box>
@@ -128,7 +134,10 @@ const OfferCardSquare: FC<OfferCardProps> = ({
             <StarIcon sx={{ color: '#FFB000' }} />
             <Typography sx={styles.ratingAmount}> {`${rating}`} </Typography>
           </Box>
-          <Typography sx={styles.reviews}> {`${reviews} reviews`} </Typography>
+          <Typography sx={styles.reviews}>
+            {' '}
+            {`${reviews} ${t('findOfferPage.reviews')}`}{' '}
+          </Typography>
         </Box>
       </Box>
       <AppOfferButtonsSquare />

@@ -1,22 +1,24 @@
-import { Container } from '@mui/material'
+import { Box } from '@mui/material'
 import OfferCard from '../offer-card/OfferCard'
 import { offerDataMock } from './offerDataMock'
 import OfferCardSquare from '../offer-card-square-version/OfferCardSquare'
 
 const ListOfferCard = ({ isSquareVersion = true }) => {
   return (
-    <Container
+    <Box
       sx={
         isSquareVersion == false
           ? {
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'start'
+              alignItems: 'center',
+              m: '100px'
             }
           : {
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              gridTemplateRows: 'auto'
+              gridTemplateRows: 'auto',
+              m: '0 100px'
             }
       }
     >
@@ -53,7 +55,7 @@ const ListOfferCard = ({ isSquareVersion = true }) => {
             title={data.title}
           />
         ))}
-    </Container>
+    </Box>
   )
 }
 

@@ -116,9 +116,5 @@
     "category": "Please select a category",
     "subject": "Please select a subject",
     "description": "Please provide a description"
-  },
-  "cardButtons":{
-    "showDetails": "Show details",
-    "sendMessage": "Send message"
   }
 }

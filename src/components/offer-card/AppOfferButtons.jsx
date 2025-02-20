@@ -9,10 +9,10 @@ const AppOfferButtons = () => {
     <Box sx={styles.buttonsCard}>
       <AppButton sx={styles.button}>
         {' '}
-        {t('offerPage.cardButtons.showDetails')}{' '}
+        {t('findOfferPage.cardButtons.showDetails')}{' '}
       </AppButton>
       <AppButton sx={styles.button} variant='outlined'>
-        {t('offerPage.cardButtons.sendMessage')}
+        {t('findOfferPage.cardButtons.sendMessage')}
       </AppButton>
     </Box>
   )

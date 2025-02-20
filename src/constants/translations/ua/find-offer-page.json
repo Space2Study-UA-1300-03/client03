@@ -50,5 +50,17 @@
   },
   "otherOffers":{
     "title":"Інші пропозиції"
-  }
+  },
+  "cardButtons":{
+    "showDetails": "Переглянути деталі",
+    "sendMessage": "Надіслати повідомлення"
+  },
+  "priceCurrange": "грн",
+  "hour": "годину",
+  "reviews": "відгуки",
+  "filterMenu" : {
+    "filter": "Фільтри"
+  },
+  "level": "Предмет",
+  "subject": "Рівень"
 }
