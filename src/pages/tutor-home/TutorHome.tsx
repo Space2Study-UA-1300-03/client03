@@ -17,14 +17,14 @@ const TutorHome = () => {
   const { isFirstLogin, userRole } = useAppSelector((state) => state.appMain)
 
   useEffect(() => {
-    // if (isFirstLogin) {
+    if (isFirstLogin) {
     openModal({
       component: <UserStepsWrapper userRole={userRole} />,
       paperProps: {
         sx: styles.modal
       }
     })
-    // }
+    }
   }, [openModal, isFirstLogin, userRole])
 
   return (
