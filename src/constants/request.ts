@@ -48,5 +48,8 @@ export const URLs = {
       post: '/resources-categories',
       delete: 'resources-categories'
     }
+  },
+  offers: {
+    get: '/offers'
   }
 }
