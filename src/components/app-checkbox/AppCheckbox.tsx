@@ -41,7 +41,7 @@ const AppCheckbox: React.FC<AppCheckboxProps> = ({
           control={
             <Checkbox
               required
-              sx={{ color: errormsg ? 'red' : undefined }}
+              sx={{ color: errormsg ? 'error.main' : undefined }}
               {...props}
             />
           }
