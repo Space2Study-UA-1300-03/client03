@@ -24,9 +24,12 @@ export const styles = {
     display: { xs: 'none', md: 'flex' },
     alignItems: 'center'
   },
-  listItem: { py: '5px' },
+  menuItem: { p: '0' },
+  menuLink: { p: '5px 16px' },
+  listItem: { py: '5px', cursor: 'pointer' },
   navItemText: (isActive = false) => ({
     ...navItem,
+    width: '100%',
     textDecoration: isActive ? 'underline' : 'none',
     '&:focus': { textDecoration: 'underline' }
   }),
