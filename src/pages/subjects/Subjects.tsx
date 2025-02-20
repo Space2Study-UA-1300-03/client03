@@ -62,6 +62,7 @@ const Subjects = () => {
     page: 1,
     limit: 100
   })
+
   const subjectsNamesItems = subjectsNames.data.map(
     (item: SubjectNameInterface) => item.subjectName
   )
@@ -111,10 +112,13 @@ const Subjects = () => {
     [subjects, categoryId, oppositeRole, t]
   )
 
-  const getCategoriesNames = (page = 1, limit = 100) =>
-    categoryService
-      .getCategoriesNames(page, limit)
-      .then((response) => response.data)
+  const getCategoriesNames = useCallback(
+    () =>
+      categoryService
+        .getCategoriesNames(1, 100)
+        .then((response) => response.data),
+    []
+  )
 
   const onCategoryChange = (
     _: React.SyntheticEvent,
@@ -148,16 +152,6 @@ const Subjects = () => {
   )
 
   const handleOpenModal = () => openModal({ component: <CreateSubjectModal /> })
-
-  console.log('categoryName', categoryName)
-  console.log('categoryId', categoryId)
-  console.log('subjects', subjects)
-  console.log('subjectsLoading', subjectsLoading)
-  console.log('subjectsNamesItems', subjectsNamesItems)
-  console.log('subjectNamesLoading', subjectNamesLoading)
-  console.log('cards', cards)
-  console.log('params', params)
-  console.log('match:', match)
 
   return (
     <PageWrapper>
