@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import useBreakpoints from '~/hooks/use-breakpoints'
+
 import Box from '@mui/material/Box'
 import { Typography } from '@mui/material'
 
@@ -16,6 +18,7 @@ import { styles } from '~/containers/tutor-home-page/language-step/LanguageStep.
 const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
   const { t } = useTranslation()
   const [language, setLanguage] = useState('')
+  const { isLaptopAndAbove, isMobile } = useBreakpoints()
 
   const { response: languages, loading: loadingLanguages } = useAxios({
     service: languagesService.getLanguages,
@@ -47,6 +50,11 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
     return (
       <Box>
         <Typography>{t('becomeTutor.languages.studentTitle')}</Typography>
+        {isMobile && (
+          <Box sx={styles.imgContainer}>
+            <Box component='img' src={img} sx={styles.img} />
+          </Box>
+        )}
         <AppAutoComplete
           key={languages.id}
           loading={loadingLanguages}
@@ -66,6 +74,11 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
     return (
       <Box>
         <Typography>{t('becomeTutor.languages.tutorTitle')}</Typography>
+        {isMobile && (
+          <Box sx={styles.imgContainer}>
+            <Box component='img' src={img} sx={styles.img} />
+          </Box>
+        )}
         <AppAutoComplete
           getOptionLabel={(option) => option.name || ''}
           key={languages.id}
@@ -89,9 +102,11 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
 
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.imgContainer}>
-        <Box component='img' src={img} sx={styles.img} />
-      </Box>
+      {isLaptopAndAbove && (
+        <Box sx={styles.imgContainer}>
+          <Box component='img' src={img} sx={styles.img} />
+        </Box>
+      )}
       <Box sx={styles.rigthBox}>
         {userRole === student && <StudentLangStep />}
         {userRole === tutor && <TutorLangStep />}

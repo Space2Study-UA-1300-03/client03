@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import useBreakpoints from '~/hooks/use-breakpoints'
+
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useTranslation } from 'react-i18next'
 
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
@@ -15,6 +17,7 @@ import { useSnackBarContext } from '~/context/snackbar-context'
 const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
+  const { isLaptopAndAbove, isMobile } = useBreakpoints()
 
   const [subject, setSubject] = useState({ category: null, subject: null })
   const [listOfSubjects, setListOfSubjects] = useState(data.interests)
@@ -133,12 +136,19 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
 
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.imgContainer}>
-        <Box component='img' src={img} sx={styles.img} />
-      </Box>
+      {isLaptopAndAbove && (
+        <Box sx={styles.imgContainer}>
+          <Box component='img' src={img} sx={styles.img} />
+        </Box>
+      )}
       <Box sx={styles.rightBox}>
         <Box sx={styles.contentBox}>
           <Typography mb={2}>{t('becomeTutor.categories.title')}</Typography>
+          {isMobile && (
+            <Box sx={styles.imgContainer}>
+              <Box component='img' src={img} sx={styles.img} />
+            </Box>
+          )}
           <AppAutoComplete
             getOptionLabel={(option) => option.categoryName ?? option}
             loading={loadingCategories}
