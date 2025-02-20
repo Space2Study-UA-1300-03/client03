@@ -7,7 +7,7 @@ export type Address = {
 
 export type Category = {
   _id: string
-  name: string
+  categoryName: string
 }
 
 export type CreatedAt = {

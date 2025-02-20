@@ -38,14 +38,12 @@ export interface DataByRole<T> {
 }
 
 export interface CategoryInterface extends CommonEntityFields {
-  name: string
+  categoryName: string
   appearance: CategoryAppearance
-  totalOffers: DataByRole<number>
 }
 
 export interface CategoryNameInterface {
   _id: string
-  name: string
   categoryName: string
 }
 
@@ -53,14 +51,14 @@ export interface SubjectInterface extends CommonEntityFields {
   appearance: CategoryAppearance
   subjectName: string
   name: string
-  category: string
   totalOffers: DataByRole<number>
+  categoryId: string
 }
 
 export interface SubjectNameInterface {
-  _id: string
-  name: string
+  categoryId: string
   subjectName: string
+  _id: string
 }
 
 export interface ReviewInterface extends CommonEntityFields {
@@ -142,7 +140,7 @@ export interface Quiz extends CommonEntityFields {
 export interface CourseResources {
   _id: string
   title: string
-  category?: { _id: string; name: string }
+  category?: { _id: string; categoryName: string }
   createdAt: Date
   updatedAt: Date
 }

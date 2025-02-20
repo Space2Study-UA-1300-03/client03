@@ -6,7 +6,7 @@ import { createUrlPath } from '~/utils/helper-functions'
 
 export const subjectService = {
   getSubjects: (
-    params?: Pick<SubjectInterface, 'name'>,
+    params?: Pick<SubjectInterface, 'subjectName'>,
     categoryId?: string
   ): Promise<AxiosResponse<ItemsWithCount<SubjectInterface>>> => {
     const category = createUrlPath(URLs.categories.get, categoryId)
