@@ -15,6 +15,9 @@ export const userService = {
   ): Promise<AxiosResponse<UserResponse[]>> => {
     return await axiosClient.get(URLs.users.get, { params })
   },
+  getMe: (): Promise<AxiosResponse<UserResponse[]>> => {
+    return axiosClient.get(URLs.users.getMe)
+  },
   getUserById: (
     userId: string,
     userRole: UserRole

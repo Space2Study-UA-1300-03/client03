@@ -7,11 +7,12 @@ import AppButton from '../app-button/AppButton'
 import { styles } from '~/components/offer-cards-filter-menu/OfferCardsFilterMenu.styles'
 
 export default function OfferCardViewButton({ setCardView, cardView }) {
+  console.log(cardView)
   return (
     <Box sx={styles.viewButtons}>
       <AppButton
         onClick={() => setCardView('single')}
-        sx={{ borderColыor: cardView === 'single' ? 'black' : 'default' }}
+        sx={{ borderColor: cardView === 'single' ? 'black' : 'default' }}
         variant='outlined'
       >
         <FilterListOutlinedIcon />

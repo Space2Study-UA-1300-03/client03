@@ -34,6 +34,7 @@ import subjectsPage from './subjects-page.json'
 import subjectsNames from './subjects-names.json'
 import categoriesNames from './categories-names.json'
 import findOfferPage from './find-offer-page.json'
+import languages from './languages.json'
 
 const en = {
   translations: {
@@ -72,7 +73,8 @@ const en = {
     questionPage,
     subjectsPage,
     subjectsNames,
-    categoriesNames
+    categoriesNames,
+    languages
   }
 }
 

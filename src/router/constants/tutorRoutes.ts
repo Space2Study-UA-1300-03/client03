@@ -16,6 +16,6 @@ export const tutorRoutes = {
       route: 'my-resources',
       path: authRoutes.myResources.root.path
     },
-    faq: { route: 'faq', path: '/tutor/#faq' }
+    faq: { route: 'faq', path: '/tutor#faq' }
   }
 }

@@ -10,10 +10,11 @@ export const styles = {
   },
   imgContainer: {
     display: 'flex',
+    flexDirection: 'flex-start',
     flex: 1,
-    maxWidth: '432px',
+    maxWidth: '440px',
     aspectRatio: { xs: '4/3', sm: 'auto' },
-    pb: { xs: '16px', sm: '52px' }
+    p: { lg: '0 120px 50px 0', md: '0 60px 50px 0', xs: '15px 0' }
   },
   img: {
     width: '100%',
@@ -40,6 +41,13 @@ export const styles = {
     fontSize: '14px'
   },
   requiredField: {
+    fontSize: '12px'
+  },
+  error: {
+    color: 'error.500',
+    width: { xs: '230px' },
+    m: '0 14px',
+    minHeight: '20px',
     fontSize: '12px'
   }
 }

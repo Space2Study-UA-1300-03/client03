@@ -13,6 +13,8 @@ import AddPhotoStep from '~/containers/tutor-home-page/add-photo-step/AddPhotoSt
 import SubjectsStep from '~/containers/tutor-home-page/subjects-step/SubjectsStep'
 import LanguageStep from '~/containers/tutor-home-page/language-step/LanguageStep'
 import { useModalContext, CLOSE_EVENT_KEY } from '~/context/modal-context'
+import useAxios from '~/hooks/use-axios'
+import { userService } from '~/services/user-service'
 
 import StepWrapper from '~/components/step-wrapper/StepWrapper'
 
@@ -26,6 +28,11 @@ import { student } from '~/constants'
 
 interface UserStepsWrapperProps {
   userRole: string
+}
+
+interface UserData {
+  firstName?: string
+  lastName?: string
 }
 
 const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
@@ -65,6 +72,22 @@ const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
     initialValues: initialValues,
     validations: validations
   })
+
+  const userData = useAxios({
+    service: userService.getMe,
+    defaultResponse: null,
+    fetchOnMount: true
+  }).response as UserData | null
+
+  useEffect(() => {
+    if (!userData) return
+
+    handleDataChange({
+      firstName: userData.firstName || '',
+      lastName: userData.lastName || ''
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData])
 
   useEffect(() => {
     registerEvent(CLOSE_EVENT_KEY, () => {

@@ -14,6 +14,7 @@ export const URLs = {
   },
   users: {
     get: '/users',
+    getMe: '/users/me',
     update: '/users',
     delete: '/users/delete',
     myProfile: '/users/myProfile',
@@ -48,5 +49,8 @@ export const URLs = {
       post: '/resources-categories',
       delete: 'resources-categories'
     }
+  },
+  offers: {
+    get: '/offers'
   }
 }

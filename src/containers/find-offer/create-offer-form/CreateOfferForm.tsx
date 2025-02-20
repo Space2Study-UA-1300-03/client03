@@ -1,14 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { useState } from 'react'
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { useState, useEffect } from 'react'
 import { Box, Typography, InputAdornment, IconButton } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import CloseIcon from '@mui/icons-material/Close'
+
 import AppButton from '~/components/app-button/AppButton'
 import AppTextField from '~/components/app-text-field/AppTextField'
 import AppChipList from '~/components/app-chips-list/AppChipList'
-import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
+import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
 import Levels from '~/components/levels/Levels'
-import CloseIcon from '@mui/icons-material/Close'
-import { useTranslation } from 'react-i18next'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 import TitleIcon from '~/assets/img/offer-request-form/leak_add.svg'
 import StepOneIcon from '~/assets/img/offer-request-form/counter_1.svg'
@@ -16,36 +24,97 @@ import StepTwoIcon from '~/assets/img/offer-request-form/counter_2.svg'
 import StepThreeIcon from '~/assets/img/offer-request-form/counter_3.svg'
 import HryvniaIcon from '~/assets/img/offer-request-form/hryvnia.svg'
 
+import useCategoriesNames from '~/hooks/use-categories-names'
+import useSubjectsNames from '~/hooks/use-subjects-names'
+import useAxios from '~/hooks/use-axios'
+import { languagesService } from '~/services/languages-service'
+import { axiosClient } from '~/plugins/axiosClient'
+
 import { styles } from './CreateOfferForm.styles'
 
-interface Language {
-  name: string
+const normalizeLanguage = (lang: string) => {
+  return lang.charAt(0).toUpperCase() + lang.slice(1).toLowerCase()
 }
+
+const mockCourses = [
+  { name: 'Fundamentals of Mathematics' },
+  { name: 'Introduction to Programming' },
+  { name: 'History of Art 101' }
+]
 
 const CreateOfferForm = () => {
   const { t } = useTranslation()
+  const { setAlert } = useSnackBarContext()
+
   const [description, setDescription] = useState('')
   const [faq, setFaq] = useState([{ id: 1, question: '', answer: '' }])
-
+  const [selectedCategory, setSelectedCategory] = useState<any>(null)
+  const [selectedSubject, setSelectedSubject] = useState<any>(null)
+  const [proficiencyLevel, setProficiencyLevel] = useState<string>('')
+  const [language, setLanguage] = useState<any>(null)
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
+  const [selectedCourse, setSelectedCourse] = useState<any>(null)
+  const [price, setPrice] = useState('')
+  const [title, setTitle] = useState('')
   const maxDescriptionLength = 1000
-  const selectedLanguages: Language[] = []
-  const selectedCategory = null
-  const selectedSubject = null
 
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (event.target.value.length <= maxDescriptionLength) {
-      setDescription(event.target.value)
+  const { response: categories, loading: loadingCategories } =
+    useCategoriesNames({
+      page: 1,
+      limit: 1000,
+      fetchOnMount: true
+    })
+
+  const {
+    response: subjects,
+    loading: loadingSubjects,
+    fetchData: fetchSubjects
+  } = useSubjectsNames({
+    category: selectedCategory ? selectedCategory._id : null,
+    page: 1,
+    limit: 1000,
+    fetchOnMount: false
+  })
+
+  const { response: allLanguages, loading: loadingLanguages } = useAxios({
+    service: languagesService.getLanguages,
+    defaultResponse: [],
+    fetchOnMount: true
+  })
+
+  const {
+    fetchData: createOffer,
+    response: offerResponse,
+    error: offerError,
+    loading: offerLoading
+  } = useAxios({
+    service: (payload) => axiosClient.post('/offers', payload),
+    defaultResponse: {},
+    fetchOnMount: false
+  })
+
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchSubjects()
+      setSelectedSubject(null)
+    }
+  }, [selectedCategory, fetchSubjects])
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length <= maxDescriptionLength) {
+      setDescription(e.target.value)
     }
   }
 
   const handleAddQuestion = () => {
-    setFaq([...faq, { id: faq.length + 1, question: '', answer: '' }])
+    setFaq((prev) => [
+      ...prev,
+      { id: prev.length + 1, question: '', answer: '' }
+    ])
   }
 
   const handleDeleteQuestion = (id: number) => {
-    setFaq(faq.filter((item) => item.id !== id))
+    setFaq((prev) => prev.filter((item) => item.id !== id))
   }
 
   const handleFAQChange = (
@@ -53,10 +122,69 @@ const CreateOfferForm = () => {
     field: 'question' | 'answer',
     value: string
   ) => {
-    setFaq(
-      faq.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+    setFaq((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
     )
   }
+
+  const handleChangeLanguage = (_: any, selectedValue: any) => {
+    setLanguage(selectedValue)
+  }
+
+  const handleAddLanguage = () => {
+    if (!language?.name) return
+    const normalized = normalizeLanguage(language.name)
+    if (selectedLanguages.includes(normalized)) return
+    setSelectedLanguages((prev) => [...prev, normalized])
+    setLanguage(null)
+  }
+
+  const handleDeleteLanguage = (langName: string) => {
+    setSelectedLanguages((prev) => prev.filter((l) => l !== langName))
+  }
+
+  const handleChangeLevel = (_name: string, value: string) => {
+    setProficiencyLevel(value)
+  }
+
+  const handleCreateOffer = async () => {
+    try {
+      const numericPrice = Number(price) || 0
+      const payload = {
+        title,
+        description,
+        price: numericPrice,
+        categoryId: selectedCategory?._id,
+        subjectId: selectedSubject?._id,
+        proficiencyLevel,
+        languages: selectedLanguages,
+        faq,
+        courseName: selectedCourse?.name || null
+      }
+
+      await createOffer(payload)
+      setAlert({
+        severity: 'success',
+        message: 'offerPage.createOffer.successMessage'
+      })
+    } catch (error) {
+      setAlert({
+        severity: 'error',
+        message: 'offerPage.createOffer.errorMessage'
+      })
+      console.error('Error creating offer:', error)
+    }
+  }
+
+  const isFormValid =
+    title.trim() !== '' &&
+    description.trim() !== '' &&
+    selectedCategory !== null &&
+    selectedSubject !== null &&
+    proficiencyLevel.trim() !== '' &&
+    selectedLanguages.length > 0 &&
+    price.trim() !== '' &&
+    selectedCourse !== null
 
   return (
     <Box sx={{ maxWidth: '645px', width: '100%' }}>
@@ -67,6 +195,7 @@ const CreateOfferForm = () => {
       <Typography component='p' sx={styles.subtitle} variant='body1'>
         {t('offerPage.createOffer.description.tutor')}
       </Typography>
+
       <Typography component='p' sx={styles.stepTitle} variant='h6'>
         <Box
           alt='step one icon'
@@ -80,10 +209,12 @@ const CreateOfferForm = () => {
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
           {t('offerPage.description.category.tutor')}
         </Typography>
-        <AsyncAutocomplete
-          fetchOnFocus
-          getOptionLabel={(option) => option.name}
-          service={() => {}}
+        <AppAutoComplete
+          getOptionLabel={(option) => option?.categoryName || ''}
+          isOptionEqualToValue={(option, value) => option._id === value._id}
+          loading={loadingCategories}
+          onChange={(_, value) => setSelectedCategory(value)}
+          options={categories?.data || []}
           sx={styles.select}
           textFieldProps={{
             label: t('offerPage.createOffer.labels.category'),
@@ -91,12 +222,13 @@ const CreateOfferForm = () => {
           }}
           value={selectedCategory}
         />
-        <AsyncAutocomplete
+        <AppAutoComplete
           disabled={!selectedCategory}
-          fetchCondition={selectedCategory}
-          fetchOnFocus
-          getOptionLabel={(option) => option.name}
-          service={() => {}}
+          getOptionLabel={(option) => option?.subjectName || ''}
+          isOptionEqualToValue={(option, value) => option._id === value._id}
+          loading={loadingSubjects}
+          onChange={(_, value) => setSelectedSubject(value)}
+          options={subjects?.data || []}
           sx={styles.select}
           textFieldProps={{
             label: t('offerPage.createOffer.labels.subject'),
@@ -107,8 +239,9 @@ const CreateOfferForm = () => {
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
           {t('offerPage.description.level.tutor')}
         </Typography>
-        <Levels changeFunc={(name, value) => {}} />
+        <Levels changeFunc={handleChangeLevel} />
       </Box>
+
       <Typography component='p' sx={styles.stepTitle} variant='h6'>
         <Box
           alt='step two icon'
@@ -126,12 +259,14 @@ const CreateOfferForm = () => {
           <AppTextField
             fullWidth
             label={t('offerPage.createOffer.placeholders.title')}
+            onChange={(e) => setTitle(e.target.value)}
             required
             rows={1}
             type='text'
+            value={title}
           />
           <Typography component='p' sx={styles.summaryLength}>
-            {`${description.length}/100`}
+            {`${title.length}/100`}
           </Typography>
         </Box>
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
@@ -153,21 +288,27 @@ const CreateOfferForm = () => {
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
           {t('offerPage.description.languages.tutor')}
         </Typography>
-        <AsyncAutocomplete
-          fetchOnFocus
-          getOptionLabel={(option) => option.name}
-          service={() => {}}
-          sx={{ mb: '16px' }}
-          textFieldProps={{
-            label: t('offerPage.createOffer.labels.language'),
-            required: true
-          }}
-          value={selectedLanguages}
-        />
+        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+          <AppAutoComplete
+            getOptionLabel={(option) => option?.name || ''}
+            loading={loadingLanguages}
+            onChange={handleChangeLanguage}
+            options={allLanguages || []}
+            sx={{ width: '250px' }}
+            textFieldProps={{
+              label: t('offerPage.createOffer.labels.language'),
+              required: true
+            }}
+            value={language}
+          />
+          <AppButton onClick={handleAddLanguage} variant='contained'>
+            {t('common.add')}
+          </AppButton>
+        </Box>
         <AppChipList
-          defaultQuantity={0}
-          items={selectedLanguages.map((language) => language.name)}
-          wrapperStyle={styles.chipsList}
+          defaultQuantity={2}
+          handleChipDelete={handleDeleteLanguage}
+          items={selectedLanguages}
         />
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
           {t('offerPage.description.price.tutor')}
@@ -189,26 +330,30 @@ const CreateOfferForm = () => {
               ),
               style: { fontSize: '14px', color: '#455A64' }
             }}
+            onChange={(e) => setPrice(e.target.value)}
             required
             type='text'
+            value={price}
             variant='outlined'
           />
         </Box>
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
           {t('offerPage.createOffer.labels.linkCourse')}
         </Typography>
-        <AsyncAutocomplete
-          fetchOnFocus
-          getOptionLabel={(option) => option.name}
-          service={() => {}}
+        <AppAutoComplete
+          getOptionLabel={(option) => option?.name || ''}
+          isOptionEqualToValue={(option, value) => option.name === value.name}
+          onChange={(_, newValue) => setSelectedCourse(newValue)}
+          options={mockCourses}
           sx={styles.select}
           textFieldProps={{
             label: t('offerPage.createOffer.labels.selectCourse'),
             required: true
           }}
-          value={null}
+          value={selectedCourse}
         />
       </Box>
+
       <Typography component='p' sx={styles.stepTitle} variant='h6'>
         <Box
           alt='step three icon'
@@ -258,7 +403,6 @@ const CreateOfferForm = () => {
             </Box>
           </Box>
         ))}
-
         <AppButton
           onClick={handleAddQuestion}
           sx={styles.btn}
@@ -267,8 +411,14 @@ const CreateOfferForm = () => {
           {t('button.addQuestion')}
         </AppButton>
       </Box>
+
       <Box sx={styles.btnsWrapper}>
-        <AppButton sx={styles.btn} variant='contained'>
+        <AppButton
+          disabled={!isFormValid}
+          onClick={handleCreateOffer}
+          sx={styles.btn}
+          variant='contained'
+        >
           {t('offerPage.createOffer.buttonTitles.tutor')}
         </AppButton>
         <AppButton sx={styles.btn} variant='outlined'>

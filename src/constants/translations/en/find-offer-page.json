@@ -14,9 +14,9 @@
     "title": "Explore Offers",
     "description": "Discover offers in your area of interest"
   },
-  "backToAllSubjects": "Back to all subjects",
+  "backToAllCategories": "Back to all categories",
   "searchToolbar": {
-    "label": "Search by tutor name"
+    "label": "Search by name"
   },
   "topMenu": {
     "tutorsOffers": "Tutors’ offers",
