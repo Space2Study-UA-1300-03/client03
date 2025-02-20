@@ -1,9 +1,9 @@
 import { Box, Rating } from '@mui/material'
 
-export default function TutorRating() {
+export default function TutorRating({ rating }) {
   return (
     <Box>
-      <Rating />
+      <Rating value={rating} />
     </Box>
   )
 }

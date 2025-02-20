@@ -33,6 +33,7 @@ import questionPage from './question-page.json'
 import subjectsPage from './subjects-page.json'
 import subjectsNames from './subjects-names.json'
 import categoriesNames from './categories-names.json'
+import findOfferPage from './find-offer-page.json'
 import languages from './languages.json'
 
 const en = {
@@ -63,6 +64,7 @@ const en = {
     userTable,
     errorMessages,
     findOffers,
+    findOfferPage,
     filters,
     offerPage,
     offerDetailsPage,

@@ -11,7 +11,7 @@ export const styles = {
     gap: '20px',
     flex: '1 0 0',
     alignSelf: 'stretch',
-    width: ' 360px',
+    width: ' auto',
     height: 'auto',
 
     fontFamily: 'Rubik',

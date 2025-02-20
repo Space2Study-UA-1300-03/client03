@@ -18,7 +18,9 @@ export const styles = {
   searchToolbar: {
     borderRadius: '70px',
     display: 'flex',
-    flexDirection: { xs: 'column', sm: 'row' }
+    flexDirection: { xs: 'column', sm: 'row' },
+    maxWidth: '1200px',
+    width: '100%'
   },
   titleWithDescription: {
     wrapper: {

@@ -9,13 +9,14 @@ import Box from '@mui/material/Box'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 import OfferRequestBlock from '~/containers/find-offer/offer-request-block/OfferRequestBlock'
-import ListOfferCard from '~/components/offer-cards-list/ListOfferCards'
 import PageWrapper from '~/components/page-wrapper/PageWrapper'
 import SearchAutocomplete from '~/components/search-autocomplete/SearchAutocomplete'
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'
 import DirectionLink from '~/components/direction-link/DirectionLink'
 import AppToolbar from '~/components/app-toolbar/AppToolbar'
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
+import OfferTitle from '~/components/offer-title/OfferTitle'
+import OffersContainerWithMenu from '~/containers/offer-cards-menu-container/OffersContainerWithMenu'
 
 import { subjectService } from '~/services/subject-service'
 import { categoryService } from '~/services/category-service'
@@ -134,11 +135,7 @@ const FindOffers = () => {
   return (
     <PageWrapper>
       <OfferRequestBlock />
-      <TitleWithDescription
-        description={t('findOffers.titleWithDescription.description')}
-        style={styles.titleWithDescription}
-        title={t('findOffers.titleWithDescription.title')}
-      />
+      <OfferTitle />
       <Box sx={styles.navigation}>
         <DirectionLink
           before={<ArrowBackIcon fontSize={SizeEnum.Small} />}
@@ -163,7 +160,12 @@ const FindOffers = () => {
           />
         )}
       </AppToolbar>
-      <ListOfferCard />
+      <OffersContainerWithMenu />
+      <TitleWithDescription
+        description={t('findOffers.titleWithDescription.description')}
+        style={styles.titleWithDescription}
+        title={t('findOffers.titleWithDescription.title')}
+      />
     </PageWrapper>
   )
 }
