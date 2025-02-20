@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
-import { useAppSelector } from '~/hooks/use-redux'
+//import { useAppSelector } from '~/hooks/use-redux'
 import useLoadMore from '~/hooks/use-load-more'
 import useSubjectsNames from '~/hooks/use-subjects-names'
 import { subjectService } from '~/services/subject-service'
@@ -25,7 +25,7 @@ import AppToolbar from '~/components/app-toolbar/AppToolbar'
 import OfferRequestBlock from '~/containers/find-offer/offer-request-block/OfferRequestBlock'
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
 import useBreakpoints from '~/hooks/use-breakpoints'
-import { getOpositeRole, getScreenBasedLimit } from '~/utils/helper-functions'
+import { getScreenBasedLimit } from '~/utils/helper-functions'
 
 import {
   CategoryNameInterface,
@@ -44,7 +44,7 @@ const Subjects = () => {
   const params = useMemo(() => ({ name: match }), [match])
 
   const { t } = useTranslation()
-  const { userRole } = useAppSelector((state) => state.appMain)
+  //const { userRole } = useAppSelector((state) => state.appMain)
   const breakpoints = useBreakpoints()
   const { openModal } = useModalContext()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -90,16 +90,11 @@ const Subjects = () => {
     params
   })
 
-  const oppositeRole = getOpositeRole(userRole)
-
   const cards = useMemo(
     () =>
       subjects.map((item: SubjectInterface) => {
         return (
           <CardWithLink
-            // description={`${item.totalOffers[oppositeRole]} ${t(
-            //   'categoriesPage.offers'
-            // )}`}
             description={`123 ${t('categoriesPage.offers')}`}
             icon={item.appearance.icon}
             iconColor={item.appearance.color}
@@ -109,7 +104,7 @@ const Subjects = () => {
           />
         )
       }),
-    [subjects, categoryId, oppositeRole, t]
+    [subjects, categoryId, t]
   )
 
   const getCategoriesNames = useCallback(
