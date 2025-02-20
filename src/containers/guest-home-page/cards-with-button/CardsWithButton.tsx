@@ -22,12 +22,14 @@ interface CardsWithButtonProps {
   role: UserRoleEnum
   btnText: string
   isTutor: boolean
+  onClick: () => void
 }
 
 const CardsWithButton: FC<CardsWithButtonProps> = ({
   array,
   btnText,
-  isTutor
+  isTutor,
+  onClick
 }) => {
   const { t } = useTranslation()
 
@@ -63,7 +65,11 @@ const CardsWithButton: FC<CardsWithButtonProps> = ({
       <Transition in={isTutor} timeout={300}>
         {(state) => cards(state)}
       </Transition>
-      <AppButton size={SizeEnum.ExtraLarge} sx={styles.button}>
+      <AppButton
+        onClick={onClick}
+        size={SizeEnum.ExtraLarge}
+        sx={styles.button}
+      >
         {btnText}
       </AppButton>
     </>
