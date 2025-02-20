@@ -113,6 +113,11 @@ const Subjects = () => {
     [subjects, categoryId, oppositeRole, t]
   )
 
+  const getCategoriesNames = (page = 1, limit = 100) =>
+    categoryService
+      .getCategoriesNames(page, limit)
+      .then((response) => response.data)
+
   const onCategoryChange = (
     _: React.SyntheticEvent,
     value: CategoryNameInterface | null
@@ -134,7 +139,7 @@ const Subjects = () => {
       axiosProps={{ onResponse: onResponseCategory }}
       labelField='categoryName'
       onChange={onCategoryChange}
-      service={categoryService.getCategoriesNames}
+      service={getCategoriesNames}
       sx={styles.categoryInput}
       textFieldProps={{
         label: t('breadCrumbs.categories')
