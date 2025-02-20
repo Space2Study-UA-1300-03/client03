@@ -14,6 +14,7 @@ export const URLs = {
   },
   users: {
     get: '/users',
+    getMe: '/users/me',
     update: '/users',
     delete: '/users/delete',
     myProfile: '/users/myProfile',

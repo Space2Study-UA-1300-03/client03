@@ -104,6 +104,5 @@ export const confirmPassword = (
 }
 
 export const checkboxField = (value: boolean) => {
-  console.log(value)
   return validations.checkbox(value)
 }

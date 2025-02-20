@@ -16,8 +16,8 @@ export const initialValues = {
 export const validations = {
   firstName: nameField,
   lastName: nameField,
-  more18Years: checkboxField,
-  professionalSummary: textField(0, 200)
+  professionalSummary: textField(0, 200),
+  more18Years: checkboxField
 }
 
 export const tutorStepLabels = ['generalInfo', 'subjects', 'language', 'photo']
@@ -35,7 +35,8 @@ export const tabMap = {
     'country',
     'professionalSummary',
     'firstName',
-    'lastName'
+    'lastName',
+    'more18Years'
   ],
   interests: ['interests'],
   language: ['languages'],
