@@ -46,9 +46,12 @@ export interface CategoryInterface extends CommonEntityFields {
 export interface CategoryNameInterface {
   _id: string
   name: string
+  categoryName: string
 }
 
 export interface SubjectInterface extends CommonEntityFields {
+  appearance: CategoryAppearance
+  subjectName: string
   name: string
   category: string
   totalOffers: DataByRole<number>
@@ -57,6 +60,7 @@ export interface SubjectInterface extends CommonEntityFields {
 export interface SubjectNameInterface {
   _id: string
   name: string
+  subjectName: string
 }
 
 export interface ReviewInterface extends CommonEntityFields {

@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 
 import { Box, Button } from '@mui/material'
 
-import { studentHowItWorksCards } from './StudentHowItWorksCards'
-import { tutorHowItWorksCards } from './TutorHowItWorksCards'
+import {
+  tutorHowItWorksCards,
+  studentHowItWorksCards
+} from './UserHowItWorksCards'
 import { authRoutes } from '~/router/constants/authRoutes'
 import { style } from './UserHowItWorks.styles'
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'

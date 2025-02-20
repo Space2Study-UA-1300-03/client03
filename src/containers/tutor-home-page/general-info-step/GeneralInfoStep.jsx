@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Box, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
 
+import useBreakpoints from '~/hooks/use-breakpoints'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
 import AppTextField from '~/components/app-text-field/AppTextField'
 import AppTextArea from '~/components/app-text-area/AppTextArea'
@@ -28,6 +29,7 @@ const GeneralInfoStep = ({
   const [currentCities, setCurrentCities] = useState(null)
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
+  const { isLaptopAndAbove, isMobile } = useBreakpoints()
 
   const onResponseCityError = () => {
     handleNonInputValueChange('city', '')
@@ -84,14 +86,21 @@ const GeneralInfoStep = ({
 
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.imgContainer}>
-        <Box component='img' src={img} sx={styles.img} />
-      </Box>
+      {isLaptopAndAbove && (
+        <Box sx={styles.imgContainer}>
+          <Box component='img' src={img} sx={styles.img} />
+        </Box>
+      )}
       <Box sx={styles.rightBox}>
         <Box sx={styles.contentBox}>
           <Typography mb='20px'>
             {t('becomeTutor.generalInfo.title')}
           </Typography>
+          {isMobile && (
+            <Box sx={styles.imgContainer}>
+              <Box component='img' src={img} sx={styles.img} />
+            </Box>
+          )}
           <Box sx={styles.form}>
             <Box sx={styles.inputsContainer}>
               <AppTextField

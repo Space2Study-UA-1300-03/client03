@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import useBreakpoints from '~/hooks/use-breakpoints'
+
 import Box from '@mui/material/Box'
 import { Typography } from '@mui/material'
 
@@ -16,6 +18,7 @@ import { styles } from '~/containers/tutor-home-page/language-step/LanguageStep.
 const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
   const { t } = useTranslation()
   const [language, setLanguage] = useState('')
+  const { isLaptopAndAbove, isMobile } = useBreakpoints()
 
   const { response: languages, loading: loadingLanguages } = useAxios({
     service: languagesService.getLanguages,
@@ -43,15 +46,29 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
     handleLanguageChange('languages', [...updatedLanguageList])
   }
 
+  const options = useMemo(
+    () =>
+      languages.map((lang) => ({
+        ...lang,
+        name: t(`languages.${lang.name}`)
+      })),
+    [languages, t]
+  )
+
   const StudentLangStep = () => {
     return (
       <Box>
         <Typography>{t('becomeTutor.languages.studentTitle')}</Typography>
+        {isMobile && (
+          <Box sx={styles.imgContainer}>
+            <Box component='img' src={img} sx={styles.img} />
+          </Box>
+        )}
         <AppAutoComplete
           key={languages.id}
           loading={loadingLanguages}
           onChange={(_, value) => handleLanguageChange('languages', [value])}
-          options={languages?.map((language) => language.name)}
+          options={options?.map((language) => language.name)}
           sx={{ mt: '20px' }}
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabelStudent')
@@ -66,12 +83,17 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
     return (
       <Box>
         <Typography>{t('becomeTutor.languages.tutorTitle')}</Typography>
+        {isMobile && (
+          <Box sx={styles.imgContainer}>
+            <Box component='img' src={img} sx={styles.img} />
+          </Box>
+        )}
         <AppAutoComplete
           getOptionLabel={(option) => option.name || ''}
           key={languages.id}
           loading={loadingLanguages}
           onChange={handleChange}
-          options={languages}
+          options={options}
           sx={{ mt: '20px' }}
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabelTutor')
@@ -89,9 +111,11 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
 
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.imgContainer}>
-        <Box component='img' src={img} sx={styles.img} />
-      </Box>
+      {isLaptopAndAbove && (
+        <Box sx={styles.imgContainer}>
+          <Box component='img' src={img} sx={styles.img} />
+        </Box>
+      )}
       <Box sx={styles.rigthBox}>
         {userRole === student && <StudentLangStep />}
         {userRole === tutor && <TutorLangStep />}

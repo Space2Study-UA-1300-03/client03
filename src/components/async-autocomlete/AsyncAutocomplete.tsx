@@ -12,7 +12,7 @@ interface AsyncAutocompleteProps<T, F extends boolean | undefined>
     AutocompleteProps<T, undefined, undefined, F>,
     'value' | 'options' | 'renderInput'
   > {
-  service: ServiceFunction<T[]>
+  service: ServiceFunction<T[]> | (() => Promise<AxiosResponse<T[], unknown>>)
   valueField?: keyof T
   labelField?: keyof T
   value: T[keyof T] | null | Category

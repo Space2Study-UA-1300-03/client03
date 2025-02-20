@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import useBreakpoints from '~/hooks/use-breakpoints'
+
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useTranslation } from 'react-i18next'
 
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
@@ -15,6 +17,7 @@ import { useSnackBarContext } from '~/context/snackbar-context'
 const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
+  const { isLaptopAndAbove, isMobile } = useBreakpoints()
 
   const [subject, setSubject] = useState({ category: null, subject: null })
   const [listOfSubjects, setListOfSubjects] = useState(data.interests)
@@ -109,19 +112,48 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
     }
   }, [categoriesError, subjectsError, setAlert])
 
+  const categoriesOptions = useMemo(
+    () => ({
+      pagination: categories.pagination,
+      data: categories.data.map((option) => ({
+        ...option,
+        categoryName: t(`categoriesNames.categories.${option.categoryName}`)
+      }))
+    }),
+    [categories.data, categories.pagination, t]
+  )
+
+  const subjectsOptions = useMemo(
+    () => ({
+      data: subjects.data.map((option) => ({
+        ...option,
+        subjectName: t(`subjectsNames.subjects.${option.subjectName}`)
+      })),
+      pagination: subjects.pagination
+    }),
+    [subjects.data, subjects.pagination, t]
+  )
+
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.imgContainer}>
-        <Box component='img' src={img} sx={styles.img} />
-      </Box>
+      {isLaptopAndAbove && (
+        <Box sx={styles.imgContainer}>
+          <Box component='img' src={img} sx={styles.img} />
+        </Box>
+      )}
       <Box sx={styles.rightBox}>
         <Box sx={styles.contentBox}>
           <Typography mb={2}>{t('becomeTutor.categories.title')}</Typography>
+          {isMobile && (
+            <Box sx={styles.imgContainer}>
+              <Box component='img' src={img} sx={styles.img} />
+            </Box>
+          )}
           <AppAutoComplete
             getOptionLabel={(option) => option.categoryName ?? option}
             loading={loadingCategories}
             onChange={onChangeCategory}
-            options={categories.data || []}
+            options={categoriesOptions.data || []}
             sx={{ mb: 2 }}
             textFieldProps={{
               label: t('becomeTutor.categories.mainSubjectsLabel')
@@ -133,7 +165,7 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
             getOptionLabel={(option) => option.subjectName ?? option}
             loading={loadingSubjects}
             onChange={onChangeSubject}
-            options={subjects.data || []}
+            options={subjectsOptions.data || []}
             sx={{ mb: 2 }}
             textFieldProps={{ label: t('becomeTutor.categories.subjectLabel') }}
             value={subject.subject}
