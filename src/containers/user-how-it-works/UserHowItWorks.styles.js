@@ -8,7 +8,6 @@ export const style = {
     textAlign: 'center',
     p: '50px 45px'
   },
-
   mainTitleWithDescription: {
     title: {
       typography: 'h4'
@@ -18,33 +17,28 @@ export const style = {
       typography: 'body1'
     }
   },
-
   cardsContainer: {
     display: 'flex',
+    justifyContent: 'center',
     flexWrap: 'wrap',
     gap: '40px',
     m: '48px 0 70px 0'
   },
-
   card: {
     maxWidth: '229px'
   },
-
   cardImg: {
     maxHeight: '64px'
   },
-
   cardTitleWithDescription: {
     wrapper: {
       mb: '32px'
     },
-
     title: {
       typography: 'h6',
       mt: '24px',
       mb: '16px'
     },
-
     description: {
       typography: 'body2'
     }
