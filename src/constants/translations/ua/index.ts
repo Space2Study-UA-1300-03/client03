@@ -32,6 +32,7 @@ import becomeTutor from './become-tutor.json'
 import subjectsNames from './subjects-names.json'
 import categoriesNames from './categories-names.json'
 import studentHomePage from './student-home-page.json'
+import languages from './languages.json'
 
 const ua = {
   translations: {
@@ -68,7 +69,8 @@ const ua = {
     becomeTutor,
     subjectsNames,
     categoriesNames,
-    studentHomePage
+    studentHomePage,
+    languages
   }
 }
 

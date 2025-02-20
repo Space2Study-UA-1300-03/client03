@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import useBreakpoints from '~/hooks/use-breakpoints'
 
@@ -46,6 +46,15 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
     handleLanguageChange('languages', [...updatedLanguageList])
   }
 
+  const options = useMemo(
+    () =>
+      languages.map((lang) => ({
+        ...lang,
+        name: t(`languages.${lang.name}`)
+      })),
+    [languages, t]
+  )
+
   const StudentLangStep = () => {
     return (
       <Box>
@@ -59,7 +68,7 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
           key={languages.id}
           loading={loadingLanguages}
           onChange={(_, value) => handleLanguageChange('languages', [value])}
-          options={languages?.map((language) => language.name)}
+          options={options?.map((language) => language.name)}
           sx={{ mt: '20px' }}
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabelStudent')
@@ -84,7 +93,7 @@ const LanguageStep = ({ userRole, btnsBox, data, handleLanguageChange }) => {
           key={languages.id}
           loading={loadingLanguages}
           onChange={handleChange}
-          options={languages}
+          options={options}
           sx={{ mt: '20px' }}
           textFieldProps={{
             label: t('becomeTutor.languages.autocompleteLabelTutor')
