@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useModalContext } from '~/context/modal-context'
 
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -14,14 +15,25 @@ import { guestRoutes } from '~/router/constants/guestRoutes'
 
 import { TypographyVariantEnum, UserRoleEnum } from '~/types'
 import { styles } from '~/containers/guest-home-page/how-it-works/HowItWorks.styles'
+import SignUpDialog from '../signup-dialog/SignUpDialog'
 
 const HowItWorks = () => {
   const { t } = useTranslation()
-
   const [isTutor, setIsTutor] = useState(false)
+  const { openModal } = useModalContext()
 
   const onChange = () => {
     setIsTutor(!isTutor)
+  }
+
+  const handleOpenSignUp = () => {
+    isTutor
+      ? openModal({
+          component: <SignUpDialog initialRole={UserRoleEnum.Tutor} />
+        })
+      : openModal({
+          component: <SignUpDialog initialRole={UserRoleEnum.Student} />
+        })
   }
 
   const switchOptions = {
@@ -54,6 +66,7 @@ const HowItWorks = () => {
               : t('guestHomePage.whatCanYouDo.learn.actionLabel')
           }
           isTutor={isTutor}
+          onClick={handleOpenSignUp}
           role={isTutor ? UserRoleEnum.Tutor : UserRoleEnum.Student}
         />
       </Box>

@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
+import useBreakpoints from '~/hooks/use-breakpoints'
+
 import { Box, Typography, Checkbox, FormControlLabel } from '@mui/material'
 
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
@@ -25,6 +27,7 @@ const GeneralInfoStep = ({
   const [currentCities, setCurrentCities] = useState(null)
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
+  const { isLaptopAndAbove, isMobile } = useBreakpoints()
 
   const onResponseCityError = () => {
     handleNonInputValueChange('city', '')
@@ -81,14 +84,21 @@ const GeneralInfoStep = ({
 
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.imgContainer}>
-        <Box component='img' src={img} sx={styles.img} />
-      </Box>
+      {isLaptopAndAbove && (
+        <Box sx={styles.imgContainer}>
+          <Box component='img' src={img} sx={styles.img} />
+        </Box>
+      )}
       <Box sx={styles.rightBox}>
         <Box sx={styles.contentBox}>
           <Typography mb='20px'>
             {t('becomeTutor.generalInfo.title')}
           </Typography>
+          {isMobile && (
+            <Box sx={styles.imgContainer}>
+              <Box component='img' src={img} sx={styles.img} />
+            </Box>
+          )}
           <Box sx={styles.form}>
             <Box sx={styles.inputsContainer}>
               <AppTextField
