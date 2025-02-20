@@ -25,7 +25,6 @@ import AppToolbar from '~/components/app-toolbar/AppToolbar'
 import OfferRequestBlock from '~/containers/find-offer/offer-request-block/OfferRequestBlock'
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
 import useBreakpoints from '~/hooks/use-breakpoints'
-import serviceIcon from '~/assets/img/student-home-page/service_icon.png'
 import { getOpositeRole, getScreenBasedLimit } from '~/utils/helper-functions'
 import { mapArrayByField } from '~/utils/map-array-by-field'
 
@@ -99,13 +98,15 @@ const Subjects = () => {
       subjects.map((item: SubjectInterface) => {
         return (
           <CardWithLink
-            description={`${item.totalOffers[oppositeRole]} ${t(
-              'categoriesPage.offers'
-            )}`}
-            img={serviceIcon}
+            // description={`${item.totalOffers[oppositeRole]} ${t(
+            //   'categoriesPage.offers'
+            // )}`}
+            description={`123 ${t('categoriesPage.offers')}`}
+            icon={item.appearance.icon}
+            iconColor={item.appearance.color}
             key={item._id}
             link={`${authRoutes.categories.path}?categoryId=${categoryId}&subjectId=${item._id}`}
-            title={item.name}
+            title={t(`subjectsNames.subjects.${item.subjectName}`)}
           />
         )
       }),
@@ -118,20 +119,20 @@ const Subjects = () => {
   ) => {
     setIsFetched(false)
     searchParams.set('categoryId', value?._id ?? '')
-    setCategoryName(value?.name ?? '')
+    setCategoryName(value?.categoryName ?? '')
     setSearchParams(searchParams)
     resetData()
   }
 
   const onResponseCategory = (response: CategoryNameInterface[]) => {
     const category = response.find((option) => option._id === categoryId)
-    setCategoryName(category?.name ?? '')
+    setCategoryName(category?.categoryName ?? '')
   }
 
   const autoCompleteCategories = (
     <AsyncAutocomplete
       axiosProps={{ onResponse: onResponseCategory }}
-      labelField='name'
+      labelField='categoryName'
       onChange={onCategoryChange}
       service={categoryService.getCategoriesNames}
       sx={styles.categoryInput}
@@ -145,6 +146,16 @@ const Subjects = () => {
 
   const handleOpenModal = () => openModal({ component: <CreateSubjectModal /> })
 
+  console.log('categoryName', categoryName)
+  console.log('categoryId', categoryId)
+  console.log('subjects', subjects)
+  console.log('subjectsLoading', subjectsLoading)
+  console.log('subjectsNamesItems', subjectsNamesItems)
+  console.log('subjectNamesLoading', subjectNamesLoading)
+  console.log('cards', cards)
+  console.log('params', params)
+  console.log('match:', match)
+
   return (
     <PageWrapper>
       <OfferRequestBlock />
@@ -154,6 +165,8 @@ const Subjects = () => {
         style={styles.titleWithDescription}
         title={t('subjectsPage.subjects.title', {
           category: categoryName
+            ? t(`categoriesNames.categories.${categoryName}`)
+            : categoryName
         })}
       />
 
@@ -165,7 +178,7 @@ const Subjects = () => {
         />
         <DirectionLink
           after={<ArrowForwardIcon fontSize={SizeEnum.Small} />}
-          linkTo={authRoutes.categories.path}
+          linkTo={authRoutes.findOffers.path}
           title={t('subjectsPage.subjects.showAllOffers')}
         />
       </Box>
