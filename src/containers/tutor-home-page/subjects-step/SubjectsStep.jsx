@@ -109,6 +109,28 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
     }
   }, [categoriesError, subjectsError, setAlert])
 
+  const categoriesOptions = useMemo(
+    () => ({
+      pagination: categories.pagination,
+      data: categories.data.map((option) => ({
+        ...option,
+        categoryName: t(`categoriesNames.categories.${option.categoryName}`)
+      }))
+    }),
+    [categories.data, categories.pagination, t]
+  )
+
+  const subjectsOptions = useMemo(
+    () => ({
+      data: subjects.data.map((option) => ({
+        ...option,
+        subjectName: t(`subjectsNames.subjects.${option.subjectName}`)
+      })),
+      pagination: subjects.pagination
+    }),
+    [subjects.data, subjects.pagination, t]
+  )
+
   return (
     <Box sx={styles.container}>
       <Box sx={styles.imgContainer}>
@@ -121,7 +143,7 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
             getOptionLabel={(option) => option.categoryName ?? option}
             loading={loadingCategories}
             onChange={onChangeCategory}
-            options={categories.data || []}
+            options={categoriesOptions.data || []}
             sx={{ mb: 2 }}
             textFieldProps={{
               label: t('becomeTutor.categories.mainSubjectsLabel')
@@ -133,7 +155,7 @@ const SubjectsStep = ({ btnsBox, data, handleSubjectChange }) => {
             getOptionLabel={(option) => option.subjectName ?? option}
             loading={loadingSubjects}
             onChange={onChangeSubject}
-            options={subjects.data || []}
+            options={subjectsOptions.data || []}
             sx={{ mb: 2 }}
             textFieldProps={{ label: t('becomeTutor.categories.subjectLabel') }}
             value={subject.subject}
