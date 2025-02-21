@@ -22,7 +22,6 @@ import OfferRequestBlock from '~/containers/find-offer/offer-request-block/Offer
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
 import useBreakpoints from '~/hooks/use-breakpoints'
 import { getScreenBasedLimit } from '~/utils/helper-functions'
-
 import {
   CategoryNameInterface,
   SizeEnum,
@@ -32,11 +31,14 @@ import {
 import { itemsLoadLimit } from '~/constants'
 import { authRoutes } from '~/router/constants/authRoutes'
 import { styles } from '~/pages/subjects/Subjects.styles'
+//import { axiosClient } from '~/plugins/axiosClient'
+import useSubjectsOffersData from '~/hooks/use-subjects-offers-data'
 
 const Subjects = () => {
   const [match, setMatch] = useState<string>('')
   const [categoryName, setCategoryName] = useState<string>('')
   const [isFetched, setIsFetched] = useState<boolean>(false)
+  // const [offersData, setOffersData] = useState<Record<string, number>>({})
   const params = useMemo(() => ({ name: match }), [match])
 
   const { t } = useTranslation()
@@ -46,6 +48,8 @@ const Subjects = () => {
   const categoryId = searchParams.get('categoryId') ?? ''
 
   const cardsLimit = getScreenBasedLimit(breakpoints, itemsLoadLimit)
+  const PAGE = 1
+  const LIMIT = 100
 
   const {
     loading: subjectNamesLoading,
@@ -54,8 +58,8 @@ const Subjects = () => {
   } = useSubjectsNames({
     fetchOnMount: false,
     category: categoryId,
-    page: 1,
-    limit: 100
+    page: PAGE,
+    limit: LIMIT
   })
 
   const subjectsNamesItems = subjectsNames.data.map(
@@ -85,12 +89,14 @@ const Subjects = () => {
     params
   })
 
+  const offersData = useSubjectsOffersData(subjects)
+
   const cards = useMemo(
     () =>
       subjects.map((item: SubjectInterface) => {
         return (
           <CardWithLink
-            description={`123 ${t('categoriesPage.offers')}`}
+            description={`${offersData[item._id] ?? 0} ${t('categoriesPage.offers')}`}
             icon={item.appearance.icon}
             iconColor={item.appearance.color}
             key={item._id}
@@ -99,13 +105,13 @@ const Subjects = () => {
           />
         )
       }),
-    [subjects, categoryId, t]
+    [subjects, categoryId, t, offersData]
   )
 
   const getCategoriesNames = useCallback(
     () =>
       categoryService
-        .getCategoriesNames(1, 100)
+        .getCategoriesNames(PAGE, LIMIT)
         .then((response) => response.data),
     []
   )
