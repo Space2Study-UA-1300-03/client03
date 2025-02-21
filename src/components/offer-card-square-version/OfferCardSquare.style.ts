@@ -11,9 +11,8 @@ export const styles = {
     gap: '20px',
     flex: '1 0 0',
     alignSelf: 'stretch',
-    width: ' auto',
-    height: 'auto',
-
+    minHeight: '420px',
+    width: 'auto',
     fontFamily: 'Rubik',
     fontStyle: 'normal',
     letterSpacing: '0.15px',
@@ -22,13 +21,19 @@ export const styles = {
   titleCard: {
     fontSize: '18px',
     fontWeight: '600',
-    color: ' #455A64'
+    color: '#455A64',
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    textOverflow: 'ellipsis'
   },
+
   author: {
     mb: '10px',
     fontSize: '16px',
     fontWeight: '500',
-    color: ' #607D8B'
+    color: '#607D8B'
   },
   reviews: {
     color: '#607D8B',
@@ -60,7 +65,7 @@ export const styles = {
   chipItemsTitle: {
     fontSize: '10px',
     fontWeight: '400',
-    color: ' #607D8B',
+    color: '#607D8B',
     textTransform: 'uppercase',
     letterSpacing: 1.5
   },
