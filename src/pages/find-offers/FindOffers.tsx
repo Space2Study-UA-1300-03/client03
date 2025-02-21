@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
@@ -19,16 +19,14 @@ import OfferCardViewButton from '~/components/offer-cards-filter-menu/OfferCardV
 
 import { subjectService } from '~/services/subject-service'
 import { categoryService } from '~/services/category-service'
-import { getScreenBasedLimit } from '~/utils/helper-functions'
 import { CategoryNameInterface, SizeEnum, SubjectNameInterface } from '~/types'
-import { itemsLoadLimit } from '~/constants'
 import { authRoutes } from '~/router/constants/authRoutes'
 import { styles } from './FindOffers.styles'
+import PopularCategories from '~/components/popular-categories/PopularCategories'
 
 const FindOffers = () => {
   const { t } = useTranslation()
   const breakpoints = useBreakpoints()
-  const cardsLimit = getScreenBasedLimit(breakpoints, itemsLoadLimit)
 
   const [searchParams, setSearchParams] = useSearchParams()
   const [match, setMatch] = useState<string>('')
@@ -37,11 +35,6 @@ const FindOffers = () => {
 
   const categoryId = searchParams.get('categoryId') ?? ''
   const subjectId = searchParams.get('subjectId') ?? ''
-
-  const params = useMemo(
-    () => ({ search: match, categoryId, subjectId }),
-    [match, categoryId, subjectId]
-  )
 
   const onCategoryChange = (
     _: React.SyntheticEvent,
@@ -126,7 +119,7 @@ const FindOffers = () => {
         {autoCompleteSubjects}
         {!breakpoints.isMobile && (
           <SearchAutocomplete
-            onSearchChange={(newSearch) => setMatch(newSearch)}
+            onSearchChange={(newSearch: string) => setMatch(newSearch)}
             options={[]}
             search={match}
             setSearch={setMatch}
@@ -142,6 +135,7 @@ const FindOffers = () => {
         search={match}
         subjectId={subjectId}
       />
+      <PopularCategories />
     </PageWrapper>
   )
 }

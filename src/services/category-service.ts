@@ -12,7 +12,9 @@ export const categoryService = {
   getCategories: (
     params?: Partial<CategoriesParams>
   ): Promise<AxiosResponse<ItemsWithCount<CategoryInterface>>> => {
-    return axiosClient.get(URLs.categories.get, { params })
+    return axiosClient.get(URLs.categories.get, {
+      params: { limit: 1000, ...params }
+    })
   },
   getCategoriesNames: (
     page?: number,

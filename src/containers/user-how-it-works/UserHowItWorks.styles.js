@@ -6,7 +6,9 @@ export const style = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    p: '50px 45px'
+    p: '50px 0px',
+    width: '100%',
+    maxWidth: '1220px'
   },
   mainTitleWithDescription: {
     title: {

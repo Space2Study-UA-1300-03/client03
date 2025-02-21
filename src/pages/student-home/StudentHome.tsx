@@ -9,6 +9,7 @@ import Faq from '~/containers/faq/Faq'
 import UserHowItWorks from '~/containers/user-how-it-works/UserHowItWorks.jsx'
 
 import { translationKey } from '~/components/find-block/find-tutor-constants'
+import PopularCategories from '~/components/popular-categories/PopularCategories'
 
 const StudentHome = () => {
   const { openModal } = useModalContext()
@@ -33,6 +34,7 @@ const StudentHome = () => {
   return (
     <Container data-testid='studentHome' sx={{ flex: 1 }}>
       <FindBlock translationKey={translationKey} />
+      <PopularCategories />
       <UserHowItWorks userRole={userRole} />
       <Faq userRole={userRole} />
     </Container>

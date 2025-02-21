@@ -10,7 +10,7 @@
   "popularCategories": {
     "title": "Популярні категорії",
     "description": "Досліджуйте категорії репетиторства, які вас цікавлять.",
-    "viewMore": "Дивитися більше"
+    "viewAllCategories": "Дивитися всі категорії"
   },
   "howItWorks": {
     "title": "Як це працює",

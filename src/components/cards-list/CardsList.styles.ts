@@ -10,7 +10,7 @@ export const styles = {
     },
     gridAutoRows: '112px',
     gridGap: '24px',
-    width: '1220px'
+    maxWidth: '1220px'
   },
   btn: {
     minWidth: '148px',
