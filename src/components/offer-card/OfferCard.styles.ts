@@ -10,6 +10,7 @@ export const styles = {
     justifyContent: 'space-between',
     gap: '24px',
     minWidth: '1128px',
+    maxWidth: '1128px',
     height: '290px',
     fontFamily: 'Rubik',
     fontStyle: 'normal',

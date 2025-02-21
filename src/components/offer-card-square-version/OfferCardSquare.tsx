@@ -22,42 +22,46 @@ const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
   } = cardData
 
   const { t } = useTranslation()
+  const maxLanguagesToShow = 3
+  const displayedLanguages = languages?.slice(0, maxLanguagesToShow)
+  const hiddenCount = (languages?.length ?? 0) - maxLanguagesToShow
 
   return (
     <Box sx={styles.offerCardSquare}>
-      {/* Верхня частина з аватаром, ім'ям, мовами, іконкою "Bookmark" */}
       <Box sx={styles.authInfo}>
-        <Avatar alt='avatar' src={avatar} sx={{ minWidth: '100px', minHeight: '100px' }} />
+        <Avatar
+          alt='avatar'
+          src={avatar}
+          sx={{ minWidth: '100px', minHeight: '100px' }}
+        />
         <Box>
           <Typography sx={styles.author}>{author}</Typography>
-          <Stack
-            direction='row'
-            display='grid'
-            gap='2px'
-            gridTemplateColumns='repeat(2, 1fr)'
-            gridTemplateRows='auto'
-          >
-            {languages?.map((item) => (
+          <Stack direction='row' flexWrap='wrap' spacing={0.5}>
+            {displayedLanguages?.map((lang) => (
               <Chip
-                color='default'
-                key={item}
-                label={item}
+                key={lang}
+                label={lang}
                 sx={{ color: '#616161' }}
                 variant='outlined'
               />
             ))}
+            {hiddenCount > 0 && (
+              <Chip
+                label={`+${hiddenCount} more`}
+                sx={{ color: '#616161' }}
+                variant='outlined'
+              />
+            )}
           </Stack>
         </Box>
         <BookmarkBorderOutlinedIcon />
       </Box>
-
-      {/* Заголовок */}
       <Typography sx={styles.titleCard}>{title}</Typography>
       <Divider />
-
-      {/* Предмети */}
       <Box sx={styles.chipItems}>
-        <Typography sx={styles.chipItemsTitle}>{t('findOfferPage.subject')}:</Typography>
+        <Typography sx={styles.chipItemsTitle}>
+          {t('findOfferPage.subject')}:
+        </Typography>
         <Stack direction='row' spacing={0.5}>
           {subjects?.map((item) => (
             <Chip
@@ -72,10 +76,10 @@ const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
           ))}
         </Stack>
       </Box>
-
-      {/* Рівень */}
       <Box sx={styles.chipItems}>
-        <Typography sx={styles.chipItemsTitle}>{t('findOfferPage.level')}:</Typography>
+        <Typography sx={styles.chipItemsTitle}>
+          {t('findOfferPage.level')}:
+        </Typography>
         <Stack direction='row' spacing={0.5}>
           {proficiencyLevel?.map((item) => (
             <Chip
@@ -90,8 +94,6 @@ const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
           ))}
         </Stack>
       </Box>
-
-      {/* Ціна і рейтинг */}
       <Box
         sx={{
           display: 'flex',
