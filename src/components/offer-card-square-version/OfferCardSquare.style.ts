@@ -1,8 +1,7 @@
-import { border } from '~/pages/offer-details/OfferDetails.styles'
+import { alpha } from '@mui/material/styles'
 
 export const styles = {
   offerCardSquare: {
-    ...border,
     m: '16px',
     p: { sm: '20px 20px', md: '20px 30px' },
     display: 'flex',
@@ -16,7 +15,13 @@ export const styles = {
     fontFamily: 'Rubik',
     fontStyle: 'normal',
     letterSpacing: '0.15px',
-    lineHeight: '24px'
+    lineHeight: '24px',
+    borderRadius: '6px',
+    backgroundColor: '#fff',
+    cursor: 'pointer',
+    '&:hover': {
+      boxShadow: `0px 3px 15px ${alpha('#90A4AE8F', 0.5)}`
+    }
   },
   titleCard: {
     fontSize: '18px',
