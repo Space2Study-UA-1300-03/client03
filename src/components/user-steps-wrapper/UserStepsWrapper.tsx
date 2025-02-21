@@ -22,7 +22,8 @@ import {
   tutorStepLabels,
   studentStepLabels,
   initialValues,
-  validations
+  studentValidations,
+  tutorValidations
 } from '~/components/user-steps-wrapper/constants'
 import { student } from '~/constants'
 
@@ -37,6 +38,8 @@ interface UserData {
 
 const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
   const stepLabels = userRole === student ? studentStepLabels : tutorStepLabels
+  const validations =
+    userRole === student ? studentValidations : tutorValidations
   const [isUserFetched, setIsUserFetched] = useState(false)
   const dispatch = useAppDispatch()
   const { closeModal, registerEvent, unregisterEvent } = useModalContext()
