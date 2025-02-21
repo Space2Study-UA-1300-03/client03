@@ -9,6 +9,7 @@ export const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     cursor: 'pointer',
+    transition: 'box-shadow 0.3s ease, transform 0.2s ease',
     '&:hover': {
       boxShadow: `0px 3px 15px ${alpha('#90A4AE8F', 0.5)}`
     }

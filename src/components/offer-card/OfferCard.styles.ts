@@ -17,6 +17,7 @@ export const styles = {
     lineHeight: '24px',
     borderRadius: '6px',
     backgroundColor: '#fff',
+    transition: 'box-shadow 0.3s ease, transform 0.2s ease',
     cursor: 'pointer',
     '&:hover': {
       boxShadow: `0px 3px 15px ${alpha('#90A4AE8F', 0.5)}`
