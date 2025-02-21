@@ -39,5 +39,8 @@ export const styles = {
       typography: { sm: 'body1', xs: 'body2' },
       color: 'primary.500'
     }
+  },
+  container: {
+    mb: 7
   }
 }

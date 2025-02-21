@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios'
 
 export interface RequestParams {
   limit: number
-  skip: number
+  page: number
   sort: Sort
   categories: string[]
 }

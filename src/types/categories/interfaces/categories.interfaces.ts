@@ -6,6 +6,8 @@ import { RequestParams } from '~/types/services/types/services.types'
 
 export interface CategoriesParams extends RequestParams {
   name: string
+  page?: number
+  limit?: number
 }
 
 export interface CreateCategoriesParams {
