@@ -37,7 +37,7 @@ const Subjects = () => {
   const [match, setMatch] = useState<string>('')
   const [categoryName, setCategoryName] = useState<string>('')
   const [isFetched, setIsFetched] = useState<boolean>(false)
-  const params = useMemo(() => ({ name: match }), [match])
+  const params = useMemo(() => ({ subjectName: match }), [match])
 
   const { t } = useTranslation()
   const breakpoints = useBreakpoints()
@@ -70,7 +70,7 @@ const Subjects = () => {
   }
 
   const getSubjects = useCallback(
-    (data?: Pick<SubjectInterface, 'name'>) =>
+    (data?: Pick<SubjectInterface, 'subjectName'>) =>
       subjectService.getSubjects(data, categoryId),
     [categoryId]
   )
@@ -81,7 +81,7 @@ const Subjects = () => {
     resetData,
     loadMore,
     isExpandable
-  } = useLoadMore<SubjectInterface, Pick<SubjectInterface, 'name'>>({
+  } = useLoadMore<SubjectInterface, Pick<SubjectInterface, 'subjectName'>>({
     service: getSubjects,
     limit: cardsLimit,
     params
