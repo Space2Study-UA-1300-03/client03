@@ -10,14 +10,20 @@ export const initialValues = {
   languages: [],
   photo: null,
   photoFile: null,
-  more18Years: false
+  more18Years: null
 }
 
-export const validations = {
+export const tutorValidations = {
   firstName: nameField,
   lastName: nameField,
   professionalSummary: textField(0, 200),
   more18Years: checkboxField
+}
+
+export const studentValidations = {
+  firstName: nameField,
+  lastName: nameField,
+  professionalSummary: textField(0, 200)
 }
 
 export const tutorStepLabels = ['generalInfo', 'subjects', 'language', 'photo']
