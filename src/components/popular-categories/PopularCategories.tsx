@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import useAxios from '~/hooks/use-axios'
-import usePopularCategoriesOffersData from '~/hooks/use-popular-categories-offers-data copy'
+import usePopularCategoriesOffersData from '~/hooks/use-popular-categories-offers-data'
 
 import Box from '@mui/material/Box'
 
