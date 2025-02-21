@@ -16,7 +16,11 @@ export const styles = {
     justifyContent: 'space-between'
   },
   searchToolbar: {
-    borderRadius: '70px'
+    borderRadius: '70px',
+    display: 'flex',
+    flexDirection: { xs: 'column', sm: 'row' },
+    width: '100%',
+    maxWidth: '1200px'
   },
   showAllOffers: {
     display: 'flex',

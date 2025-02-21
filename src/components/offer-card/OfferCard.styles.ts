@@ -3,30 +3,51 @@ import { border } from '~/pages/offer-details/OfferDetails.styles'
 export const styles = {
   offerCard: {
     ...border,
-    m: '16px',
-    p: { sm: '20px 20px', md: '20px 30px' },
+    margin: '16px',
+    padding: { sm: '20px 20px', md: '20px 30px' },
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '40px',
-    flex: '1 0 0',
-    alignSelf: 'stretch',
-    minWidth: '600px',
-    height: '360px',
-
+    justifyContent: 'space-between',
+    gap: '24px',
+    minWidth: '1128px',
+    height: '290px',
     fontFamily: 'Rubik',
     fontStyle: 'normal',
     letterSpacing: '0.15px',
     lineHeight: '24px'
   },
+  authInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 1,
+    width: '160px',
+    padding: '10px'
+  },
+  cardDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    gap: '10px',
+    flex: '1 1 auto'
+  },
+  rightColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    width: '180px'
+  },
   titleCard: {
     fontSize: '18px',
     fontWeight: '600',
-    color: ' #455A64'
+    color: '#455A64'
   },
   author: {
     fontSize: '16px',
     fontWeight: '500',
-    color: ' #607D8B'
+    color: '#607D8B'
   },
   reviews: {
     color: '#607D8B',
@@ -35,35 +56,39 @@ export const styles = {
   },
   description: {
     color: '#546E7A',
-    fontSize: '14px'
+    fontSize: '14px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: 'vertical'
   },
-  authInfo: {
-    p: '10px',
-    width: 'auto',
+  priceValue: {
+    fontSize: '20px',
+    fontWeight: '500',
+    textTransform: 'uppercase'
+  },
+  priceUnit: {
+    fontSize: '10px',
+    fontWeight: '400',
+    textTransform: 'uppercase'
+  },
+  buttonArea: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '2'
-  },
-  cardDetails: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    gap: '10px',
-    maxWidth: 'md'
+    gap: '8px',
+    marginTop: '24px'
   },
   buttonsCard: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '8px',
     justifyContent: 'center',
-    alignItems: 'center',
-    maxwidth: '250px'
+    alignItems: 'center'
   },
   button: {
     p: '7px 24px',
-    width: '180px',
+    width: '200px',
     height: '56px'
   }
 }
