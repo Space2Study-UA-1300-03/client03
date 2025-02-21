@@ -24,7 +24,7 @@ export const styles = {
     color: '#455A64',
     overflow: 'hidden',
     display: '-webkit-box',
-    WebkitLineClamp: 2,
+    WebkitLineClamp: 1,
     WebkitBoxOrient: 'vertical',
     textOverflow: 'ellipsis'
   },
