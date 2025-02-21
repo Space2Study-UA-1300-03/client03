@@ -98,7 +98,7 @@ const Subjects = () => {
             icon={item.appearance.icon}
             iconColor={item.appearance.color}
             key={item._id}
-            link={`${authRoutes.categories.path}?categoryId=${categoryId}&subjectId=${item._id}`}
+            link={`${authRoutes.findOffers.path}?categoryId=${categoryId}&subjectId=${item._id}`}
             title={t(`subjectsNames.subjects.${item.subjectName}`)}
           />
         )
