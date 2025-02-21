@@ -12,26 +12,15 @@ export const styles = {
     }
   },
   navigation: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    maxWidth: '1220px',
     width: '100%',
-    maxWidth: '1220px'
+    display: 'flex',
+    justifyContent: 'right'
   },
   searchToolbar: {
-    borderRadius: '70px',
-    display: 'flex',
-    flexDirection: { xs: 'column', sm: 'row' },
+    maxWidth: '1200px',
     width: '100%',
-    maxWidth: '1200px'
-  },
-  showAllOffers: {
-    display: 'flex',
-    justifyContent: 'end',
-    alignItems: 'center',
-    columnGap: '10px',
-    color: 'primary.500',
-    textDecoration: 'none',
-    m: '0 45px 20px 0'
+    borderRadius: '70px'
   },
   titleWithDescription: {
     wrapper: {
@@ -45,5 +34,14 @@ export const styles = {
       typography: { sm: 'body1', xs: 'body2' },
       color: 'primary.500'
     }
+  },
+  createNewSubjectOrCategory: {
+    textAlign: 'center',
+    typography: 'body2',
+    mb: '30px'
+  },
+  link: {
+    color: 'inherit',
+    fontWeight: '500'
   }
 }

@@ -13,7 +13,9 @@ export const styles = {
   },
   navigation: {
     display: 'flex',
-    justifyContent: 'left'
+    justifyContent: 'left',
+    width: '100%',
+    maxWidth: '1220px'
   },
   searchToolbar: {
     borderRadius: '70px',
