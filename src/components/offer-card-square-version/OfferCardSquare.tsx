@@ -6,7 +6,6 @@ import StarIcon from '@mui/icons-material/Star'
 
 import AppOfferButtonsSquare from './AppOfferButtonsSquare'
 import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
-
 import { styles } from '~/components/offer-card-square-version/OfferCardSquare.style'
 
 const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
@@ -21,87 +20,78 @@ const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
     reviews,
     title
   } = cardData
+
   const { t } = useTranslation()
+
   return (
     <Box sx={styles.offerCardSquare}>
+      {/* Верхня частина з аватаром, ім'ям, мовами, іконкою "Bookmark" */}
       <Box sx={styles.authInfo}>
-        <Avatar
-          alt='avatar'
-          src={avatar}
-          sx={{ minWidth: '100px', minHeight: '100px' }}
-        />
+        <Avatar alt='avatar' src={avatar} sx={{ minWidth: '100px', minHeight: '100px' }} />
         <Box>
-          <Typography sx={styles.author}> {author} </Typography>
+          <Typography sx={styles.author}>{author}</Typography>
           <Stack
             direction='row'
             display='grid'
             gap='2px'
             gridTemplateColumns='repeat(2, 1fr)'
             gridTemplateRows='auto'
-            spacing={1}
           >
-            {languages?.map((item) => {
-              return (
-                <Chip
-                  color='default'
-                  key={item}
-                  label={item}
-                  sx={{ color: '#616161' }}
-                  variant='outlined'
-                />
-              )
-            })}
+            {languages?.map((item) => (
+              <Chip
+                color='default'
+                key={item}
+                label={item}
+                sx={{ color: '#616161' }}
+                variant='outlined'
+              />
+            ))}
           </Stack>
         </Box>
         <BookmarkBorderOutlinedIcon />
       </Box>
-      <Typography sx={styles.titleCard}> {title} </Typography>
+
+      {/* Заголовок */}
+      <Typography sx={styles.titleCard}>{title}</Typography>
       <Divider />
+
+      {/* Предмети */}
       <Box sx={styles.chipItems}>
-        <Typography sx={styles.chipItemsTitle}>
-          {t('findOfferPage.subject')}:
-        </Typography>
+        <Typography sx={styles.chipItemsTitle}>{t('findOfferPage.subject')}:</Typography>
         <Stack direction='row' spacing={0.5}>
-          {subjects?.map((item) => {
-            return (
-              <Chip
-                color='default'
-                key={item}
-                label={item}
-                sx={{
-                  bgcolor: '#79B26099',
-                  color: '#2C4521',
-                  textTransform: 'uppercase'
-                }}
-                variant='filled'
-              />
-            )
-          })}
-        </Stack>
-      </Box>
-      <Box sx={styles.chipItems}>
-        <Typography sx={styles.chipItemsTitle}>
-          {t('findOfferPage.level')}:
-        </Typography>
-        <Stack direction='row' spacing={0.5}>
-          {proficiencyLevel?.map((item) => {
-            return (
-              <Chip
-                color='default'
-                key={item}
-                label={item}
-                sx={{
-                  bgcolor: '#79B26033',
-                  color: '#455A64',
-                  textTransform: 'uppercase'
-                }}
-                variant='filled'
-              />
-            )
-          })}
+          {subjects?.map((item) => (
+            <Chip
+              key={item}
+              label={item}
+              sx={{
+                bgcolor: '#79B26099',
+                color: '#2C4521',
+                textTransform: 'uppercase'
+              }}
+            />
+          ))}
         </Stack>
       </Box>
 
+      {/* Рівень */}
+      <Box sx={styles.chipItems}>
+        <Typography sx={styles.chipItemsTitle}>{t('findOfferPage.level')}:</Typography>
+        <Stack direction='row' spacing={0.5}>
+          {proficiencyLevel?.map((item) => (
+            <Chip
+              key={item}
+              label={item}
+              sx={{
+                bgcolor: '#79B26033',
+                color: '#455A64',
+                textTransform: 'uppercase'
+              }}
+            />
+          ))}
+        </Stack>
+      </Box>
+
+      {/* Ціна і рейтинг */}
       <Box
         sx={{
           display: 'flex',
@@ -111,20 +101,18 @@ const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
         }}
       >
         <Box>
-          <Box>
-            <Typography
-              sx={{
-                fontSize: ' 20px',
-                fontWeight: '500',
-                textTransform: 'uppercase'
-              }}
-            >
-              {price} {t('findOfferPage.priceCurrange')}
-            </Typography>
-          </Box>
           <Typography
             sx={{
-              fontSize: ' 10px',
+              fontSize: '20px',
+              fontWeight: '500',
+              textTransform: 'uppercase'
+            }}
+          >
+            {price} {t('findOfferPage.priceCurrange')}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: '10px',
               fontWeight: '400',
               textTransform: 'uppercase'
             }}
@@ -135,14 +123,14 @@ const OfferCardSquare: FC<OfferCardProps> = ({ cardData }) => {
         <Box>
           <Box sx={styles.rating}>
             <StarIcon sx={{ color: '#FFB000' }} />
-            <Typography sx={styles.ratingAmount}> {`${rating}`} </Typography>
+            <Typography sx={styles.ratingAmount}>{rating}</Typography>
           </Box>
           <Typography sx={styles.reviews}>
-            {' '}
-            {`${reviews} ${t('findOfferPage.reviews')}`}{' '}
+            {reviews} {t('findOfferPage.reviews')}
           </Typography>
         </Box>
       </Box>
+
       <AppOfferButtonsSquare />
     </Box>
   )
