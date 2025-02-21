@@ -11,7 +11,15 @@ export const styles = {
       lineHeight: '20px'
     }
   },
+  navigation: {
+    maxWidth: '1220px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'right'
+  },
   searchToolbar: {
+    maxWidth: '1200px',
+    width: '100%',
     borderRadius: '70px'
   },
   titleWithDescription: {

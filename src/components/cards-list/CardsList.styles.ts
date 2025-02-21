@@ -9,7 +9,8 @@ export const styles = {
       lg: 'repeat(4, minmax(264px, 1fr))'
     },
     gridAutoRows: '112px',
-    gridGap: '24px'
+    gridGap: '24px',
+    width: '1220px'
   },
   btn: {
     minWidth: '148px',

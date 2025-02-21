@@ -2,12 +2,13 @@ import { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation, Trans } from 'react-i18next'
 
-import { Typography } from '@mui/material'
+import { Typography, Box } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import useBreakpoints from '~/hooks/use-breakpoints'
 import useCategoriesNames from '~/hooks/use-categories-names'
 import useLoadMore from '~/hooks/use-load-more'
+import useCategoriesOffersData from '~/hooks/use-categories-offers-data'
 import { useModalContext } from '~/context/modal-context'
 import { categoryService } from '~/services/category-service'
 import { getScreenBasedLimit } from '~/utils/helper-functions'
@@ -63,12 +64,14 @@ const Categories = () => {
 
   const getCategoryNames = () => !categoryNames.length && void fetchData()
 
+  const offersData = useCategoriesOffersData(categories)
+
   const cards = useMemo(
     () =>
       categories.map((item) => {
         return (
           <CardWithLink
-            description={`${Math.round(Math.random() * 100)} ${t('categoriesPage.offers')}`}
+            description={`${offersData[item._id] ?? 0} ${t('categoriesPage.offers')}`}
             icon={item.appearance.icon}
             iconColor={item.appearance.color}
             key={item._id}
@@ -77,7 +80,7 @@ const Categories = () => {
           />
         )
       }),
-    [categories, t]
+    [categories, t, offersData]
   )
 
   const options = useMemo(
@@ -96,13 +99,13 @@ const Categories = () => {
         style={styles.titleWithDescription}
         title={t('categoriesPage.title')}
       />
-
-      <DirectionLink
-        after={<ArrowForwardIcon fontSize={SizeEnum.Small} />}
-        linkTo={authRoutes.findOffers.path}
-        title={t('categoriesPage.showAllOffers')}
-      />
-
+      <Box sx={styles.navigation}>
+        <DirectionLink
+          after={<ArrowForwardIcon fontSize={SizeEnum.Small} />}
+          linkTo={authRoutes.findOffers.path}
+          title={t('categoriesPage.showAllOffers')}
+        />
+      </Box>
       <AppToolbar sx={styles.searchToolbar}>
         <SearchAutocomplete
           loading={categoryNamesLoading}
