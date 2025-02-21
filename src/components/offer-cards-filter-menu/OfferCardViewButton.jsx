@@ -1,9 +1,8 @@
 import { Box } from '@mui/material'
-import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined'
+import ReorderOutlinedIcon from '@mui/icons-material/ReorderOutlined'
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
 
 import AppButton from '../app-button/AppButton'
-
 import { styles } from '~/components/offer-cards-filter-menu/OfferCardsFilterMenu.styles'
 
 export default function OfferCardViewButton({ setCardView, cardView }) {
@@ -14,7 +13,7 @@ export default function OfferCardViewButton({ setCardView, cardView }) {
         sx={{ borderColor: cardView === 'single' ? 'black' : 'default' }}
         variant='outlined'
       >
-        <FilterListOutlinedIcon />
+        <ReorderOutlinedIcon />
       </AppButton>
       <AppButton
         onClick={() => setCardView('grid')}
