@@ -13,23 +13,14 @@ export const styles = {
   },
   navigation: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'left'
   },
   searchToolbar: {
     borderRadius: '70px',
     display: 'flex',
     flexDirection: { xs: 'column', sm: 'row' },
-    width: '100%',
-    maxWidth: '1200px'
-  },
-  showAllOffers: {
-    display: 'flex',
-    justifyContent: 'end',
-    alignItems: 'center',
-    columnGap: '10px',
-    color: 'primary.500',
-    textDecoration: 'none',
-    m: '0 45px 20px 0'
+    maxWidth: '1200px',
+    width: '100%'
   },
   titleWithDescription: {
     wrapper: {

@@ -1,65 +1,169 @@
-import { Container } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Box, Typography } from '@mui/material'
+import { axiosClient } from '~/plugins/axiosClient'
+import { useTranslation } from 'react-i18next'
+
 import OfferCard from '../offer-card/OfferCard'
+import OfferCardSquare from '../offer-card-square-version/OfferCardSquare'
+import PaginationBar from '~/components/pagination-bar/PaginationBar'
+import { styles } from '~/components/offer-cards-list/ListOfferCards.style'
 
-const offerDataMock = [
-  {
-    id: '1',
-    avatar:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: 4,
-    author: 'Jennifer W.',
-    subjects: ['design'],
-    proficiencyLevel: ['beginner'],
-    price: 75,
-    languages: ['Ukrainian', 'English'],
-    reviews: 15,
-    title:
-      'Advanced Quantum Mechanics: Theoretical Concepts, Mathematical Formulations in Modern Physics',
-    description:
-      'Hello. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don Hello. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in s'
-  },
-  {
-    id: '2',
-    avatar:
-      'https://images.unsplash.com/photo-1699107769235-902ff97e93f3?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: 3,
-    author: 'Jenni',
-    subjects: ['chemistry'],
-    proficiencyLevel: ['advanced'],
-    price: 50,
-    languages: ['Ukrainian', 'Germany', 'Polish'],
-    reviews: 25,
-    title:
-      'Advanced Quantum Mechanics: Theoretical Concepts, Mathematical Formulations in Modern Physics',
-    description:
-      'Hello. There are many variations of passages of Lorem Ipsum available'
+interface IOffer {
+  id: string
+  aboutAuthor: {
+    author: {
+      _id: string
+      firstName: string
+      email: string
+      role: string[]
+    } | null
+    authorRole: string
   }
-]
+  aboutInterests: {
+    categoryInfo: {
+      _id: string
+      categoryName: string
+      appearance: { icon: string; color: string }
+    }
+    subjectInfo: {
+      _id: string
+      subjectName: string
+      appearance: { icon: string; color: string }
+    }
+  }
+  title: string
+  description: string
+  price: number
+  proficiencyLevel: string
+  languages: string[]
+  status: string
+  FAQ: Array<{ question: string; answer: string }>
+  createdAt: string
+  updatedAt: string
+}
 
-const ListOfferCard = () => {
+interface ListOfferCardProps {
+  cardView: 'grid' | 'single'
+  categoryId?: string
+  subjectId?: string
+  search?: string
+}
+
+const ListOfferCard: React.FC<ListOfferCardProps> = ({
+  cardView,
+  categoryId,
+  subjectId,
+  search
+}) => {
+  const { t } = useTranslation()
+  const [offers, setOffers] = useState<IOffer[]>([])
+  const [page, setPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [loading, setLoading] = useState<boolean>(false)
+  const limit = 6
+
+  const fetchOffers = async (currentPage: number) => {
+    try {
+      setLoading(true)
+      const response = await axiosClient.get('/offers', {
+        params: {
+          page: currentPage,
+          limit,
+          categoryId,
+          subjectId,
+          search
+        }
+      })
+
+      const { pagination, data } = response.data
+      console.log('DATA FROM SERVER:', data)
+      setOffers(data)
+      setTotalPages(pagination?.totalPages || 1)
+    } catch (error) {
+      console.error('Error fetching offers:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    setPage(1)
+  }, [categoryId, subjectId, search])
+
+  useEffect(() => {
+    void fetchOffers(page)
+  }, [page, categoryId, subjectId, search])
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+  }
+
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
-      {offerDataMock.map((data) => (
-        <OfferCard
-          author={data.author}
-          avatar={data.avatar}
-          description={data.description}
-          key={data.id}
-          languages={data.languages}
-          price={data.price}
-          proficiencyLevel={data.proficiencyLevel}
-          reviews={data.reviews}
-          subjects={data.subjects}
-          title={data.title}
+    <Box sx={styles.wrapper}>
+      {!loading && offers.length === 0 ? (
+        <Typography sx={{ textAlign: 'center', marginTop: 20 }} variant='h6'>
+          {t('offerPage.createOffer.findOffers.noResults')}
+        </Typography>
+      ) : (
+        <Box
+          sx={
+            cardView === 'grid'
+              ? styles.gridCardWrapper
+              : styles.singleCardWrapper
+          }
+        >
+          {offers.map((offer) => {
+            const {
+              id,
+              aboutAuthor,
+              aboutInterests,
+              title,
+              description,
+              price,
+              proficiencyLevel,
+              languages
+            } = offer
+
+            const authorName = aboutAuthor.author?.firstName || 'Unknown'
+            const subjects = aboutInterests.subjectInfo
+              ? [aboutInterests.subjectInfo.subjectName]
+              : []
+            const levelArray = Array.isArray(proficiencyLevel)
+              ? proficiencyLevel
+              : [proficiencyLevel]
+
+            const cardData = {
+              author: authorName,
+              avatar: '',
+              description,
+              languages,
+              price,
+              proficiencyLevel: levelArray,
+              reviews: 0,
+              subjects,
+              title
+            }
+
+            return (
+              <Box key={id} sx={{ mb: 2 }}>
+                {cardView === 'grid' ? (
+                  <OfferCardSquare cardData={cardData} />
+                ) : (
+                  <OfferCard cardData={cardData} />
+                )}
+              </Box>
+            )
+          })}
+        </Box>
+      )}
+      <Box sx={styles.paginationContainer}>
+        <PaginationBar
+          currentPage={page}
+          onPageChange={handlePageChange}
+          totalPages={totalPages}
         />
-      ))}
-    </Container>
+      </Box>
+    </Box>
   )
 }
 

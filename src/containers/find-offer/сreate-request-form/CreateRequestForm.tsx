@@ -15,6 +15,7 @@ import AppTextField from '~/components/app-text-field/AppTextField'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
 import Levels from '~/components/levels/Levels'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 import TitleIcon from '~/assets/img/offer-request-form/leak_add.svg'
 import StepOneIcon from '~/assets/img/offer-request-form/counter_1.svg'
@@ -34,6 +35,7 @@ const normalizeLanguage = (lang: string) =>
 
 const CreateRequestForm = () => {
   const { t } = useTranslation()
+  const { setAlert } = useSnackBarContext()
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -139,11 +141,27 @@ const CreateRequestForm = () => {
         languages: selectedLanguages
       }
       await createRequest(payload)
-      console.log('Request created:', requestResponse)
+
+      setAlert({
+        severity: 'success',
+        message: 'offerPage.createOffer.successMessage'
+      })
     } catch (error) {
+      setAlert({
+        severity: 'error',
+        message: 'offerPage.createOffer.errorMessage'
+      })
       console.error('Error creating request:', error)
     }
   }
+
+  const isFormValid =
+    title.trim() !== '' &&
+    description.trim() !== '' &&
+    selectedCategory !== null &&
+    selectedSubject !== null &&
+    proficiencyLevel.trim() !== '' &&
+    selectedLanguages.length > 0
 
   return (
     <Box sx={{ maxWidth: '645px', width: '100%' }}>
@@ -247,7 +265,6 @@ const CreateRequestForm = () => {
             {`${description.length}/${maxDescriptionLength}`}
           </Typography>
         </Box>
-
         <Typography
           component='p'
           mt={2}
@@ -279,7 +296,6 @@ const CreateRequestForm = () => {
           items={selectedLanguages}
           wrapperStyle={styles.chipsList}
         />
-
         <Typography
           component='p'
           mt={2}
@@ -377,6 +393,7 @@ const CreateRequestForm = () => {
 
       <Box sx={styles.btnsWrapper}>
         <AppButton
+          disabled={!isFormValid}
           onClick={handleCreateRequest}
           sx={styles.btn}
           variant='contained'

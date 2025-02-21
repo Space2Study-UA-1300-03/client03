@@ -1,35 +1,29 @@
-import { Avatar, Box, Typography, Chip, Stack } from '@mui/material'
 import { FC } from 'react'
-import { styles } from '~/components/offer-card/OfferCard.styles'
+import { useTranslation } from 'react-i18next'
+import { Avatar, Box, Typography, Chip, Stack } from '@mui/material'
+
 import AppOfferButtons from './AppOfferButtons'
 import TutorRating from './TutorRating'
-import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import SaveFavoriteButton from './SaveFavoriteButton'
+import { OfferCardProps } from '../offer-cards-list/offer.card.interface'
 
-interface OfferCardProps {
-  avatar?: string
-  rating?: number
-  author: string
-  subjects?: string[]
-  proficiencyLevel: string[]
-  price?: string | number
-  languages?: string[]
-  reviews: number
-  title: string
-  description: string
-}
+import { styles } from '~/components/offer-card/OfferCard.styles'
 
-const OfferCard: FC<OfferCardProps> = ({
-  avatar,
-  author,
-  subjects,
-  proficiencyLevel,
-  price,
-  languages,
-  reviews,
-  title,
-  description
-}) => {
+const OfferCard: FC<OfferCardProps> = ({ cardData }) => {
+  const {
+    avatar,
+    author,
+    subjects,
+    proficiencyLevel,
+    price,
+    languages,
+    reviews,
+    title,
+    description,
+    rating
+  } = cardData
+
+  const { t } = useTranslation()
   return (
     <Box sx={styles.offerCard}>
       <Box sx={styles.authInfo}>
@@ -39,8 +33,11 @@ const OfferCard: FC<OfferCardProps> = ({
           sx={{ minWidth: '80px', minHeight: '80px' }}
         />
         <Typography sx={styles.author}> {author} </Typography>
-        <TutorRating />
-        <Typography sx={styles.reviews}> {`${reviews} reviews`} </Typography>
+        <TutorRating rating={rating} />
+        <Typography sx={styles.reviews}>
+          {' '}
+          {`${reviews} ${t('findOfferPage.reviews')}`}{' '}
+        </Typography>
       </Box>
       <Box sx={styles.cardDetails}>
         <Typography sx={styles.titleCard}> {title} </Typography>
@@ -77,13 +74,20 @@ const OfferCard: FC<OfferCardProps> = ({
             )
           })}
         </Stack>
-        <Typography sx={styles.description}> {description} </Typography>
+        <Typography
+          overflow='hidden'
+          sx={styles.description}
+          textOverflow='ellipsis'
+          whiteSpace='balance'
+        >
+          {' '}
+          {description}
+        </Typography>
         <Stack direction='row' spacing={1}>
           {languages?.map((item) => {
             return (
               <Chip
                 color='default'
-                icon={<PublicOutlinedIcon />}
                 key={item}
                 label={item}
                 sx={{ color: '#616161' }}
@@ -108,7 +112,7 @@ const OfferCard: FC<OfferCardProps> = ({
                 textTransform: 'uppercase'
               }}
             >
-              {price + ' ' + 'uah'}
+              {price + ' ' + t('findOfferPage.priceCurrange')}
             </Typography>
             <SaveFavoriteButton />
           </Box>
@@ -119,7 +123,7 @@ const OfferCard: FC<OfferCardProps> = ({
               textTransform: 'uppercase'
             }}
           >
-            / hour
+            / {t('findOfferPage.hour')}
           </Typography>
         </Box>
         <AppOfferButtons />

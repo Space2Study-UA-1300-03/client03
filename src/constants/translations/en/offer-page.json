@@ -12,6 +12,9 @@
       "selectCourse": "Select a course",
       "linkCourse": "Link your created course to the offer"
     },
+    "findOffers": {
+      "noResults": "Nothing found"
+    },
     "placeholders": {
       "title": "Enter the title of your offer",
       "describe": "Describe your tutoring service, your teaching style, and your expertise",
@@ -116,9 +119,5 @@
     "category": "Please select a category",
     "subject": "Please select a subject",
     "description": "Please provide a description"
-  },
-  "cardButtons":{
-    "showDetails": "Show details",
-    "sendMessage": "Send message"
   }
 }

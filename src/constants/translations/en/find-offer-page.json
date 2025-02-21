@@ -14,9 +14,9 @@
     "title": "Explore Offers",
     "description": "Discover offers in your area of interest"
   },
-  "backToAllSubjects": "Back to all subjects",
+  "backToAllCategories": "Back to all categories",
   "searchToolbar": {
-    "label": "Search by tutor name"
+    "label": "Search by name"
   },
   "topMenu": {
     "tutorsOffers": "Tutors’ offers",
@@ -52,5 +52,17 @@
   },
   "otherOffers":{
     "title":"Other offers"
-  }
+  },
+  "cardButtons":{
+    "showDetails": "Show details",
+    "sendMessage": "Send message"
+  },
+  "priceCurrange": "uah",
+  "hour": "hour",
+  "reviews": "reviews",
+  "filterMenu" : {
+    "filter": "filter"
+  },
+  "level": "Level",
+  "subject": "Subjects"
 }

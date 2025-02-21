@@ -16,6 +16,7 @@ import AppTextField from '~/components/app-text-field/AppTextField'
 import AppChipList from '~/components/app-chips-list/AppChipList'
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
 import Levels from '~/components/levels/Levels'
+import { useSnackBarContext } from '~/context/snackbar-context'
 
 import TitleIcon from '~/assets/img/offer-request-form/leak_add.svg'
 import StepOneIcon from '~/assets/img/offer-request-form/counter_1.svg'
@@ -43,6 +44,7 @@ const mockCourses = [
 
 const CreateOfferForm = () => {
   const { t } = useTranslation()
+  const { setAlert } = useSnackBarContext()
 
   const [description, setDescription] = useState('')
   const [faq, setFaq] = useState([{ id: 1, question: '', answer: '' }])
@@ -159,12 +161,30 @@ const CreateOfferForm = () => {
         faq,
         courseName: selectedCourse?.name || null
       }
+
       await createOffer(payload)
-      console.log('Offer created:', offerResponse)
+      setAlert({
+        severity: 'success',
+        message: 'offerPage.createOffer.successMessage'
+      })
     } catch (error) {
+      setAlert({
+        severity: 'error',
+        message: 'offerPage.createOffer.errorMessage'
+      })
       console.error('Error creating offer:', error)
     }
   }
+
+  const isFormValid =
+    title.trim() !== '' &&
+    description.trim() !== '' &&
+    selectedCategory !== null &&
+    selectedSubject !== null &&
+    proficiencyLevel.trim() !== '' &&
+    selectedLanguages.length > 0 &&
+    price.trim() !== '' &&
+    selectedCourse !== null
 
   return (
     <Box sx={{ maxWidth: '645px', width: '100%' }}>
@@ -246,7 +266,7 @@ const CreateOfferForm = () => {
             value={title}
           />
           <Typography component='p' sx={styles.summaryLength}>
-            {`${description.length}/100`}
+            {`${title.length}/100`}
           </Typography>
         </Box>
         <Typography component='p' sx={styles.stepSubtitle} variant='body1'>
@@ -394,6 +414,7 @@ const CreateOfferForm = () => {
 
       <Box sx={styles.btnsWrapper}>
         <AppButton
+          disabled={!isFormValid}
           onClick={handleCreateOffer}
           sx={styles.btn}
           variant='contained'

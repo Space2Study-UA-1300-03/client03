@@ -1,12 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
+import { Box, Typography } from '@mui/material'
+import { useSelector } from 'react-redux'
+
 import useBreakpoints from '~/hooks/use-breakpoints'
-
-import { Box, Typography, Checkbox, FormControlLabel } from '@mui/material'
-
 import AppAutoComplete from '~/components/app-auto-complete/AppAutoComplete'
 import AppTextField from '~/components/app-text-field/AppTextField'
 import AppTextArea from '~/components/app-text-area/AppTextArea'
+import AppCheckbox from '~/components/app-checkbox/AppCheckbox'
 import useAxios from '~/hooks/use-axios'
 import img from '~/assets/img/tutor-home-page/become-tutor/general-info.svg'
 import { stepperService } from '~/services/stepper-service'
@@ -24,6 +25,7 @@ const GeneralInfoStep = ({
   errors,
   handleBlur
 }) => {
+  const { userRole } = useSelector((state) => state.appMain)
   const [currentCities, setCurrentCities] = useState(null)
   const { t } = useTranslation()
   const { setAlert } = useSnackBarContext()
@@ -155,19 +157,20 @@ const GeneralInfoStep = ({
                 value={data?.professionalSummary || ''}
               />
             </Box>
-            <FormControlLabel
-              checked={data?.more18Years || false}
-              control={<Checkbox />}
-              label={
-                <Typography sx={styles.checkboxLabel}>
-                  {t('common.confirmYears')}
-                </Typography>
-              }
-              onChange={handleChange('more18Years')}
-            />
-            <Typography sx={styles.requiredField}>
-              {t('becomeTutor.generalInfo.helperText')}
-            </Typography>
+            {userRole === 'tutor' && (
+              <AppCheckbox
+                checked={data?.more18Years || false}
+                errormsg={t(errors.more18Years || '')}
+                label={
+                  <Typography component='span' sx={styles.checkboxLabel}>
+                    {t('common.confirmYears')}
+                  </Typography>
+                }
+                onBlur={handleBlur('more18Years')}
+                onChange={handleChange('more18Years')}
+                required
+              />
+            )}
           </Box>
         </Box>
         {btnsBox}

@@ -7,7 +7,7 @@ interface UseFormProps<T> {
   initialValues: T
   initialErrors?: { [K in keyof T]: string }
   validations?: Partial<{
-    [K in keyof T]: (value: T[K] | string, data: T) => string | undefined
+    [K in keyof T]: (value: T[K], data: T) => string | undefined
   }>
   onSubmit?: (data?: T) => Promise<void>
   submitWithData?: boolean
@@ -51,13 +51,19 @@ export const useForm = <T extends object>({
     getEmptyValues(initialValues, false)
   )
 
-  const validateValue = (key: keyof T, value: T[keyof T] | string) => {
+  const validateValue = (
+    key: keyof T,
+    value: T[keyof T] | string | boolean
+  ) => {
     if (validations && validations[key]) {
-      return validations[key]?.(value, data)
+      return validations[key]?.(value as T[keyof T], data)
     }
   }
 
-  const checkForError = <K extends keyof T>(key: K, value: T[K] | string) => {
+  const checkForError = <K extends keyof T>(
+    key: K,
+    value: T[K] | string | boolean
+  ) => {
     if (isTouched[key] || errors[key]) {
       const valid = validateValue(key, value)
 
@@ -85,7 +91,7 @@ export const useForm = <T extends object>({
         }
         return newData
       })
-      checkForError(key, event.target.value)
+      checkForError(key, value)
     }
 
   const handleNonInputValueChange = <K extends keyof T>(
@@ -114,7 +120,12 @@ export const useForm = <T extends object>({
     (key: keyof T) => (event: React.FocusEvent<HTMLInputElement>) => {
       setDirty(!isEqual(data, initialValues))
 
-      const valid = validateValue(key, event.target.value)
+      const value =
+        event.target.type === 'checkbox'
+          ? event.target.checked
+          : event.target.value
+
+      const valid = validateValue(key, value)
 
       setErrors((prev) => ({
         ...prev,
@@ -180,10 +191,17 @@ export const useForm = <T extends object>({
       return acc
     }, {} as Partial<T>)
 
-    setData((prev) => ({
-      ...prev,
-      ...filteredNewData
-    }))
+    setData((prev) => {
+      const newData = {
+        ...prev,
+        ...filteredNewData
+      }
+
+      if (dirtyOnChange) {
+        setDirty(!isEqual(newData, initialValues))
+      }
+      return newData
+    })
   }
 
   const isFormValid =

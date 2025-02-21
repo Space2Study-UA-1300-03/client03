@@ -14,9 +14,9 @@
     "title": "Досліджуйте пропозиції",
     "description": "Відкрийте для себе пропозиції у вашій області інтересів"
   },
-  "backToAllSubjects": "Повернутися до всіх предметів",
+  "backToAllCategories": "Повернутися до всіх категорій",
   "searchToolbar": {
-    "label": "Пошук за іменем репетитора"
+    "label": "Пошук за іменем"
   },
   "topMenu": {
     "tutorsOffers": "Пропозиції репетитора",
@@ -50,5 +50,17 @@
   },
   "otherOffers":{
     "title":"Інші пропозиції"
-  }
+  },
+  "cardButtons":{
+    "showDetails": "Переглянути деталі",
+    "sendMessage": "Надіслати повідомлення"
+  },
+  "priceCurrange": "грн",
+  "hour": "годину",
+  "reviews": "відгуки",
+  "filterMenu" : {
+    "filter": "Фільтри"
+  },
+  "level": "Предмет",
+  "subject": "Рівень"
 }

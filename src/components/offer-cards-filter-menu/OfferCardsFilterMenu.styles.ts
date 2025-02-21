@@ -1,12 +1,13 @@
 export const styles = {
   container: {
-    width: 'auto',
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   switch: {
-    display: 'flex'
+    display: 'flex',
+    flexDirection: { sm: 'row', xs: 'column' }
   },
   filter: {
     display: 'flex',
@@ -24,8 +25,5 @@ export const styles = {
     justifyContent: 'space-between',
     gap: '8px'
   },
-  cardSwitch: {
-    display: 'flex',
-    flexDirection: { sm: 'row', xs: 'column' }
-  }
+  cardSwitch: {}
 }
