@@ -63,8 +63,6 @@ const Categories = () => {
 
   const getCategoryNames = () => !categoryNames.length && void fetchData()
 
-  console.log(categoryNames, 'categoryNames')
-
   const cards = useMemo(
     () =>
       categories.map((item) => {
@@ -83,11 +81,8 @@ const Categories = () => {
   )
 
   const options = useMemo(
-    () =>
-      categoryNames.data.map((option) =>
-        t(`categoriesNames.categories.${option.categoryName}`)
-      ),
-    [categoryNames, t]
+    () => categoryNames.data.map((option) => option.categoryName),
+    [categoryNames]
   )
 
   const handleOpenModal = () => openModal({ component: <CreateSubjectModal /> })
