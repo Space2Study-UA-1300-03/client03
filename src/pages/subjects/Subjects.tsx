@@ -31,14 +31,12 @@ import {
 import { itemsLoadLimit } from '~/constants'
 import { authRoutes } from '~/router/constants/authRoutes'
 import { styles } from '~/pages/subjects/Subjects.styles'
-//import { axiosClient } from '~/plugins/axiosClient'
 import useSubjectsOffersData from '~/hooks/use-subjects-offers-data'
 
 const Subjects = () => {
   const [match, setMatch] = useState<string>('')
   const [categoryName, setCategoryName] = useState<string>('')
   const [isFetched, setIsFetched] = useState<boolean>(false)
-  // const [offersData, setOffersData] = useState<Record<string, number>>({})
   const params = useMemo(() => ({ name: match }), [match])
 
   const { t } = useTranslation()
