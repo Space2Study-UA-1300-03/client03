@@ -1,34 +1,33 @@
-<a href="https://softserve.academy/"><img src="../main/photo2.jpg" title="SoftServe IT Academy" alt="SoftServe IT Academy"></a>
+<a href="https://softserve.academy/">
+  <img src="main/photo2.jpg" title="SoftServe IT Academy" alt="SoftServe IT Academy" width="200">
+</a>
 
-# SpaceToStudy project
+# SpaceToStudy Frontend
 
-SpaceToStudy project is a platform where experts in various fields share their knowledge and students can learn from the best. Here you can find the proper training course, find a tutor, or find students and receive feedback from them.
-
-[![GitHub issues](insert your link here)]
-[![Pending Pull-Requests](insert your link here)]
-[![GitHub license](insert your link here)]
+**SpaceToStudy** is a platform where experts in various fields share their knowledge, and students get access to high-quality courses and learning experiences. This repository contains the frontend part of the project, built with React, Redux, and Material-UI.
 
 ---
 
+## Table of Contents
+
 - [Installation](#installation)
-  - [Required to install](#Required-to-install)
-  - [Clone](#Clone)
-  - [Setup](#Setup)
-  - [How to run local](#How-to-run-local)
-- [Usage](#Usage)
-  - [How to run tests](#How-to-run-tests)
-- [Documentation](#Documentation)
-  - [Rules and guidelines](#Rules-and-guidelines)
-  - [Testing](#Testing)
-- [Contributing](#contributing)
-  - [git flow](#git-flow)
-  - [issue flow](#git-flow)
-- [Teams](#teams) 
-  - [Development team](#development-team) 
-  - [DevOps team](#devops-team) 
-  - [Designer team](#designer-team) 
-  - [BA team](#ba-team)
-  - [QC team](#qc-team)
+  - [Requirements](#requirements)
+  - [Clone Repository](#clone-repository)
+  - [Setup](#setup)
+  - [Running Locally](#running-locally)
+- [Usage](#usage)
+  - [Running Tests](#running-tests)
+- [Documentation](#documentation)
+  - [Project Structure and Coding Guidelines](#project-structure-and-coding-guidelines)
+  - [Testing](#testing)
+- [Implemented on the Frontend](#implemented-on-the-frontend)
+  - [Popular Categories, Subjects, and Offers](#popular-categories-subjects-and-offers)
+  - [Registration and Login](#registration-and-login)
+  - [Profile Setup Stepper](#profile-setup-stepper)
+  - [Forms for Creating Offers and Requests](#forms-for-creating-offers-and-requests)
+  - [Search, Filtering, and Pagination](#search-filtering-and-pagination)
+  - [Multilingual Support](#multilingual-support)
+- [Teams](#teams)
 - [FAQ](#faq)
 - [License](#license)
 
@@ -36,15 +35,14 @@ SpaceToStudy project is a platform where experts in various fields share their k
 
 ## Installation
 
-- All the `code` required to get started
+### Requirements
 
-### Required to install
+- NodeJS (version **18.14.0 LTS** or above)
+- NPM
 
-- NodeJS (18.14.0 LTS)
+### Clone Repository
 
-### Clone
-
-- Clone this repo to your local machine
+Clone this repository to your local machine:
 
 ### Setup
 
@@ -116,6 +114,7 @@ Order of testing components:
 - constants
 - static css styles
 - related components (test only one specific component at the specific moment of time)
+
 ##### How to test:
 - testing using snapshots (actual ui)
 - testing logic of component (dynamic)
@@ -165,6 +164,39 @@ Checks:
 1. Use `data-cy` as selector
 
 ---
+
+## Implemented on the Frontend
+
+### Popular Categories, Subjects, and Offers
+- A **Popular Categories** block on the homepage shows the most in-demand tutoring areas (e.g., Chemistry, History, Painting, etc.).
+- Users can click on a category to view the **Subjects** within that category.
+- Each **Subject** page displays available offers or requests. This includes the tutor’s information (price, level, languages, etc.) or students’ requests.
+- **Search and filtering** options are available on every page with a list of categories or subjects, allowing users to quickly find the most relevant offers.
+
+### Registration and Login
+- Developed forms for registration (both for students and tutors) with Google Sign-In integration and data validation.
+- Implemented automatic pre-filling of first and last name from the Google profile.
+
+### Profile Setup Stepper
+- Created a multi-step form for profile setup after successful registration.
+- Includes entering basic information, selecting subjects, choosing languages, and uploading a profile photo.
+
+### Forms for Creating Offers and Requests
+- **Create a New Offer** form for tutors:
+  - Choose a category, subject, and proficiency level.
+  - Describe teaching approach, specify lesson price, choose the teaching language, and add FAQ.
+  - Publish the offer immediately or save it as a draft.
+- **Learning Requests** form for students:
+  - Specify subject, proficiency level, preferred schedule, and other requirements.
+
+### Search, Filtering, and Pagination
+- Developed components for keyword search, filtering by category, language, price, and proficiency level.
+- Implemented pagination to enable smooth navigation through long lists of offers or requests.
+- Each page containing lists of categories, subjects, or offers includes search and filter options for an optimal user experience.
+
+### Multilingual Support
+- Integrated a language switcher (English/Українська) to accommodate a wider audience.
+
 
 ## Contributing
 
@@ -228,31 +260,13 @@ Only the release should merge into the main branch!!!
 
 ### Development team
 
-[![@Tolik170](https://avatars.githubusercontent.com/u/63456632?v=4)](https://github.com/Tolik170)
-[![@Mav-Ivan](https://avatars.githubusercontent.com/u/110425368?v=4)](https://github.com/Mav-Ivan)
-[![@dmtrth25](https://avatars.githubusercontent.com/u/56305508?v=4)](https://github.com/dmtrth25)
-[![@abalanovsky](https://avatars.githubusercontent.com/u/108689551?v=4)](https://github.com/abalanovsky)
-[![@OlyaKorchan](https://avatars.githubusercontent.com/u/17857767?v=4)](https://github.com/OlyaKorchan)
-[![@Marichka0406](https://avatars.githubusercontent.com/u/121502737?v=4)](https://github.com/Marichka0406)
+[![@NataliaKilienko](https://avatars.githubusercontent.com/NataliaKilienko?v=4)](https://github.com/NataliaKilienko)
+[![@IrynaKhylchuk](https://avatars.githubusercontent.com/IrynaKhylchuk?v=4)](https://github.com/IrynaKhylchuk)
+[![@uncle-Yevhenii](https://avatars.githubusercontent.com/uncle-Yevhenii?v=4)](https://github.com/uncle-Yevhenii)
+[![@SanekOstapiuk](https://avatars.githubusercontent.com/SanekOstapiuk?v=4)](https://github.com/SanekOstapiuk)
+[![@bilets](https://avatars.githubusercontent.com/bilets?v=4)](https://github.com/bilets)
+[![@ANNA124kr](https://avatars.githubusercontent.com/ANNA124kr?v=4)](https://github.com/ANNA124kr)
 
-### DevOps team
-
-[![@abohatyrov](https://avatars.githubusercontent.com/u/52012169?v=4)](https://github.com/abohatyrov)
-[![@bdeputat](https://avatars.githubusercontent.com/u/36072762?v=4)](https://github.com/bdeputat)
-
-### Designer team
-
-[![@Nastia197](https://avatars.githubusercontent.com/u/76164279?v=4)](https://github.com/Nastia197)
-
-### BA team
-
-[![@IvannaSW](https://avatars.githubusercontent.com/u/24367409?v=4)](https://github.com/IvannaSW)
-
-### QC team
-
-[![@AntonOkun](https://avatars.githubusercontent.com/u/129941062?v=4)](https://github.com/AntonOkun)
-[![@Valent1n0o](https://avatars.githubusercontent.com/u/118978192?v=4)](https://github.com/Valent1n0o)
----
 
 ## FAQ
 
