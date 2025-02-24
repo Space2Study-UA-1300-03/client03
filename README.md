@@ -1,8 +1,6 @@
-<a href="https://softserve.academy/">
-  <img src="main/photo2.jpg" title="SoftServe IT Academy" alt="SoftServe IT Academy" width="200">
-</a>
+<a href="https://softserve.academy/"><img src="../main/photo2.jpg" title="SoftServe IT Academy" alt="SoftServe IT Academy"></a>
 
-# SpaceToStudy Frontend
+# SpaceToStudy project
 
 **SpaceToStudy** is a platform where experts in various fields share their knowledge, and students get access to high-quality courses and learning experiences. This repository contains the frontend part of the project, built with React, Redux, and Material-UI.
 
